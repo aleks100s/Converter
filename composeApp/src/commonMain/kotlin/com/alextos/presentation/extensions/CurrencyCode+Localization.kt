@@ -1,7 +1,7 @@
 package com.alextos.presentation.extensions
 
 import com.alextos.common.UiText
-import com.alextos.domain.CurrencyCode
+import com.alextos.domain.models.CurrencyCode
 import converter.composeapp.generated.resources.Res
 import converter.composeapp.generated.resources.*
 

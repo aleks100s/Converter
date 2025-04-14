@@ -1,4 +1,4 @@
-package com.alextos.domain
+package com.alextos.domain.models
 
 enum class CurrencyCode {
     AED, // United Arab Emirates Dirham,

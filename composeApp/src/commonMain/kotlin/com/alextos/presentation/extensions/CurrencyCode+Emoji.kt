@@ -1,6 +1,6 @@
 package com.alextos.presentation.extensions
 
-import com.alextos.domain.CurrencyCode
+import com.alextos.domain.models.CurrencyCode
 
 val CurrencyCode.emoji: String
     get() {

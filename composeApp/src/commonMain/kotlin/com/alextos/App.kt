@@ -12,6 +12,7 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
+import com.alextos.di.appModule
 import converter.composeapp.generated.resources.*
 import com.alextos.theme.AppTheme
 import com.alextos.theme.LocalThemeIsDark
@@ -19,9 +20,19 @@ import kotlinx.coroutines.isActive
 import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
+import org.koin.compose.KoinApplication
 
 @Composable
 internal fun App() = AppTheme {
+    KoinApplication(application = {
+        modules(appModule)
+    }) {
+        ContentView()
+    }
+}
+
+@Composable
+private fun ContentView() {
     Column(
         modifier = Modifier
             .fillMaxSize()
