@@ -8,8 +8,8 @@ import com.alextos.data.database.entity.CurrencyRateEntity
 @Dao
 interface CurrencyRateDao {
     @Upsert
-    fun upsertCurrencyRates(currencyRates: List<CurrencyRateEntity>)
+    suspend fun upsertCurrencyRates(currencyRates: List<CurrencyRateEntity>)
 
     @Query("SELECT * FROM currency_rates")
-    fun getCurrencyRates(): List<CurrencyRateEntity>
+    suspend fun getCurrencyRates(): List<CurrencyRateEntity>
 }

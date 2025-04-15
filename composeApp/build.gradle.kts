@@ -53,6 +53,7 @@ kotlin {
             implementation(libs.kotlinx.datetime)
             implementation(libs.room.runtime)
             implementation(libs.composeIcons.featherIcons)
+            implementation(libs.androidx.sqlite)
         }
 
         commonTest.dependencies {
