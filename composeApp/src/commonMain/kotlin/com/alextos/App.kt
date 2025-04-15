@@ -13,6 +13,7 @@ import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import com.alextos.di.appModule
+import com.alextos.di.platformModule
 import com.alextos.presentation.scenes.MainScreen
 import converter.composeapp.generated.resources.*
 import com.alextos.theme.AppTheme
@@ -27,7 +28,7 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 internal fun App() = AppTheme {
     KoinApplication(application = {
-        modules(appModule)
+        modules(appModule, platformModule)
     }) {
         MainScreen(koinViewModel())
     }

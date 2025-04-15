@@ -1,4 +1,4 @@
-package com.alextos.common
+package com.alextos.core
 
 import androidx.compose.runtime.Composable
 import org.jetbrains.compose.resources.StringResource
