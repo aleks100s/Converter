@@ -12,9 +12,8 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
-import com.alextos.di.appModule
-import com.alextos.di.platformModule
 import com.alextos.presentation.scenes.MainScreen
+import com.alextos.presentation.scenes.MainViewModel
 import converter.composeapp.generated.resources.*
 import com.alextos.theme.AppTheme
 import com.alextos.theme.LocalThemeIsDark
@@ -22,16 +21,12 @@ import kotlinx.coroutines.isActive
 import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
-import org.koin.compose.KoinApplication
-import org.koin.compose.viewmodel.koinViewModel
+import org.koin.mp.KoinPlatform.getKoin
 
 @Composable
 internal fun App() = AppTheme {
-    KoinApplication(application = {
-        modules(appModule, platformModule)
-    }) {
-        MainScreen(koinViewModel())
-    }
+    val viewModel = remember { getKoin().get<MainViewModel>() }
+    MainScreen(viewModel)
 }
 
 @Composable

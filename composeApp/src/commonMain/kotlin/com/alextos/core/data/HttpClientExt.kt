@@ -2,7 +2,6 @@ package com.alextos.core.data
 
 import io.ktor.client.call.body
 import io.ktor.client.statement.HttpResponse
-import io.ktor.http.cio.Response
 
 suspend inline fun <reified T> safeCall(
     execute: () -> HttpResponse

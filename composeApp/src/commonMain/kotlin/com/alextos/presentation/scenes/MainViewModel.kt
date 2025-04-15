@@ -2,7 +2,6 @@ package com.alextos.presentation.scenes
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.alextos.data.network.KtorRemoteCurrencyDataSource
 import com.alextos.domain.repository.CurrencyRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO

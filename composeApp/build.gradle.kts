@@ -41,19 +41,19 @@ kotlin {
             implementation(libs.ktor.client.content.negotiation)
             implementation(libs.ktor.client.serialization)
             implementation(libs.ktor.client.logging)
-            implementation(libs.ktor.serialization.xml)
             implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.androidx.lifecycle.runtime.compose)
             implementation(libs.androidx.navigation.composee)
             implementation(libs.kotlinx.serialization.json)
             implementation(libs.koin.core)
             implementation(libs.koin.compose)
-            implementation(libs.koin.compose.viewmodel)
             implementation(libs.multiplatformSettings)
             implementation(libs.kotlinx.datetime)
             implementation(libs.room.runtime)
             implementation(libs.composeIcons.featherIcons)
             implementation(libs.androidx.sqlite)
+            implementation(libs.ktor.serialization.xml)
+            implementation(libs.koin.compose.viewmodel)
         }
 
         commonTest.dependencies {
@@ -68,6 +68,7 @@ kotlin {
             implementation(libs.androidx.activityCompose)
             implementation(libs.kotlinx.coroutines.android)
             implementation(libs.ktor.client.okhttp)
+            implementation(libs.koin.android)
         }
 
         iosMain.dependencies {

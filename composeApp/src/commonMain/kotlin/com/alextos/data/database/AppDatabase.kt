@@ -1,5 +1,6 @@
 package com.alextos.data.database
 
+import androidx.room.ConstructedBy
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import com.alextos.data.database.dao.CurrencyRateDao
@@ -10,6 +11,7 @@ import com.alextos.data.database.entity.CurrencyRateEntity
     version = 1,
     exportSchema = false
 )
+@ConstructedBy(DatabaseConstructor::class)
 abstract class AppDatabase: RoomDatabase() {
     abstract fun currencyRateDao(): CurrencyRateDao
 

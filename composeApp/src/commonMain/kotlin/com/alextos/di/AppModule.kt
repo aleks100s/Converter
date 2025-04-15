@@ -19,14 +19,14 @@ expect val platformModule: Module
 val appModule = module {
     single<HttpClient> { HttpClientFactory.create(get()) }
     single<RemoteCurrencyDataSource> { KtorRemoteCurrencyDataSource(get()) }
-    single<CurrencyRepository> { CurrencyRepositoryImpl(get()) }
+    single<CurrencyRepository> { CurrencyRepositoryImpl(get(), get()) }
 
     single {
         get<DatabaseFactory>().create()
             .setDriver(BundledSQLiteDriver())
             .build()
     }
-    single { get<AppDatabase>().currencyRateDao()}
+    single { get<AppDatabase>().currencyRateDao() }
 
     viewModelOf(::MainViewModel)
 }
