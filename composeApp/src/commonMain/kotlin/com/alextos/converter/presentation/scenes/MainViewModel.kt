@@ -25,6 +25,10 @@ class MainViewModel(
                     }
                 }
         }
+
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.fetchCurrencyRates()
+        }
     }
 
     fun onAction(action: MainAction) {}

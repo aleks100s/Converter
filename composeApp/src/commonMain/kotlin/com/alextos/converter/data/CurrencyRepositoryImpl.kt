@@ -5,6 +5,7 @@ import com.alextos.converter.data.database.entity.CurrencyRateEntity
 import com.alextos.converter.data.mappers.toDomain
 import com.alextos.converter.data.mappers.toEntity
 import com.alextos.converter.data.network.RemoteCurrencyDataSource
+import com.alextos.converter.domain.models.CurrencyCode
 import com.alextos.converter.domain.models.CurrencyRate
 import com.alextos.converter.domain.repository.CurrencyRepository
 import kotlinx.coroutines.flow.Flow
@@ -22,7 +23,10 @@ class CurrencyRepositoryImpl(
 
     override suspend fun fetchCurrencyRates() {
         val response = remoteDataSource.getCurrencyRates().getOrDefault(emptyList())
-        val entities = response.map { it.toEntity() }
+        val existingCodes = CurrencyCode.entries.map { it.name}
+        val entities = response
+            .filter { existingCodes.contains(it.charCode) }
+            .map { it.toEntity() }
         dao.upsertCurrencyRates(entities)
     }
 }

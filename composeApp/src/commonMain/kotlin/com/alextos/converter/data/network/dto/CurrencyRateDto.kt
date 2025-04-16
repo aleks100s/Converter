@@ -4,12 +4,10 @@ import com.alextos.core.data.DoubleWithCommaSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import nl.adaptivity.xmlutil.serialization.XmlElement
-import nl.adaptivity.xmlutil.serialization.XmlSerialName
 
 @Serializable
 @SerialName("Valute")
 data class CurrencyRateDto(
-    @XmlElement(true)
     @SerialName("ID") val id: String,
     @XmlElement(true)
     @SerialName("NumCode") val numCode: String,

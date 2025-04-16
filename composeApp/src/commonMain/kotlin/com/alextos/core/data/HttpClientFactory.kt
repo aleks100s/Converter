@@ -17,9 +17,7 @@ object HttpClientFactory {
     fun create(engine: HttpClientEngine): HttpClient {
         return HttpClient(engine) {
             install(ContentNegotiation) {
-                xml(format = XML {
-                    xmlDeclMode = XmlDeclMode.Charset
-                })
+                xml()
             }
             install(Logging) {
                 logger = object: Logger {

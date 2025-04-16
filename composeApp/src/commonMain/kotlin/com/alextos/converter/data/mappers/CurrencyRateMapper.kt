@@ -17,7 +17,7 @@ fun CurrencyRateEntity.toDomain(): CurrencyRate {
 @OptIn(ExperimentalTime::class)
 fun CurrencyRateDto.toEntity(): CurrencyRateEntity {
     return CurrencyRateEntity(
-        code = numCode,
+        code = charCode,
         rate = value,
         isFavourite = false,
         isMain = false,
