@@ -1,0 +1,52 @@
+package com.alextos.converter.presentation.extensions
+
+import com.alextos.converter.domain.models.CurrencyCode
+
+val CurrencyCode.emoji: String
+    get() {
+        return when (this) {
+            CurrencyCode.AED -> "\uD83C\uDDE6\uD83C\uDDEA" // United Arab Emirates Dirham,
+            CurrencyCode.AMD -> "\uD83C\uDDE6\uD83C\uDDF2" // Armenian Dram,
+            CurrencyCode.AUD -> "\uD83C\uDDE6\uD83C\uDDFA" // Australian Dollar,
+            CurrencyCode.AZN -> "\uD83C\uDDE6\uD83C\uDDFF" // Azerbaijan Manat,
+            CurrencyCode.BGN -> "\uD83C\uDDE7\uD83C\uDDEC" // Bulgarian Lev,
+            CurrencyCode.BRL -> "\uD83C\uDDE7\uD83C\uDDF7" // Brazilian Real,
+            CurrencyCode.BYN -> "\uD83C\uDDE7\uD83C\uDDFE" // Belarusian Ruble,
+            CurrencyCode.CAD -> "\uD83C\uDDE8\uD83C\uDDE6" // Canadian Dollar,
+            CurrencyCode.CHF -> "\uD83C\uDDE8\uD83C\uDDED" // Swiss Franc,
+            CurrencyCode.CNY -> "\uD83C\uDDE8\uD83C\uDDF3" // Chinese Yuan,
+            CurrencyCode.CZK -> "\uD83C\uDDE8\uD83C\uDDFF" // Czech Koruna,
+            CurrencyCode.DKK -> "\uD83C\uDDE9\uD83C\uDDF0" // Danish Krone,
+            CurrencyCode.EGP -> "\uD83C\uDDEA\uD83C\uDDEC" // Egyptian Pound,
+            CurrencyCode.EUR -> "\uD83C\uDDEA\uD83C\uDDFA" // Euro,
+            CurrencyCode.GBP -> "\uD83C\uDDEC\uD83C\uDDE7" // British Pound Sterling,
+            CurrencyCode.GEL -> "\uD83C\uDDEC\uD83C\uDDEA" // Georgian Lari,
+            CurrencyCode.HKD -> "\uD83C\uDDED\uD83C\uDDF0" // Hong Kong Dollar,
+            CurrencyCode.HUF -> "\uD83C\uDDED\uD83C\uDDFA" // Hungarian Forint,
+            CurrencyCode.IDR -> "\uD83C\uDDEE\uD83C\uDDE9" // Indonesian Rupiah,
+            CurrencyCode.INR -> "\uD83C\uDDEE\uD83C\uDDF3" // Indian Rupee,
+            CurrencyCode.JPY -> "\uD83C\uDDEF\uD83C\uDDF5" // Japanese Yen,
+            CurrencyCode.KGS -> "\uD83C\uDDF0\uD83C\uDDEC" // Kyrgyzstani Som,
+            CurrencyCode.KRW -> "\uD83C\uDDF0\uD83C\uDDF7" // South Korean Won,
+            CurrencyCode.KZT -> "\uD83C\uDDF0\uD83C\uDDFF" // Kazakhstani Tenge,
+            CurrencyCode.MDL -> "\uD83C\uDDF2\uD83C\uDDE9" // Moldovan Leu,
+            CurrencyCode.NOK -> "\uD83C\uDDF3\uD83C\uDDF4" // Norwegian Krone,
+            CurrencyCode.NZD -> "\uD83C\uDDF3\uD83C\uDDFF" // New Zealand Dollar,
+            CurrencyCode.PLN -> "\uD83C\uDDF5\uD83C\uDDF1" // Polish Zloty,
+            CurrencyCode.QAR -> "\uD83C\uDDF6\uD83C\uDDE6" // Qatari Rial,
+            CurrencyCode.RON -> "\uD83C\uDDF7\uD83C\uDDF4" // Romanian Leu,
+            CurrencyCode.RSD -> "\uD83C\uDDF7\uD83C\uDDF8" // Serbian Dinar,
+            CurrencyCode.RUB -> "\uD83C\uDDF7\uD83C\uDDFA" // Russian Ruble,
+            CurrencyCode.SEK -> "\uD83C\uDDF8\uD83C\uDDEA" // Swedish Krona,
+            CurrencyCode.SGD -> "\uD83C\uDDF8\uD83C\uDDEC" // Singapore Dollar,
+            CurrencyCode.THB -> "\uD83C\uDDF9\uD83C\uDDED" // Thai Baht,
+            CurrencyCode.TJS -> "\uD83C\uDDF9\uD83C\uDDEF" // Tajikistani Somoni,
+            CurrencyCode.TMT -> "\uD83C\uDDF9\uD83C\uDDF2" // Turkmenistani Manat,
+            CurrencyCode.TRY -> "\uD83C\uDDF9\uD83C\uDDF7" // Turkish Lira,
+            CurrencyCode.UAH -> "\uD83C\uDDFA\uD83C\uDDE6" // Ukrainian Hryvnia,
+            CurrencyCode.USD -> "\uD83C\uDDFA\uD83C\uDDF8" // United States Dollar,
+            CurrencyCode.UZS -> "\uD83C\uDDFA\uD83C\uDDFF" // Uzbekistani Som,
+            CurrencyCode.VND -> "\uD83C\uDDFB\uD83C\uDDF3" // Vietnamese Dong,
+            CurrencyCode.ZAR -> "\uD83C\uDDFF\uD83C\uDDE6" // South African Rand,
+        }
+    }

@@ -1,6 +1,6 @@
 package com.alextos.di
 
-import com.alextos.data.database.DatabaseFactory
+import com.alextos.converter.data.database.DatabaseFactory
 import io.ktor.client.engine.HttpClientEngine
 import io.ktor.client.engine.darwin.Darwin
 import org.koin.core.module.Module

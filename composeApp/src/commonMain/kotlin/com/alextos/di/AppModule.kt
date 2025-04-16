@@ -2,13 +2,13 @@ package com.alextos.di
 
 import androidx.sqlite.driver.bundled.BundledSQLiteDriver
 import com.alextos.core.data.HttpClientFactory
-import com.alextos.data.CurrencyRepositoryImpl
-import com.alextos.data.database.AppDatabase
-import com.alextos.data.database.DatabaseFactory
-import com.alextos.data.network.KtorRemoteCurrencyDataSource
-import com.alextos.data.network.RemoteCurrencyDataSource
-import com.alextos.domain.repository.CurrencyRepository
-import com.alextos.presentation.scenes.MainViewModel
+import com.alextos.converter.data.CurrencyRepositoryImpl
+import com.alextos.converter.data.database.AppDatabase
+import com.alextos.converter.data.database.DatabaseFactory
+import com.alextos.converter.data.network.KtorRemoteCurrencyDataSource
+import com.alextos.converter.data.network.RemoteCurrencyDataSource
+import com.alextos.converter.domain.repository.CurrencyRepository
+import com.alextos.converter.presentation.scenes.MainViewModel
 import io.ktor.client.HttpClient
 import org.koin.core.module.Module
 import org.koin.core.module.dsl.viewModelOf

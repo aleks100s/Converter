@@ -4,6 +4,12 @@
     <string name="run">Run</string>
     <string name="stop">Stop</string>
     <string name="theme">Theme</string>
+    <string name="common_back">Назад</string>
+    <string name="common_save">Сохранить</string>
+    <string name="common_ok">Ок</string>
+    <string name="common_done">Готово</string>
+    <string name="common_remove">Удалить</string>
+    <string name="converter_title">Конвертер</string>
     <string name="currency_aed">Дирхам ОАЭ</string>
     <string name="currency_amd">Армянский драм</string>
     <string name="currency_aud">Австралийский доллар</string>
