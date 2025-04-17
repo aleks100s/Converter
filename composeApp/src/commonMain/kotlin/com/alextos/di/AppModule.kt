@@ -5,6 +5,7 @@ import com.alextos.common.data.HttpClientFactory
 import com.alextos.converter.data.CurrencyRepositoryImpl
 import com.alextos.converter.data.database.AppDatabase
 import com.alextos.converter.data.database.DatabaseFactory
+import com.alextos.converter.data.database.DatabaseSeeder
 import com.alextos.converter.data.network.KtorRemoteCurrencyDataSource
 import com.alextos.converter.data.network.RemoteCurrencyDataSource
 import com.alextos.converter.domain.repository.CurrencyRepository
@@ -23,6 +24,7 @@ val appModule = module {
 
     single {
         get<DatabaseFactory>().create()
+            .addCallback(DatabaseSeeder())
             .setDriver(BundledSQLiteDriver())
             .build()
     }

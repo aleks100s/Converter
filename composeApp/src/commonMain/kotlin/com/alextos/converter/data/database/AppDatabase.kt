@@ -4,10 +4,14 @@ import androidx.room.ConstructedBy
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import com.alextos.converter.data.database.dao.CurrencyRateDao
+import com.alextos.converter.data.database.entity.CurrencyEntity
 import com.alextos.converter.data.database.entity.CurrencyRateEntity
 
 @Database(
-    entities = [CurrencyRateEntity::class],
+    entities = [
+        CurrencyEntity::class,
+        CurrencyRateEntity::class,
+               ],
     version = 1,
     exportSchema = false
 )
