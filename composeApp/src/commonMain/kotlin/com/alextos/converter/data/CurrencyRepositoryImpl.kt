@@ -1,13 +1,16 @@
 package com.alextos.converter.data
 
 import com.alextos.converter.data.database.dao.CurrencyRateDao
+import com.alextos.converter.data.database.entity.CurrencyRateEntity
 import com.alextos.converter.data.mappers.toEntity
 import com.alextos.converter.data.network.RemoteCurrencyDataSource
+import com.alextos.converter.data.network.dto.CurrencyRateDto
 import com.alextos.converter.domain.models.CurrencyCode
 import com.alextos.converter.domain.models.CurrencyRate
 import com.alextos.converter.domain.repository.CurrencyRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.filter
 
 class CurrencyRepositoryImpl(
     private val remoteDataSource: RemoteCurrencyDataSource,
@@ -15,7 +18,7 @@ class CurrencyRepositoryImpl(
 ): CurrencyRepository {
     override fun getCurrencyRates(): Flow<List<CurrencyRate>> {
         return combine(
-            dao.getCurrencyRates(),
+            dao.getCurrencyRates().filter { it.isNotEmpty() },
             dao.getCurrencies()
         ) { rates, currencies ->
             currencies.map { currencyEntity ->
@@ -36,7 +39,8 @@ class CurrencyRepositoryImpl(
         val entities = response
             .filter { existingCodes.contains(it.charCode) }
             .map { it.toEntity() }
-        dao.upsertCurrencyRates(entities)
+        val rub = CurrencyRateEntity(code = "RUB", rate = 1.0)
+        dao.upsertCurrencyRates(entities + listOf(rub))
     }
 
     override suspend fun increasePriority(currency: CurrencyRate) {

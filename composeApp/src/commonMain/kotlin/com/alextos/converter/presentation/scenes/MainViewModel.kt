@@ -42,7 +42,7 @@ class MainViewModel(
         when (action) {
             is MainAction.TopTextChanged -> {
                 val topValue = action.text.replace(Regex("[^\\d.,]"), "").replace(",", ".").toDoubleOrNull() ?: 0.0
-                val topRubValue = topValue * (state.value.topCurrency?.rate ?: 0.0)
+                val topRubValue = topValue * (state.value.topCurrency?.rate ?: 1.0)
                 val bottomRubValue = topRubValue / (state.value.bottomCurrency?.rate ?: 1.0)
                 _state.update { state ->
                     state.copy(
@@ -53,7 +53,7 @@ class MainViewModel(
             }
             is MainAction.BottomTextChanged -> {
                 val bottomValue = action.text.replace(Regex("[^\\d.,]"), "").replace(",", ".").toDoubleOrNull() ?: 0.0
-                val bottomRubValue = bottomValue * (state.value.bottomCurrency?.rate ?: 0.0)
+                val bottomRubValue = bottomValue * (state.value.bottomCurrency?.rate ?: 1.0)
                 val topRubValue = bottomRubValue / (state.value.topCurrency?.rate ?: 1.0)
                 _state.update { state ->
                     state.copy(

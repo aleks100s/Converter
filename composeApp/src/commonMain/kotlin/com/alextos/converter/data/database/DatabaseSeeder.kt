@@ -13,6 +13,5 @@ class DatabaseSeeder: RoomDatabase.Callback() {
             "('${it.name}', 0, 0, 0)"
         }
         connection.execSQL("INSERT INTO currencies (code, isFavourite, isMain, priority) VALUES $currencies;")
-        connection.execSQL("INSERT INTO currency_rates (code, rate) VALUES ('RUB', 1.0);")
     }
 }
