@@ -2,6 +2,7 @@ package com.alextos.converter.presentation.scenes
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.alextos.common.preciseFormat
 import com.alextos.converter.domain.models.CurrencyCode
 import com.alextos.converter.domain.repository.CurrencyRepository
 import kotlinx.coroutines.Dispatchers
@@ -40,24 +41,24 @@ class MainViewModel(
     fun onAction(action: MainAction) {
         when (action) {
             is MainAction.TopTextChanged -> {
-                val topValue = action.text.toDoubleOrNull() ?: 0.0
+                val topValue = action.text.replace(Regex("[^\\d.,]"), "").replace(",", ".").toDoubleOrNull() ?: 0.0
                 val topRubValue = topValue * (state.value.topCurrency?.rate ?: 0.0)
                 val bottomRubValue = topRubValue / (state.value.bottomCurrency?.rate ?: 1.0)
                 _state.update { state ->
                     state.copy(
                         topText = action.text,
-                        bottomText = bottomRubValue.toString(),
+                        bottomText = bottomRubValue.preciseFormat(),
                     )
                 }
             }
             is MainAction.BottomTextChanged -> {
-                val bottomValue = action.text.toDoubleOrNull() ?: 0.0
+                val bottomValue = action.text.replace(Regex("[^\\d.,]"), "").replace(",", ".").toDoubleOrNull() ?: 0.0
                 val bottomRubValue = bottomValue * (state.value.bottomCurrency?.rate ?: 0.0)
                 val topRubValue = bottomRubValue / (state.value.topCurrency?.rate ?: 1.0)
                 _state.update { state ->
                     state.copy(
                         bottomText = action.text,
-                        topText = topRubValue.toString(),
+                        topText = topRubValue.preciseFormat(),
                     )
                 }
             }

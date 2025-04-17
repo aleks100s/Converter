@@ -1,7 +1,7 @@
 package com.alextos.di
 
 import androidx.sqlite.driver.bundled.BundledSQLiteDriver
-import com.alextos.core.data.HttpClientFactory
+import com.alextos.common.data.HttpClientFactory
 import com.alextos.converter.data.CurrencyRepositoryImpl
 import com.alextos.converter.data.database.AppDatabase
 import com.alextos.converter.data.database.DatabaseFactory

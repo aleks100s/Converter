@@ -1,6 +1,6 @@
 package com.alextos.converter.data.network.dto
 
-import com.alextos.core.data.DoubleWithCommaSerializer
+import com.alextos.common.data.DoubleWithCommaSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import nl.adaptivity.xmlutil.serialization.XmlElement

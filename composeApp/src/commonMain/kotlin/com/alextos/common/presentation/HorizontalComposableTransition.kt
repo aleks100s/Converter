@@ -1,4 +1,4 @@
-package com.alextos.core.presentation
+package com.alextos.common.presentation
 
 import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.core.tween

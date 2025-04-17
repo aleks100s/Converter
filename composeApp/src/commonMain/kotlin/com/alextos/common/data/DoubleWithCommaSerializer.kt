@@ -1,4 +1,4 @@
-package com.alextos.core.data
+package com.alextos.common.data
 
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.descriptors.PrimitiveKind

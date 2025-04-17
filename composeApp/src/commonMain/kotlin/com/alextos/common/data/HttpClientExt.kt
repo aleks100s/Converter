@@ -1,4 +1,4 @@
-package com.alextos.core.data
+package com.alextos.common.data
 
 import io.ktor.client.call.body
 import io.ktor.client.statement.HttpResponse

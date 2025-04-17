@@ -2,7 +2,7 @@ package com.alextos.converter.domain.models
 
 import androidx.compose.runtime.Composable
 import com.alextos.converter.presentation.extensions.localization
-import com.alextos.core.presentation.PickerElement
+import com.alextos.common.presentation.PickerElement
 
 data class CurrencyRate(
     val code: CurrencyCode,

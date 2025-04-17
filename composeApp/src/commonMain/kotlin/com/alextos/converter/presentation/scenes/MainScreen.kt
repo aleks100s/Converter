@@ -21,9 +21,10 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.alextos.converter.domain.models.CurrencyRate
 import com.alextos.converter.presentation.extensions.emoji
-import com.alextos.core.presentation.PickerDropdown
-import com.alextos.core.presentation.Screen
+import com.alextos.common.presentation.PickerDropdown
+import com.alextos.common.presentation.Screen
 import converter.composeapp.generated.resources.Res
+import converter.composeapp.generated.resources.converter_swap
 import converter.composeapp.generated.resources.converter_title
 import org.jetbrains.compose.resources.stringResource
 
@@ -62,7 +63,7 @@ fun MainScreen(
             ) {
                 Icon(
                     Icons.Default.Refresh,
-                    "Поменять валюты местами",
+                    stringResource(Res.string.converter_swap),
                 )
             }
 

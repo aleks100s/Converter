@@ -1,4 +1,4 @@
-package com.alextos.core.presentation
+package com.alextos.common.presentation
 
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.padding

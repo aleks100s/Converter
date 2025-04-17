@@ -1,4 +1,4 @@
-package com.alextos.core.data
+package com.alextos.common.data
 
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.HttpClientEngine
@@ -10,8 +10,6 @@ import io.ktor.client.plugins.logging.Logging
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import io.ktor.serialization.kotlinx.xml.xml
-import nl.adaptivity.xmlutil.XmlDeclMode
-import nl.adaptivity.xmlutil.serialization.XML
 
 object HttpClientFactory {
     fun create(engine: HttpClientEngine): HttpClient {

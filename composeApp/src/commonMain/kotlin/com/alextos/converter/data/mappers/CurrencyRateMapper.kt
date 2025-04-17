@@ -18,7 +18,7 @@ fun CurrencyRateEntity.toDomain(): CurrencyRate {
 fun CurrencyRateDto.toEntity(): CurrencyRateEntity {
     return CurrencyRateEntity(
         code = charCode,
-        rate = value,
+        rate = value / nominal,
         isFavourite = false,
         isMain = false,
         timestamp = Clock.System.now().toEpochMilliseconds()
