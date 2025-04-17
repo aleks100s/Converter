@@ -43,5 +43,5 @@ enum class CurrencyCode {
     USD, // United States Dollar,
     UZS, // Uzbekistani Som,
     VND, // Vietnamese Dong,
-    ZAR  // South African Rand,
+    ZAR  // South African Rand
 }

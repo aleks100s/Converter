@@ -8,5 +8,6 @@ data class CurrencyEntity(
     @PrimaryKey(autoGenerate = false)
     val code: String,
     val isFavourite: Boolean,
-    val isMain: Boolean
+    val isMain: Boolean,
+    val priority: Int
 )

@@ -6,4 +6,5 @@ import kotlinx.coroutines.flow.Flow
 interface CurrencyRepository {
     fun getCurrencyRates(): Flow<List<CurrencyRate>>
     suspend fun fetchCurrencyRates()
+    suspend fun increasePriority(currency: CurrencyRate)
 }

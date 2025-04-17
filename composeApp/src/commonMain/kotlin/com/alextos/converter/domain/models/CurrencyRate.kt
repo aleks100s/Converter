@@ -1,11 +1,14 @@
 package com.alextos.converter.domain.models
 
 import androidx.compose.runtime.Composable
-import com.alextos.converter.presentation.extensions.localization
 import com.alextos.common.presentation.PickerElement
+import com.alextos.converter.presentation.extensions.localization
 
 data class CurrencyRate(
     val code: CurrencyCode,
+    val priority: Int,
+    val isFavourite: Boolean,
+    val isMain: Boolean,
     val rate: Double,
 ): PickerElement {
     override val pickerOption: String

@@ -23,6 +23,7 @@ import com.alextos.converter.domain.models.CurrencyRate
 import com.alextos.converter.presentation.extensions.emoji
 import com.alextos.common.presentation.PickerDropdown
 import com.alextos.common.presentation.Screen
+import com.alextos.converter.domain.models.CurrencyCode
 import converter.composeapp.generated.resources.Res
 import converter.composeapp.generated.resources.converter_swap
 import converter.composeapp.generated.resources.converter_title
@@ -51,7 +52,7 @@ fun MainScreen(
                     viewModel.onAction(MainAction.TopTextChanged(text))
                 },
                 currencies = state.rates,
-                onCurrencyChanged = { currency ->
+                onCurrencySelected = { currency ->
                     viewModel.onAction(MainAction.TopCurrencySelected(currency))
                 }
             )
@@ -74,7 +75,7 @@ fun MainScreen(
                     viewModel.onAction(MainAction.BottomTextChanged(text))
                 },
                 currencies = state.rates,
-                onCurrencyChanged = { currency ->
+                onCurrencySelected = { currency ->
                     viewModel.onAction(MainAction.BottomCurrencySelected(currency))
                 }
             )
@@ -88,7 +89,7 @@ fun CurrencyEditor(
     value: String,
     onValueChanged: (String) -> Unit,
     currencies: List<CurrencyRate>,
-    onCurrencyChanged: (CurrencyRate) -> Unit
+    onCurrencySelected: (CurrencyRate) -> Unit
 ) {
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -98,7 +99,7 @@ fun CurrencyEditor(
         PickerDropdown(
             selected = currency,
             options = currencies,
-            onSelect = onCurrencyChanged
+            onSelect = onCurrencySelected
         )
 
         OutlinedTextField(

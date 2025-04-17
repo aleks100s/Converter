@@ -25,8 +25,8 @@ class MainViewModel(
                     _state.update { state ->
                         state.copy(
                             rates = rates,
-                            bottomCurrency = rates.firstOrNull { it.code == CurrencyCode.RUB },
-                            topCurrency = rates.firstOrNull { it.code == CurrencyCode.USD }
+                            bottomCurrency = state.bottomCurrency ?: rates.firstOrNull { it.code == CurrencyCode.RUB },
+                            topCurrency = state.topCurrency ?: rates.firstOrNull { it.code == CurrencyCode.USD },
                         )
                     }
                     onAction(MainAction.TopTextChanged(state.value.topText))
@@ -76,12 +76,18 @@ class MainViewModel(
                     state.copy(topCurrency = action.currency)
                 }
                 onAction(MainAction.TopTextChanged(state.value.topText))
+                viewModelScope.launch(Dispatchers.IO) {
+                    repository.increasePriority(action.currency)
+                }
             }
             is MainAction.BottomCurrencySelected -> {
                 _state.update { state ->
                     state.copy(bottomCurrency = action.currency)
                 }
                 onAction(MainAction.TopTextChanged(state.value.topText))
+                viewModelScope.launch(Dispatchers.IO) {
+                    repository.increasePriority(action.currency)
+                }
             }
         }
     }
