@@ -27,6 +27,13 @@ class CurrencyRepositoryImpl(
         val entities = response
             .filter { existingCodes.contains(it.charCode) }
             .map { it.toEntity() }
-        dao.upsertCurrencyRates(entities)
+        val rub = CurrencyRateEntity(
+            code = "RUB",
+            rate = 1.0,
+            isFavourite = false,
+            isMain = false,
+            timestamp = 0L
+        )
+        dao.upsertCurrencyRates(entities + listOf(rub))
     }
 }
