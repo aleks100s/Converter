@@ -1,9 +1,7 @@
 package com.alextos.converter.presentation.scenes
 
 import androidx.compose.animation.core.Animatable
-import androidx.compose.animation.core.EaseInBounce
 import androidx.compose.animation.core.EaseInOutBounce
-import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -35,7 +33,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.alextos.converter.domain.models.CurrencyRate
-import com.alextos.converter.presentation.extensions.emoji
+import com.alextos.converter.domain.models.emoji
 import com.alextos.common.presentation.PickerDropdown
 import com.alextos.common.presentation.Screen
 import converter.composeapp.generated.resources.Res
@@ -43,7 +41,6 @@ import converter.composeapp.generated.resources.converter_reload
 import converter.composeapp.generated.resources.converter_swap
 import converter.composeapp.generated.resources.converter_title
 import converter.composeapp.generated.resources.ic_swap
-import kotlinx.coroutines.isActive
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 
@@ -192,7 +189,10 @@ fun CurrencyEditor(
             onValueChange = onValueChanged,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
             leadingIcon = {
-                Text(text = currency?.code?.emoji ?: "")
+                Text(text = currency?.flag ?: "")
+            },
+            suffix = {
+                Text(text = currency?.sign ?: "")
             }
         )
     }

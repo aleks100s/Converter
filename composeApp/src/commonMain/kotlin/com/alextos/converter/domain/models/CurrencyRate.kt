@@ -10,6 +10,8 @@ data class CurrencyRate(
     val isFavourite: Boolean,
     val isMain: Boolean,
     val rate: Double,
+    val flag: String,
+    val sign: String,
 ): PickerElement {
     override val pickerOption: String
         @Composable

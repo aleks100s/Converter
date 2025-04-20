@@ -26,7 +26,9 @@ class CurrencyRepositoryImpl(
                     priority = currencyEntity.priority,
                     isMain = currencyEntity.isMain,
                     isFavourite = currencyEntity.isFavourite,
-                    rate = rates.firstOrNull { it.code == currencyEntity.code }?.rate ?: 0.0
+                    rate = rates.firstOrNull { it.code == currencyEntity.code }?.rate ?: 0.0,
+                    flag = currencyEntity.flag,
+                    sign = currencyEntity.sign
                 )
             }
         }

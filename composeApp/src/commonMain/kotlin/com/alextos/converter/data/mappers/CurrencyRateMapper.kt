@@ -4,6 +4,8 @@ import com.alextos.converter.data.database.entity.CurrencyEntity
 import com.alextos.converter.data.database.entity.CurrencyRateEntity
 import com.alextos.converter.data.network.dto.CurrencyRateDto
 import com.alextos.converter.domain.models.CurrencyRate
+import com.alextos.converter.domain.models.emoji
+import com.alextos.converter.domain.models.symbol
 
 fun CurrencyRateDto.toEntity(): CurrencyRateEntity {
     return CurrencyRateEntity(
@@ -17,6 +19,8 @@ fun CurrencyRate.toEntity(): CurrencyEntity {
         code = code.name,
         priority = priority,
         isMain = isMain,
-        isFavourite = isFavourite
+        isFavourite = isFavourite,
+        flag = code.emoji,
+        sign = code.symbol
     )
 }
