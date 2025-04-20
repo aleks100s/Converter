@@ -17,6 +17,7 @@ import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.minimumInteractiveComponentSize
@@ -32,14 +33,15 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.alextos.common.presentation.CustomButton
 import com.alextos.converter.domain.models.CurrencyRate
-import com.alextos.converter.domain.models.emoji
 import com.alextos.common.presentation.PickerDropdown
 import com.alextos.common.presentation.Screen
 import converter.composeapp.generated.resources.Res
 import converter.composeapp.generated.resources.converter_reload
 import converter.composeapp.generated.resources.converter_swap
 import converter.composeapp.generated.resources.converter_title
+import converter.composeapp.generated.resources.data_is_actual
 import converter.composeapp.generated.resources.ic_swap
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
@@ -99,6 +101,13 @@ fun MainScreen(
                     onCurrencySelected = { currency ->
                         viewModel.onAction(MainAction.BottomCurrencySelected(currency))
                     }
+                )
+
+                Text(
+                    modifier = Modifier.align(Alignment.End),
+                    text = stringResource(Res.string.data_is_actual),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }
         }
@@ -172,6 +181,7 @@ fun CurrencyEditor(
     currencies: List<CurrencyRate>,
     onCurrencySelected: (CurrencyRate) -> Unit
 ) {
+
     Row(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
@@ -183,17 +193,30 @@ fun CurrencyEditor(
             onSelect = onCurrencySelected
         )
 
-        OutlinedTextField(
-            modifier = Modifier.fillMaxWidth(),
-            value = value,
-            onValueChange = onValueChanged,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
-            leadingIcon = {
-                Text(text = currency?.flag ?: "")
-            },
-            suffix = {
-                Text(text = currency?.sign ?: "")
+        Column {
+            OutlinedTextField(
+                modifier = Modifier.fillMaxWidth(),
+                value = value,
+                onValueChange = onValueChanged,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+                leadingIcon = {
+                    Text(text = currency?.flag ?: "")
+                },
+                suffix = {
+                    Text(text = currency?.sign ?: "")
+                }
+            )
+
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
+                listOf("1", "10", "100", "1000").forEach { title ->
+                    CustomButton(
+                        title = "$title${currency?.sign ?: ""}",
+                        onTap = {
+                            onValueChanged(title)
+                        }
+                    )
+                }
             }
-        )
+        }
     }
 }
