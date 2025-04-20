@@ -56,7 +56,7 @@ class MainViewModel(
                 val bottomRubValue = topRubValue / (state.value.bottomCurrency?.rate ?: 1.0)
                 _state.update { state ->
                     state.copy(
-                        topText = action.text,
+                        topText = action.text.trimStart('0').ifEmpty { "0" },
                         bottomText = bottomRubValue.preciseFormat(),
                     )
                 }
@@ -77,7 +77,7 @@ class MainViewModel(
                 val topRubValue = bottomRubValue / (state.value.topCurrency?.rate ?: 1.0)
                 _state.update { state ->
                     state.copy(
-                        bottomText = action.text,
+                        bottomText = action.text.trimStart('0').ifEmpty { "0" },
                         topText = topRubValue.preciseFormat(),
                     )
                 }

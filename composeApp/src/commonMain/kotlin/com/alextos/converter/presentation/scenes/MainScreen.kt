@@ -3,6 +3,7 @@ package com.alextos.converter.presentation.scenes
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.EaseInOutBounce
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,6 +14,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
@@ -31,6 +34,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -39,10 +43,12 @@ import com.alextos.converter.domain.models.CurrencyRate
 import com.alextos.common.presentation.PickerDropdown
 import com.alextos.common.presentation.Screen
 import converter.composeapp.generated.resources.Res
+import converter.composeapp.generated.resources.converter_clear
 import converter.composeapp.generated.resources.converter_quick_select
 import converter.composeapp.generated.resources.converter_reload
 import converter.composeapp.generated.resources.converter_swap
 import converter.composeapp.generated.resources.converter_title
+import converter.composeapp.generated.resources.copy
 import converter.composeapp.generated.resources.data_is_actual
 import converter.composeapp.generated.resources.ic_swap
 import org.jetbrains.compose.resources.stringResource
@@ -86,8 +92,7 @@ fun MainScreen(
                     currencies = state.rates,
                     onCurrencySelected = { currency ->
                         viewModel.onAction(MainAction.TopCurrencySelected(currency))
-                    },
-                    isTop = true
+                    }
                 )
 
                 SwapButton {
@@ -103,8 +108,7 @@ fun MainScreen(
                     currencies = state.rates,
                     onCurrencySelected = { currency ->
                         viewModel.onAction(MainAction.BottomCurrencySelected(currency))
-                    },
-                    isTop = false
+                    }
                 )
 
                 Text(
@@ -181,7 +185,6 @@ fun SwapButton(onClick: () -> Unit) {
 fun CurrencyEditor(
     currency: CurrencyRate?,
     value: String,
-    isTop: Boolean,
     onValueChanged: (String) -> Unit,
     currencies: List<CurrencyRate>,
     onCurrencySelected: (CurrencyRate) -> Unit
@@ -198,8 +201,13 @@ fun CurrencyEditor(
                 onSelect = onCurrencySelected
             )
 
+            var isFocused by remember { mutableStateOf(false) }
+
             OutlinedTextField(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth()
+                    .onFocusChanged { focusState ->
+                        isFocused = focusState.isFocused
+                    },
                 value = value,
                 onValueChange = onValueChanged,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
@@ -208,7 +216,21 @@ fun CurrencyEditor(
                 },
                 suffix = {
                     Text(text = currency?.sign ?: "")
-                }
+                },
+                trailingIcon = if (value != "0" && isFocused) {
+                    {
+                        IconButton(
+                            onClick = {
+                                onValueChanged("0")
+                            }
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Clear,
+                                contentDescription = stringResource(Res.string.converter_clear),
+                            )
+                        }
+                    }
+                } else null,
             )
         }
 

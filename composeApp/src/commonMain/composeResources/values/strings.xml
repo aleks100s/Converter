@@ -13,6 +13,7 @@
     <string name="converter_swap">Поменять валюты местами</string>
     <string name="converter_reload">Обновить курс</string>
     <string name="converter_quick_select">Быстрый набор:</string>
+    <string name="converter_clear">Очистить</string>
     <string name="data_is_actual">Данные ЦБ РФ</string>
     <string name="currency_aed">Дирхам ОАЭ</string>
     <string name="currency_amd">Армянский драм</string>
