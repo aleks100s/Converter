@@ -27,6 +27,7 @@ class MainViewModel(
                             rates = rates,
                             bottomCurrency = state.bottomCurrency ?: rates.firstOrNull { it.code == CurrencyCode.RUB },
                             topCurrency = state.topCurrency ?: rates.firstOrNull { it.code == CurrencyCode.USD },
+                            isLoading = false
                         )
                     }
                     onAction(MainAction.TopTextChanged(state.value.topText))

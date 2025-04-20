@@ -86,7 +86,7 @@ android {
         minSdk = 21
         targetSdk = 35
 
-        applicationId = "com.alextos.androidApp"
+        applicationId = "com.alextos.converter"
         versionCode = 1
         versionName = "1.0.0"
 

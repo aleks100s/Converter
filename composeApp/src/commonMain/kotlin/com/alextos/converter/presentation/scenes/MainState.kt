@@ -8,4 +8,5 @@ data class MainState(
     val bottomText: String = "100",
     val topCurrency: CurrencyRate? = null,
     val bottomCurrency: CurrencyRate? = null,
+    val isLoading: Boolean = true
 )
