@@ -4,7 +4,6 @@ import com.alextos.converter.data.database.dao.CurrencyRateDao
 import com.alextos.converter.data.database.entity.CurrencyRateEntity
 import com.alextos.converter.data.mappers.toEntity
 import com.alextos.converter.data.network.RemoteCurrencyDataSource
-import com.alextos.converter.data.network.dto.CurrencyRateDto
 import com.alextos.converter.domain.models.CurrencyCode
 import com.alextos.converter.domain.models.CurrencyRate
 import com.alextos.converter.domain.repository.CurrencyRepository
@@ -14,7 +13,7 @@ import kotlinx.coroutines.flow.filter
 
 class CurrencyRepositoryImpl(
     private val remoteDataSource: RemoteCurrencyDataSource,
-    private val dao: CurrencyRateDao
+    private val dao: CurrencyRateDao,
 ): CurrencyRepository {
     override fun getCurrencyRates(): Flow<List<CurrencyRate>> {
         return combine(
@@ -39,7 +38,7 @@ class CurrencyRepositoryImpl(
         val entities = response
             .filter { existingCodes.contains(it.charCode) }
             .map { it.toEntity() }
-        val rub = CurrencyRateEntity(code = "RUB", rate = 1.0)
+        val rub = CurrencyRateEntity(code = CurrencyCode.RUB.name, rate = 1.0)
         dao.upsertCurrencyRates(entities + listOf(rub))
     }
 
