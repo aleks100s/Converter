@@ -11,6 +11,7 @@
     <string name="common_remove">Удалить</string>
     <string name="converter_title">Конвертер</string>
     <string name="converter_swap">Поменять валюты местами</string>
+    <string name="converter_reload">Обновить курс</string>
     <string name="currency_aed">Дирхам ОАЭ</string>
     <string name="currency_amd">Армянский драм</string>
     <string name="currency_aud">Австралийский доллар</string>

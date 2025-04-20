@@ -26,8 +26,8 @@ import com.alextos.converter.domain.models.CurrencyRate
 import com.alextos.converter.presentation.extensions.emoji
 import com.alextos.common.presentation.PickerDropdown
 import com.alextos.common.presentation.Screen
-import com.alextos.converter.presentation.extensions.localization
 import converter.composeapp.generated.resources.Res
+import converter.composeapp.generated.resources.converter_reload
 import converter.composeapp.generated.resources.converter_swap
 import converter.composeapp.generated.resources.converter_title
 import org.jetbrains.compose.resources.stringResource
@@ -41,9 +41,24 @@ fun MainScreen(
     Screen(
         modifier = Modifier,
         title = stringResource(Res.string.converter_title),
+        actions = {
+            IconButton(
+                onClick = {
+                    viewModel.onAction(MainAction.ReloadRates)
+                }
+            ) {
+                Icon(
+                    Icons.Default.Refresh,
+                    stringResource(Res.string.converter_reload),
+                )
+            }
+        }
     ) { modifier ->
         if (state.isLoading) {
-            Box(modifier = Modifier.fillMaxSize()) {
+            Box(
+                modifier = modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
                 CircularProgressIndicator()
             }
         } else {

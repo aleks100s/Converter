@@ -90,6 +90,14 @@ class MainViewModel(
                     repository.increasePriority(action.currency)
                 }
             }
+            is MainAction.ReloadRates -> {
+                _state.update { state ->
+                    state.copy(isLoading = true)
+                }
+                viewModelScope.launch(Dispatchers.IO) {
+                    repository.fetchCurrencyRates()
+                }
+            }
         }
     }
 }

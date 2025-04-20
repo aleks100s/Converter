@@ -8,4 +8,5 @@ sealed interface MainAction {
     data object SwapCurrencies : MainAction
     data class TopCurrencySelected(val currency: CurrencyRate) : MainAction
     data class BottomCurrencySelected(val currency: CurrencyRate) : MainAction
+    data object ReloadRates : MainAction
 }
