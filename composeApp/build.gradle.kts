@@ -54,6 +54,7 @@ kotlin {
             implementation(libs.androidx.sqlite)
             implementation(libs.ktor.serialization.xml)
             implementation(libs.koin.compose.viewmodel)
+            implementation(libs.multiplatform.settings.no.arg)
         }
 
         commonTest.dependencies {

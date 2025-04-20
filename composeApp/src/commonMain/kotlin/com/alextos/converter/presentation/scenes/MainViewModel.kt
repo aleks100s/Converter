@@ -5,6 +5,8 @@ import androidx.lifecycle.viewModelScope
 import com.alextos.common.preciseFormat
 import com.alextos.converter.domain.models.CurrencyCode
 import com.alextos.converter.domain.repository.CurrencyRepository
+import com.alextos.converter.domain.storage.ConverterState
+import com.alextos.converter.domain.storage.StorageService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,20 +15,28 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class MainViewModel(
-    private val repository: CurrencyRepository
+    private val repository: CurrencyRepository,
+    private val storage: StorageService
 ): ViewModel() {
     private val _state = MutableStateFlow(MainState())
     val state = _state.asStateFlow()
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
+            val savedState = storage.getState()
+            _state.update { state ->
+                state.copy(
+                    topText = savedState.topText,
+                    bottomText = savedState.bottomText,
+                )
+            }
             repository.getCurrencyRates()
                 .collect { rates ->
                     _state.update { state ->
                         state.copy(
                             rates = rates,
-                            bottomCurrency = state.bottomCurrency ?: rates.firstOrNull { it.code == CurrencyCode.RUB },
-                            topCurrency = state.topCurrency ?: rates.firstOrNull { it.code == CurrencyCode.USD },
+                            bottomCurrency = state.bottomCurrency ?: rates.firstOrNull { it.code == savedState.bottomCurrency },
+                            topCurrency = state.topCurrency ?: rates.firstOrNull { it.code == savedState.topCurrency },
                             isLoading = false
                         )
                     }
@@ -49,6 +59,16 @@ class MainViewModel(
                     state.copy(
                         topText = action.text,
                         bottomText = bottomRubValue.preciseFormat(),
+                    )
+                }
+                viewModelScope.launch(Dispatchers.IO) {
+                    storage.saveState(
+                        ConverterState(
+                            topText = state.value.topText,
+                            bottomText = state.value.bottomText,
+                            topCurrency = state.value.topCurrency?.code,
+                            bottomCurrency = state.value.bottomCurrency?.code
+                        )
                     )
                 }
             }

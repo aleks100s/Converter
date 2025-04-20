@@ -8,8 +8,11 @@ import com.alextos.converter.data.database.DatabaseFactory
 import com.alextos.converter.data.database.DatabaseSeeder
 import com.alextos.converter.data.network.KtorRemoteCurrencyDataSource
 import com.alextos.converter.data.network.RemoteCurrencyDataSource
+import com.alextos.converter.data.storage.StorageServiceImpl
 import com.alextos.converter.domain.repository.CurrencyRepository
+import com.alextos.converter.domain.storage.StorageService
 import com.alextos.converter.presentation.scenes.MainViewModel
+import com.russhwolf.settings.Settings
 import io.ktor.client.HttpClient
 import org.koin.core.module.Module
 import org.koin.core.module.dsl.viewModelOf
@@ -31,4 +34,7 @@ val appModule = module {
     single { get<AppDatabase>().currencyRateDao() }
 
     viewModelOf(::MainViewModel)
+
+    single<Settings> { Settings() }
+    single<StorageService> { StorageServiceImpl(get()) }
 }
