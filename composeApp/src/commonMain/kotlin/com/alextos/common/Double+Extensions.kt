@@ -1,7 +1,7 @@
 package com.alextos.common
 
 fun Double.preciseFormat(): String {
-    val str = this.toString()
+    val str = String.format("%f", this).replace(",", ".")
 
     // если число целое, то отбрасываем дробную часть
     if (str.endsWith(".0")) return str.substringBefore(".")

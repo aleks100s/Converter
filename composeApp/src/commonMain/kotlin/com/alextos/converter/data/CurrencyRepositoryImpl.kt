@@ -23,7 +23,6 @@ class CurrencyRepositoryImpl(
             currencies.map { currencyEntity ->
                 CurrencyRate(
                     code = CurrencyCode.valueOf(currencyEntity.code),
-                    priority = currencyEntity.priority,
                     isMain = currencyEntity.isMain,
                     isFavourite = currencyEntity.isFavourite,
                     rate = rates.firstOrNull { it.code == currencyEntity.code }?.rate ?: 0.0,
@@ -42,9 +41,5 @@ class CurrencyRepositoryImpl(
             .map { it.toEntity() }
         val rub = CurrencyRateEntity(code = CurrencyCode.RUB.name, rate = 1.0)
         dao.upsertCurrencyRates(entities + listOf(rub))
-    }
-
-    override suspend fun increasePriority(currency: CurrencyRate) {
-        dao.upsertCurrency(currency = currency.copy(priority = currency.priority + 1).toEntity())
     }
 }

@@ -29,6 +29,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -38,6 +39,7 @@ import com.alextos.converter.domain.models.CurrencyRate
 import com.alextos.common.presentation.PickerDropdown
 import com.alextos.common.presentation.Screen
 import converter.composeapp.generated.resources.Res
+import converter.composeapp.generated.resources.converter_quick_select
 import converter.composeapp.generated.resources.converter_reload
 import converter.composeapp.generated.resources.converter_swap
 import converter.composeapp.generated.resources.converter_title
@@ -84,7 +86,8 @@ fun MainScreen(
                     currencies = state.rates,
                     onCurrencySelected = { currency ->
                         viewModel.onAction(MainAction.TopCurrencySelected(currency))
-                    }
+                    },
+                    isTop = true
                 )
 
                 SwapButton {
@@ -100,7 +103,8 @@ fun MainScreen(
                     currencies = state.rates,
                     onCurrencySelected = { currency ->
                         viewModel.onAction(MainAction.BottomCurrencySelected(currency))
-                    }
+                    },
+                    isTop = false
                 )
 
                 Text(
@@ -177,23 +181,23 @@ fun SwapButton(onClick: () -> Unit) {
 fun CurrencyEditor(
     currency: CurrencyRate?,
     value: String,
+    isTop: Boolean,
     onValueChanged: (String) -> Unit,
     currencies: List<CurrencyRate>,
     onCurrencySelected: (CurrencyRate) -> Unit
 ) {
+    Column {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            PickerDropdown(
+                selected = currency,
+                options = currencies,
+                onSelect = onCurrencySelected
+            )
 
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        PickerDropdown(
-            selected = currency,
-            options = currencies,
-            onSelect = onCurrencySelected
-        )
-
-        Column {
             OutlinedTextField(
                 modifier = Modifier.fillMaxWidth(),
                 value = value,
@@ -206,16 +210,26 @@ fun CurrencyEditor(
                     Text(text = currency?.sign ?: "")
                 }
             )
+        }
 
-            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
-                listOf("1", "10", "100", "1000").forEach { title ->
-                    CustomButton(
-                        title = "$title${currency?.sign ?: ""}",
-                        onTap = {
-                            onValueChanged(title)
-                        }
-                    )
-                }
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                modifier = Modifier.alpha(0.7f),
+                text = stringResource(Res.string.converter_quick_select),
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+
+            listOf("1", "10", "100").forEach { title ->
+                CustomButton(
+                    title = "$title${currency?.sign ?: ""}",
+                    onTap = {
+                        onValueChanged(title)
+                    }
+                )
             }
         }
     }

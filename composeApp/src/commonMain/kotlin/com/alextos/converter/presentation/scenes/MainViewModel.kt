@@ -3,7 +3,6 @@ package com.alextos.converter.presentation.scenes
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.alextos.common.preciseFormat
-import com.alextos.converter.domain.models.CurrencyCode
 import com.alextos.converter.domain.repository.CurrencyRepository
 import com.alextos.converter.domain.storage.ConverterState
 import com.alextos.converter.domain.storage.StorageService
@@ -97,18 +96,12 @@ class MainViewModel(
                     state.copy(topCurrency = action.currency)
                 }
                 onAction(MainAction.TopTextChanged(state.value.topText))
-                viewModelScope.launch(Dispatchers.IO) {
-                    repository.increasePriority(action.currency)
-                }
             }
             is MainAction.BottomCurrencySelected -> {
                 _state.update { state ->
                     state.copy(bottomCurrency = action.currency)
                 }
                 onAction(MainAction.TopTextChanged(state.value.topText))
-                viewModelScope.launch(Dispatchers.IO) {
-                    repository.increasePriority(action.currency)
-                }
             }
             is MainAction.ReloadRates -> {
                 _state.update { state ->

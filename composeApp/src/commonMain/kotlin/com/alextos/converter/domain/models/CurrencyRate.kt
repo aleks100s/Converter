@@ -6,7 +6,6 @@ import com.alextos.converter.presentation.extensions.localization
 
 data class CurrencyRate(
     val code: CurrencyCode,
-    val priority: Int,
     val isFavourite: Boolean,
     val isMain: Boolean,
     val rate: Double,

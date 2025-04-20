@@ -12,8 +12,8 @@ class DatabaseSeeder: RoomDatabase.Callback() {
         super.onCreate(connection)
         // Seed the database with initial data
         val currencies = CurrencyCode.entries.joinToString(", ") {
-            "('${it.name}', '${it.symbol}', '${it.emoji}', 0, 0, 0)"
+            "('${it.name}', '${it.symbol}', '${it.emoji}', 0, 0)"
         }
-        connection.execSQL("INSERT INTO currencies (code, sign, flag, isFavourite, isMain, priority) VALUES $currencies;")
+        connection.execSQL("INSERT INTO currencies (code, sign, flag, isFavourite, isMain) VALUES $currencies;")
     }
 }

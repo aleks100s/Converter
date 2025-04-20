@@ -18,7 +18,7 @@ class StorageServiceImpl(
     }
 
     override fun getState(): ConverterState {
-        val topText = settings["topText", "0"]
+        val topText = settings["topText", "1"]
         val bottomText = settings["bottomText", "0"]
         val topCurrency = CurrencyCode.valueOf(settings["topCurrency", "USD"])
         val bottomCurrency = CurrencyCode.valueOf(settings["bottomCurrency", "RUB"])

@@ -10,6 +10,5 @@ data class CurrencyEntity(
     val sign: String,
     val flag: String,
     val isFavourite: Boolean,
-    val isMain: Boolean,
-    val priority: Int
+    val isMain: Boolean
 )

@@ -17,7 +17,6 @@ fun CurrencyRateDto.toEntity(): CurrencyRateEntity {
 fun CurrencyRate.toEntity(): CurrencyEntity {
     return CurrencyEntity(
         code = code.name,
-        priority = priority,
         isMain = isMain,
         isFavourite = isFavourite,
         flag = code.emoji,
