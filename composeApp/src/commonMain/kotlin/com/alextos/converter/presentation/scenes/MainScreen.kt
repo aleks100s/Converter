@@ -35,7 +35,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.alextos.common.presentation.CustomButton
@@ -208,8 +210,13 @@ fun CurrencyEditor(
                     .onFocusChanged { focusState ->
                         isFocused = focusState.isFocused
                     },
-                value = value,
-                onValueChange = onValueChanged,
+                value = TextFieldValue(
+                    text = value,
+                    selection = TextRange(value.length)
+                ),
+                onValueChange = { value ->
+                    onValueChanged(value.text)
+                },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
                 leadingIcon = {
                     Text(text = currency?.flag ?: "")

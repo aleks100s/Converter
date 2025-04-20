@@ -1,7 +1,13 @@
 package com.alextos.common
 
+import kotlin.math.roundToInt
+
+fun kek(vararg args: Any?): String {
+    return ""
+}
+
 fun Double.preciseFormat(): String {
-    val str = String.format("%f", this).replace(",", ".")
+    val str = toFullString().replace(",", ".")
 
     // если число целое, то отбрасываем дробную часть
     if (str.endsWith(".0")) return str.substringBefore(".")
@@ -25,4 +31,11 @@ fun Double.preciseFormat(): String {
     val trimmed = fraction.take(endIndex).trimEnd('0')
 
     return if (trimmed.isEmpty()) integer else "$integer.$trimmed"
+}
+
+private fun Double.roundToDecimals(decimals: Int): Double {
+    var dotAt = 1
+    repeat(decimals) { dotAt *= 10 }
+    val roundedValue = (this * dotAt).roundToInt()
+    return (roundedValue / dotAt) + (roundedValue % dotAt).toDouble() / dotAt
 }
