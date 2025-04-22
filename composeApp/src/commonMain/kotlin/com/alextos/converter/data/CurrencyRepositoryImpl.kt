@@ -10,6 +10,7 @@ import com.alextos.converter.domain.repository.CurrencyRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filter
+import kotlin.random.Random
 
 class CurrencyRepositoryImpl(
     private val remoteDataSource: RemoteCurrencyDataSource,

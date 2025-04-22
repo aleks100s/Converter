@@ -9,7 +9,7 @@
     <string name="common_ok">Ок</string>
     <string name="common_done">Готово</string>
     <string name="common_remove">Удалить</string>
-    <string name="converter_title">Конвертер</string>
+    <string name="converter_title">Валютка</string>
     <string name="converter_swap">Поменять валюты местами</string>
     <string name="converter_reload">Обновить курс</string>
     <string name="converter_quick_select">Быстрый набор:</string>

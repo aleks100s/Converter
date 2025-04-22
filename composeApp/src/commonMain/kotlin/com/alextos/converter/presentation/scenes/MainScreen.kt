@@ -64,7 +64,7 @@ fun MainScreen(
 
     Screen(
         modifier = Modifier,
-        title = stringResource(Res.string.converter_title),
+        title = stringResource(Res.string.converter_swap),
         actions = {
             RefreshButton {
                 viewModel.onAction(MainAction.ReloadRates)

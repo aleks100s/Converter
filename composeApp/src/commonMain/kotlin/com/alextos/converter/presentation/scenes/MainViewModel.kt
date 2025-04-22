@@ -34,8 +34,8 @@ class MainViewModel(
                     _state.update { state ->
                         state.copy(
                             rates = rates,
-                            bottomCurrency = state.bottomCurrency ?: rates.firstOrNull { it.code == savedState.bottomCurrency },
-                            topCurrency = state.topCurrency ?: rates.firstOrNull { it.code == savedState.topCurrency },
+                            bottomCurrency = rates.firstOrNull { it.code == state.bottomCurrency?.code ?: savedState.bottomCurrency },
+                            topCurrency = rates.firstOrNull { it.code == state.topCurrency?.code ?: savedState.topCurrency },
                             isLoading = false
                         )
                     }
