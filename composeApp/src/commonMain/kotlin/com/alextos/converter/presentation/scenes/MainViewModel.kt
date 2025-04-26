@@ -6,6 +6,7 @@ import com.alextos.common.preciseFormat
 import com.alextos.converter.domain.repository.CurrencyRepository
 import com.alextos.converter.domain.storage.ConverterState
 import com.alextos.converter.domain.storage.StorageService
+import com.alextos.di.ConverterAppDelegate
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,7 +16,8 @@ import kotlinx.coroutines.launch
 
 class MainViewModel(
     private val repository: CurrencyRepository,
-    private val storage: StorageService
+    private val storage: StorageService,
+    private val delegate: ConverterAppDelegate
 ): ViewModel() {
     private val _state = MutableStateFlow(MainState())
     val state = _state.asStateFlow()
@@ -110,6 +112,9 @@ class MainViewModel(
                 viewModelScope.launch(Dispatchers.IO) {
                     repository.fetchCurrencyRates()
                 }
+            }
+            is MainAction.ShowCamera -> {
+                delegate.showCamera()
             }
         }
     }

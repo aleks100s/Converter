@@ -20,7 +20,8 @@ import org.koin.dsl.module
 
 expect val platformModule: Module
 
-val appModule = module {
+fun appModule(delegate: ConverterAppDelegate) = module {
+    single { delegate }
     single<HttpClient> { HttpClientFactory.create(get()) }
     single<RemoteCurrencyDataSource> { KtorRemoteCurrencyDataSource(get()) }
     single<CurrencyRepository> { CurrencyRepositoryImpl(get(), get()) }

@@ -1,11 +1,12 @@
 package com.alextos.app
 
 import androidx.compose.ui.window.ComposeUIViewController
+import com.alextos.di.ConverterAppDelegate
 import com.alextos.di.initKoin
 import platform.UIKit.UIViewController
 
-fun MainViewController(): UIViewController = ComposeUIViewController(
+fun MainViewController(delegate: ConverterAppDelegate): UIViewController = ComposeUIViewController(
     configure = {
-        initKoin()
+        initKoin(delegate = delegate)
     }
 ) { App() }

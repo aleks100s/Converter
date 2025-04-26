@@ -9,4 +9,5 @@ sealed interface MainAction {
     data class TopCurrencySelected(val currency: CurrencyRate) : MainAction
     data class BottomCurrencySelected(val currency: CurrencyRate) : MainAction
     data object ReloadRates : MainAction
+    data object ShowCamera: MainAction
 }

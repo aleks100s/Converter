@@ -17,6 +17,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -64,10 +65,21 @@ fun MainScreen(
 
     Screen(
         modifier = Modifier,
-        title = stringResource(Res.string.converter_swap),
+        title = stringResource(Res.string.converter_title),
         actions = {
             RefreshButton {
                 viewModel.onAction(MainAction.ReloadRates)
+            }
+
+            IconButton(
+                onClick = {
+                    viewModel.onAction(MainAction.ShowCamera)
+                },
+            ) {
+                Icon(
+                    Icons.Default.Star,
+                    stringResource(Res.string.converter_reload),
+                )
             }
         }
     ) { modifier ->
