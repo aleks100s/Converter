@@ -15,8 +15,8 @@ final class ConverterApplicationDelegate: ConverterAppDelegate {
 		self.window = window
 	}
 	
-	func showCamera() {
-		let controller = CameraViewController()
+	func showCamera(converterUseCase: ConverterUseCase) {
+		let controller = CameraViewController(converterUseCase: converterUseCase)
 		controller.navigationItem.rightBarButtonItem = UIBarButtonItem(systemItem: .cancel, primaryAction: UIAction(handler: { [weak controller] _ in
 			controller?.dismiss(animated: true)
 		}))

@@ -1,7 +1,7 @@
 package com.alextos.app
 
 import android.app.Application
-import com.alextos.di.ConverterAppDelegate
+import com.alextos.converter.domain.camera.ConverterAppDelegate
 import com.alextos.di.initKoin
 import org.koin.android.ext.koin.androidContext
 

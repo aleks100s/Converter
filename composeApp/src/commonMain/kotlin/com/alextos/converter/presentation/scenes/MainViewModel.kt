@@ -6,7 +6,8 @@ import com.alextos.common.preciseFormat
 import com.alextos.converter.domain.repository.CurrencyRepository
 import com.alextos.converter.domain.storage.ConverterState
 import com.alextos.converter.domain.storage.StorageService
-import com.alextos.di.ConverterAppDelegate
+import com.alextos.converter.domain.camera.ConverterAppDelegate
+import com.alextos.converter.domain.camera.ConverterUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,7 +18,8 @@ import kotlinx.coroutines.launch
 class MainViewModel(
     private val repository: CurrencyRepository,
     private val storage: StorageService,
-    private val delegate: ConverterAppDelegate
+    private val delegate: ConverterAppDelegate,
+    private val converterUseCase: ConverterUseCase
 ): ViewModel() {
     private val _state = MutableStateFlow(MainState())
     val state = _state.asStateFlow()
@@ -31,13 +33,18 @@ class MainViewModel(
                     bottomText = savedState.bottomText,
                 )
             }
+
             repository.getCurrencyRates()
                 .collect { rates ->
                     _state.update { state ->
                         state.copy(
                             rates = rates,
-                            bottomCurrency = rates.firstOrNull { it.code == state.bottomCurrency?.code ?: savedState.bottomCurrency },
-                            topCurrency = rates.firstOrNull { it.code == state.topCurrency?.code ?: savedState.topCurrency },
+                            bottomCurrency = rates.firstOrNull {
+                                it.code == (state.bottomCurrency?.code ?: savedState.bottomCurrency)
+                            },
+                            topCurrency = rates.firstOrNull {
+                                it.code == (state.topCurrency?.code ?: savedState.topCurrency)
+                            },
                             isLoading = false
                         )
                     }
@@ -47,6 +54,15 @@ class MainViewModel(
 
         viewModelScope.launch(Dispatchers.IO) {
             repository.fetchCurrencyRates()
+        }
+
+        viewModelScope.launch(Dispatchers.IO) {
+            _state.collect {
+                converterUseCase.setCurrencies(
+                    it.topCurrency,
+                    it.bottomCurrency
+                )
+            }
         }
     }
 
@@ -114,7 +130,7 @@ class MainViewModel(
                 }
             }
             is MainAction.ShowCamera -> {
-                delegate.showCamera()
+                delegate.showCamera(converterUseCase)
             }
         }
     }

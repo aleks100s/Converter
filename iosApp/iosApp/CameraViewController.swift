@@ -6,6 +6,7 @@
 //
 
 import AVFoundation
+import ComposeApp
 import Vision
 import UIKit
 
@@ -14,13 +15,23 @@ final class CameraViewController: UIViewController, AVCaptureVideoDataOutputSamp
 	private var previewLayer: AVCaptureVideoPreviewLayer!
 	private var textRecognitionRequest = VNRecognizeTextRequest()
 	private let overlayView = UIView()
-	
+	private let converterUseCase: ConverterUseCase
+
+	init(converterUseCase: ConverterUseCase) {
+		self.converterUseCase = converterUseCase
+		super.init(nibName: nil, bundle: nil)
+	}
+
+	required init?(coder: NSCoder) {
+		fatalError("init(coder:) has not been implemented")
+	}
+
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		setupCamera()
 		setupVision()
 	}
-	
+
 	private func setupCamera() {
 		session.sessionPreset = .high
 		
@@ -48,7 +59,7 @@ final class CameraViewController: UIViewController, AVCaptureVideoDataOutputSamp
 			await self.session.startRunning()
 		}
 	}
-	
+
 	private func setupVision() {
 		textRecognitionRequest = VNRecognizeTextRequest { [weak self] request, error in
 			self?.recognizeTextHandler(request: request, error: error)
@@ -56,7 +67,7 @@ final class CameraViewController: UIViewController, AVCaptureVideoDataOutputSamp
 		textRecognitionRequest.recognitionLevel = .accurate
 		textRecognitionRequest.usesLanguageCorrection = true
 	}
-	
+
 	@objc(captureOutput:didOutputSampleBuffer:fromConnection:)
 	func captureOutput(_ output: AVCaptureOutput,
 					   didOutput sampleBuffer: CMSampleBuffer,
@@ -67,7 +78,7 @@ final class CameraViewController: UIViewController, AVCaptureVideoDataOutputSamp
 		let requestHandler = VNImageRequestHandler(cvPixelBuffer: pixelBuffer, options: [:])
 		try? requestHandler.perform([textRecognitionRequest])
 	}
-	
+
 	private func recognizeTextHandler(request: VNRequest, error: Error?) {
 		DispatchQueue.main.async {
 			// Удаляем старые оверлеи
@@ -78,39 +89,34 @@ final class CameraViewController: UIViewController, AVCaptureVideoDataOutputSamp
 		}
 
 		guard let results = request.results as? [VNRecognizedTextObservation] else { return }
+		
+		for observation in results {
+			guard let candidate = observation.topCandidates(1).first else { continue }
 
-		DispatchQueue.main.async {
-			for observation in results {
-				guard let candidate = observation.topCandidates(1).first else { continue }
-
-				let text = self.extractPrice(from: candidate.string)
-				guard Double(text) != nil else { continue }
-				
-				let box = observation.boundingBox
-
-				// Переводим boundingBox в координаты view
-				let rect = self.transformBoundingBox(box)
-				print("From \(candidate.string) to \(text) in frame \(rect.size)")
-
-				// Или можно использовать CAShapeLayer с прямоугольником
-				let borderLayer = self.createTextLayer(frame: rect, text: text)
+			let text = extractPrice(from: candidate.string)
+			guard let value = Double(text) else { continue }
+			
+			let result = converterUseCase.convert(value: value)
+			DispatchQueue.main.async {
+				let rect = self.transformBoundingBox(observation.boundingBox, length: result.count)
+				let borderLayer = self.createTextLayer(frame: rect, text: result)
 				self.overlayView.layer.addSublayer(borderLayer)
 			}
 		}
 	}
-	
+
 	private func extractPrice(from text: String) -> String {
 		text.trimmingCharacters(in: .letters)
 	}
-	
-	private func transformBoundingBox(_ boundingBox: CGRect) -> CGRect {
-		let viewSize = view.frame.size
-		let width = boundingBox.width * viewSize.height
-		let height = boundingBox.height * viewSize.width
-		let x = boundingBox.origin.x * viewSize.height
-		let y = (1 - boundingBox.origin.y - boundingBox.height) * viewSize.width
 
-		return CGRect(x: y, y: x, width: width + 4, height: height + 4)
+	private func transformBoundingBox(_ boundingBox: CGRect, length: Int) -> CGRect {
+		let viewSize = view.frame.size
+		// let width = boundingBox.width * viewSize.height
+		let height = boundingBox.height * viewSize.width
+		let x = (boundingBox.origin.y - boundingBox.height) * viewSize.width
+		let y = boundingBox.origin.x * viewSize.height
+
+		return CGRect(x: x, y: y, width: height * CGFloat(length) / 2, height: height)
 	}
 
 	private func createTextLayer(frame: CGRect, text: String) -> CALayer {
