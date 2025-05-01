@@ -26,6 +26,6 @@ class ConverterUseCase {
         } else {
             0.0
         }
-        return result.preciseFormat()
+        return result.preciseFormat() + to?.sign
     }
 }

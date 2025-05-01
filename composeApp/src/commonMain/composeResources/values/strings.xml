@@ -15,6 +15,7 @@
     <string name="converter_quick_select">Быстрый набор:</string>
     <string name="converter_clear">Очистить</string>
     <string name="data_is_actual">Данные ЦБ РФ</string>
+    <string name="camera">Перевести %1$s в %2$s с камеры</string>
     <string name="currency_aed">Дирхам ОАЭ</string>
     <string name="currency_amd">Армянский драм</string>
     <string name="currency_aud">Австралийский доллар</string>

@@ -3,7 +3,6 @@ package com.alextos.converter.presentation.scenes
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.EaseInOutBounce
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,10 +13,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Refresh
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -46,12 +43,13 @@ import com.alextos.converter.domain.models.CurrencyRate
 import com.alextos.common.presentation.PickerDropdown
 import com.alextos.common.presentation.Screen
 import converter.composeapp.generated.resources.Res
+import converter.composeapp.generated.resources.camera
+import converter.composeapp.generated.resources.ic_camera
 import converter.composeapp.generated.resources.converter_clear
 import converter.composeapp.generated.resources.converter_quick_select
 import converter.composeapp.generated.resources.converter_reload
 import converter.composeapp.generated.resources.converter_swap
 import converter.composeapp.generated.resources.converter_title
-import converter.composeapp.generated.resources.copy
 import converter.composeapp.generated.resources.data_is_actual
 import converter.composeapp.generated.resources.ic_swap
 import org.jetbrains.compose.resources.stringResource
@@ -69,17 +67,6 @@ fun MainScreen(
         actions = {
             RefreshButton {
                 viewModel.onAction(MainAction.ReloadRates)
-            }
-
-            IconButton(
-                onClick = {
-                    viewModel.onAction(MainAction.ShowCamera)
-                },
-            ) {
-                Icon(
-                    Icons.Default.Star,
-                    stringResource(Res.string.converter_reload),
-                )
             }
         }
     ) { modifier ->
@@ -131,6 +118,30 @@ fun MainScreen(
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    IconButton(
+                        onClick = {
+                            viewModel.onAction(MainAction.ShowCamera)
+                        },
+                        modifier = Modifier
+                            .minimumInteractiveComponentSize()
+                            .size(32.dp)
+                    ) {
+                        Icon(
+                            vectorResource(Res.drawable.ic_camera),
+                            stringResource(Res.string.converter_reload),
+                            tint = MaterialTheme.colorScheme.primary
+                        )
+                    } // state.bottomCurrency?.code // state.topCurrency?.code
+
+                    CustomButton(title = stringResource(Res.string.camera, state.topCurrency?.code ?: "", state.bottomCurrency?.code ?: "")) {
+                        viewModel.onAction(MainAction.ShowCamera)
+                    }
+                }
             }
         }
     }
