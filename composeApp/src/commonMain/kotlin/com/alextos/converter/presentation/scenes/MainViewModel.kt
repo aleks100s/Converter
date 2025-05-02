@@ -8,6 +8,7 @@ import com.alextos.converter.domain.storage.ConverterState
 import com.alextos.converter.domain.storage.StorageService
 import com.alextos.converter.domain.camera.ConverterAppDelegate
 import com.alextos.converter.domain.camera.ConverterUseCase
+import com.alextos.converter.domain.services.ClipboardService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,7 +20,8 @@ class MainViewModel(
     private val repository: CurrencyRepository,
     private val storage: StorageService,
     private val delegate: ConverterAppDelegate,
-    private val converterUseCase: ConverterUseCase
+    private val converterUseCase: ConverterUseCase,
+    private val clipboardService: ClipboardService
 ): ViewModel() {
     private val _state = MutableStateFlow(MainState())
     val state = _state.asStateFlow()
@@ -131,6 +133,9 @@ class MainViewModel(
             }
             is MainAction.ShowCamera -> {
                 delegate.showCamera(converterUseCase)
+            }
+            is MainAction.CopyButtonTapped -> {
+                clipboardService.copyToClipboard(action.text, action.label)
             }
         }
     }

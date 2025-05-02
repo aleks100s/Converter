@@ -50,6 +50,7 @@ import converter.composeapp.generated.resources.converter_quick_select
 import converter.composeapp.generated.resources.converter_reload
 import converter.composeapp.generated.resources.converter_swap
 import converter.composeapp.generated.resources.converter_title
+import converter.composeapp.generated.resources.copy
 import converter.composeapp.generated.resources.data_is_actual
 import converter.composeapp.generated.resources.ic_swap
 import org.jetbrains.compose.resources.stringResource
@@ -93,6 +94,9 @@ fun MainScreen(
                     currencies = state.rates,
                     onCurrencySelected = { currency ->
                         viewModel.onAction(MainAction.TopCurrencySelected(currency))
+                    },
+                    onCopy = { text, label ->
+                        viewModel.onAction(MainAction.CopyButtonTapped(text, label))
                     }
                 )
 
@@ -109,6 +113,9 @@ fun MainScreen(
                     currencies = state.rates,
                     onCurrencySelected = { currency ->
                         viewModel.onAction(MainAction.BottomCurrencySelected(currency))
+                    },
+                    onCopy = { text, label ->
+                        viewModel.onAction(MainAction.CopyButtonTapped(text, label))
                     }
                 )
 
@@ -212,7 +219,8 @@ fun CurrencyEditor(
     value: String,
     onValueChanged: (String) -> Unit,
     currencies: List<CurrencyRate>,
-    onCurrencySelected: (CurrencyRate) -> Unit
+    onCurrencySelected: (CurrencyRate) -> Unit,
+    onCopy: (String, String) -> Unit
 ) {
     Column {
         Row(
@@ -260,7 +268,23 @@ fun CurrencyEditor(
                             )
                         }
                     }
-                } else null,
+                } else {
+                    {
+                        IconButton(
+                            onClick = {
+                                onCopy(value, currency?.sign ?: "")
+                            },
+                            modifier = Modifier
+                                .minimumInteractiveComponentSize()
+                                .size(24.dp)
+                        ) {
+                            Icon(
+                                imageVector = vectorResource(Res.drawable.copy),
+                                contentDescription = stringResource(Res.string.converter_clear),
+                            )
+                        }
+                    }
+                },
             )
         }
 

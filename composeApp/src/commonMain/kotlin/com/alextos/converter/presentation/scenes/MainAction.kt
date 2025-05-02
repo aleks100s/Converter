@@ -10,4 +10,5 @@ sealed interface MainAction {
     data class BottomCurrencySelected(val currency: CurrencyRate) : MainAction
     data object ReloadRates : MainAction
     data object ShowCamera: MainAction
+    data class CopyButtonTapped(val text: String, val label: String): MainAction
 }

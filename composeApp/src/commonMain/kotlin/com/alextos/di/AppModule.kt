@@ -8,10 +8,12 @@ import com.alextos.converter.data.database.DatabaseFactory
 import com.alextos.converter.data.database.DatabaseSeeder
 import com.alextos.converter.data.network.KtorRemoteCurrencyDataSource
 import com.alextos.converter.data.network.RemoteCurrencyDataSource
+import com.alextos.converter.data.services.ClipboardServiceImpl
 import com.alextos.converter.data.storage.StorageServiceImpl
 import com.alextos.converter.domain.repository.CurrencyRepository
 import com.alextos.converter.domain.camera.ConverterAppDelegate
 import com.alextos.converter.domain.camera.ConverterUseCase
+import com.alextos.converter.domain.services.ClipboardService
 import com.alextos.converter.domain.storage.StorageService
 import com.alextos.converter.presentation.scenes.MainViewModel
 import com.russhwolf.settings.Settings
