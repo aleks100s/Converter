@@ -14,7 +14,9 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -41,6 +43,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.alextos.common.presentation.CustomButton
+import com.alextos.common.presentation.CustomLabel
 import com.alextos.converter.domain.models.CurrencyRate
 import com.alextos.common.presentation.PickerDropdown
 import com.alextos.common.presentation.Screen
@@ -71,6 +74,23 @@ fun MainScreen(
     Screen(
         modifier = Modifier,
         title = stringResource(Res.string.converter_title),
+        floatingActionButton = {
+            val props = CameraProps(
+                title = stringResource(Res.string.camera_title, state.topCurrency?.code ?: "", state.bottomCurrency?.code ?: ""),
+                button = stringResource(Res.string.camera_button_title)
+            )
+            Button(
+                onClick = {
+                    haptic.performHapticFeedback(HapticFeedbackType.VirtualKey)
+                    viewModel.onAction(MainAction.ShowCamera(props))
+                }
+            ) {
+                CustomLabel(
+                    title = props.title,
+                    imageVector = vectorResource(Res.drawable.ic_camera)
+                )
+            }
+        },
         actions = {
             RefreshButton {
                 haptic.performHapticFeedback(HapticFeedbackType.VirtualKey)
@@ -133,34 +153,6 @@ fun MainScreen(
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
-
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    val props = CameraProps(
-                        title = stringResource(Res.string.camera_title, state.topCurrency?.code ?: "", state.bottomCurrency?.code ?: ""),
-                        button = stringResource(Res.string.camera_button_title)
-                    )
-                    IconButton(
-                        onClick = {
-                            viewModel.onAction(MainAction.ShowCamera(props))
-                        },
-                        modifier = Modifier
-                            .minimumInteractiveComponentSize()
-                            .size(32.dp)
-                    ) {
-                        Icon(
-                            vectorResource(Res.drawable.ic_camera),
-                            stringResource(Res.string.converter_reload),
-                            tint = MaterialTheme.colorScheme.primary
-                        )
-                    }
-
-                    CustomButton(title = stringResource(Res.string.camera, state.topCurrency?.code ?: "", state.bottomCurrency?.code ?: "")) {
-                        viewModel.onAction(MainAction.ShowCamera(props))
-                    }
-                }
             }
         }
     }
