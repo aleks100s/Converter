@@ -1,9 +1,13 @@
 package com.alextos.common.presentation
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -14,6 +18,8 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
@@ -26,7 +32,6 @@ import org.jetbrains.compose.resources.stringResource
 fun Screen(
     modifier: Modifier,
     title: String,
-    color: Color? = null,
     goBack: (() -> Unit)? = null,
     backButtonIcon: ImageVector = Icons.AutoMirrored.Filled.ArrowBack,
     floatingActionButton: @Composable () -> Unit = {},
@@ -35,15 +40,21 @@ fun Screen(
     content: @Composable (Modifier) -> Unit
 ) {
     Scaffold(
-        modifier = modifier,
+        modifier = modifier
+            .background(Brush.linearGradient(
+                colors = listOf(
+                    Color(red = 65, green = 106, blue = 193),
+                    Color(143,67,189)
+                ),
+                start = Offset(0f, 0f),
+                end = Offset(1000f, 1000f)
+            )),
         topBar = {
             TopAppBar(
                 title = {
                     Text(title)
                 },
-                colors = color?.let {
-                    TopAppBarDefaults.topAppBarColors().copy(containerColor = it.copy(0.4f))
-                } ?: TopAppBarDefaults.topAppBarColors(),
+                colors = TopAppBarDefaults.topAppBarColors().copy(containerColor = MaterialTheme.colorScheme.background.copy(0.2f)),
                 actions = actions,
                 navigationIcon = {
                     if (goBack != null) {
@@ -61,7 +72,7 @@ fun Screen(
                 }
             )
         },
-        containerColor = color?.copy(alpha = 0.3f) ?: MaterialTheme.colorScheme.background,
+        containerColor = MaterialTheme.colorScheme.background.copy(alpha = 0.7f),
         floatingActionButton = floatingActionButton,
         bottomBar = {
             if (bannerView != null) {

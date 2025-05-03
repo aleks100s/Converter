@@ -132,7 +132,7 @@ class MainViewModel(
                 }
             }
             is MainAction.ShowCamera -> {
-                delegate.showCamera(converterUseCase)
+                delegate.showCamera(converterUseCase, action.props)
             }
             is MainAction.CopyButtonTapped -> {
                 clipboardService.copyToClipboard(action.text, action.label)

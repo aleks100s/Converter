@@ -33,6 +33,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
@@ -42,8 +44,11 @@ import com.alextos.common.presentation.CustomButton
 import com.alextos.converter.domain.models.CurrencyRate
 import com.alextos.common.presentation.PickerDropdown
 import com.alextos.common.presentation.Screen
+import com.alextos.converter.domain.camera.CameraProps
 import converter.composeapp.generated.resources.Res
 import converter.composeapp.generated.resources.camera
+import converter.composeapp.generated.resources.camera_button_title
+import converter.composeapp.generated.resources.camera_title
 import converter.composeapp.generated.resources.ic_camera
 import converter.composeapp.generated.resources.converter_clear
 import converter.composeapp.generated.resources.converter_quick_select
@@ -61,12 +66,14 @@ fun MainScreen(
     viewModel: MainViewModel
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val haptic = LocalHapticFeedback.current
 
     Screen(
         modifier = Modifier,
         title = stringResource(Res.string.converter_title),
         actions = {
             RefreshButton {
+                haptic.performHapticFeedback(HapticFeedbackType.VirtualKey)
                 viewModel.onAction(MainAction.ReloadRates)
             }
         }
@@ -81,7 +88,7 @@ fun MainScreen(
         } else {
             Column(
                 modifier = modifier
-                    .padding(horizontal = 16.dp)
+                    .padding(horizontal = 16.dp, vertical = 16.dp)
                     .fillMaxWidth(),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
@@ -101,6 +108,7 @@ fun MainScreen(
                 )
 
                 SwapButton {
+                    haptic.performHapticFeedback(HapticFeedbackType.VirtualKey)
                     viewModel.onAction(MainAction.SwapCurrencies)
                 }
 
@@ -130,9 +138,13 @@ fun MainScreen(
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
+                    val props = CameraProps(
+                        title = stringResource(Res.string.camera_title, state.topCurrency?.code ?: "", state.bottomCurrency?.code ?: ""),
+                        button = stringResource(Res.string.camera_button_title)
+                    )
                     IconButton(
                         onClick = {
-                            viewModel.onAction(MainAction.ShowCamera)
+                            viewModel.onAction(MainAction.ShowCamera(props))
                         },
                         modifier = Modifier
                             .minimumInteractiveComponentSize()
@@ -143,10 +155,10 @@ fun MainScreen(
                             stringResource(Res.string.converter_reload),
                             tint = MaterialTheme.colorScheme.primary
                         )
-                    } // state.bottomCurrency?.code // state.topCurrency?.code
+                    }
 
                     CustomButton(title = stringResource(Res.string.camera, state.topCurrency?.code ?: "", state.bottomCurrency?.code ?: "")) {
-                        viewModel.onAction(MainAction.ShowCamera)
+                        viewModel.onAction(MainAction.ShowCamera(props))
                     }
                 }
             }
@@ -222,6 +234,7 @@ fun CurrencyEditor(
     onCurrencySelected: (CurrencyRate) -> Unit,
     onCopy: (String, String) -> Unit
 ) {
+    val haptic = LocalHapticFeedback.current
     Column {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -259,6 +272,7 @@ fun CurrencyEditor(
                     {
                         IconButton(
                             onClick = {
+                                haptic.performHapticFeedback(HapticFeedbackType.VirtualKey)
                                 onValueChanged("0")
                             }
                         ) {
@@ -272,6 +286,7 @@ fun CurrencyEditor(
                     {
                         IconButton(
                             onClick = {
+                                haptic.performHapticFeedback(HapticFeedbackType.Confirm)
                                 onCopy(value, currency?.sign ?: "")
                             },
                             modifier = Modifier
@@ -303,6 +318,7 @@ fun CurrencyEditor(
                 CustomButton(
                     title = "$title${currency?.sign ?: ""}",
                     onTap = {
+                        haptic.performHapticFeedback(HapticFeedbackType.VirtualKey)
                         onValueChanged(title)
                     }
                 )

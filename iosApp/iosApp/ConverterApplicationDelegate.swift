@@ -6,6 +6,7 @@
 //
 
 import ComposeApp
+import SwiftUI
 import UIKit
 
 final class ConverterApplicationDelegate: ConverterAppDelegate {
@@ -15,12 +16,10 @@ final class ConverterApplicationDelegate: ConverterAppDelegate {
 		self.window = window
 	}
 	
-	func showCamera(converterUseCase: ConverterUseCase) {
-		let controller = CameraViewController(converterUseCase: converterUseCase)
-		controller.navigationItem.rightBarButtonItem = UIBarButtonItem(systemItem: .cancel, primaryAction: UIAction(handler: { [weak controller] _ in
-			controller?.dismiss(animated: true)
-		}))
-		let navigationController = UINavigationController(rootViewController: controller)
-		window.rootViewController?.present(navigationController, animated: true)
+	func showCamera(converterUseCase: ConverterUseCase, props: CameraProps) {
+		let content = CameraWrapper(converterUseCase: converterUseCase)
+		let viewController = UIHostingController(rootView: CameraView(props: props, content: content))
+		viewController.modalPresentationStyle = .fullScreen
+		window.rootViewController?.present(viewController, animated: true)
 	}
 }
