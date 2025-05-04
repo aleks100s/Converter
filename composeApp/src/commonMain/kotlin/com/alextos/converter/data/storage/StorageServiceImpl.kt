@@ -29,4 +29,12 @@ class StorageServiceImpl(
             bottomCurrency = bottomCurrency
         )
     }
+
+    override fun isOnboardingFinished(): Boolean {
+        return settings["onboardingFinished", false]
+    }
+
+    override fun finishOnboarding() {
+        settings["onboardingFinished"] = true
+    }
 }

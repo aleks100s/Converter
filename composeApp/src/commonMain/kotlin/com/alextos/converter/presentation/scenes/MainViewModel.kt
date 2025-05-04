@@ -23,23 +23,29 @@ class MainViewModel(
     private val converterUseCase: ConverterUseCase,
     private val clipboardService: ClipboardService
 ): ViewModel() {
-    private val _state = MutableStateFlow(MainState(onboardingState = OnboardingState(
-        step = OnboardingStep.Initial,
-        refreshButtonAlpha = 0f,
-        isNextOnboardingButtonVisible = true,
-        swapButtonAlpha = 0f,
-        bottomEditorAlpha = 0f,
-        hintAlpha = 0f,
-    )))
+    private val _state = MutableStateFlow(MainState())
     val state = _state.asStateFlow()
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
+            val isOnboardingFinished = storage.isOnboardingFinished()
             val savedState = storage.getState()
             _state.update { state ->
                 state.copy(
                     topText = savedState.topText,
                     bottomText = savedState.bottomText,
+                    onboardingState = if (isOnboardingFinished) {
+                        OnboardingState(step = OnboardingStep.Done)
+                    } else {
+                        OnboardingState(
+                            step = OnboardingStep.Initial,
+                            refreshButtonAlpha = 0f,
+                            isNextOnboardingButtonVisible = true,
+                            swapButtonAlpha = 0f,
+                            bottomEditorAlpha = 0f,
+                            hintAlpha = 0f
+                        )
+                    }
                 )
             }
 
@@ -198,6 +204,7 @@ class MainViewModel(
                         )
                     }
                     OnboardingStep.CameraButton -> {
+                        storage.finishOnboarding()
                         old.copy(
                             step = OnboardingStep.Done,
                             topEditorAlpha = 1f,
