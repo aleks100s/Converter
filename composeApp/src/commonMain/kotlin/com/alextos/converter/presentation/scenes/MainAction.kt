@@ -12,4 +12,5 @@ sealed interface MainAction {
     data object ReloadRates : MainAction
     data class ShowCamera(val props: CameraProps): MainAction
     data class CopyButtonTapped(val text: String, val label: String): MainAction
+    data object NextOnboardingStepButtonTapped : MainAction
 }

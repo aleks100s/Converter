@@ -1,8 +1,10 @@
 package com.alextos.converter.presentation.scenes
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.EaseInOutBounce
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,10 +13,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
-import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
@@ -33,13 +37,16 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.alextos.common.presentation.CustomButton
@@ -49,9 +56,9 @@ import com.alextos.common.presentation.PickerDropdown
 import com.alextos.common.presentation.Screen
 import com.alextos.converter.domain.camera.CameraProps
 import converter.composeapp.generated.resources.Res
-import converter.composeapp.generated.resources.camera
 import converter.composeapp.generated.resources.camera_button_title
 import converter.composeapp.generated.resources.camera_title
+import converter.composeapp.generated.resources.common_next
 import converter.composeapp.generated.resources.ic_camera
 import converter.composeapp.generated.resources.converter_clear
 import converter.composeapp.generated.resources.converter_quick_select
@@ -61,6 +68,13 @@ import converter.composeapp.generated.resources.converter_title
 import converter.composeapp.generated.resources.copy
 import converter.composeapp.generated.resources.data_is_actual
 import converter.composeapp.generated.resources.ic_swap
+import converter.composeapp.generated.resources.onboarding_bottom_editor_text
+import converter.composeapp.generated.resources.onboarding_camera_button_text
+import converter.composeapp.generated.resources.onboarding_initial_text
+import converter.composeapp.generated.resources.onboarding_refresh_button_text
+import converter.composeapp.generated.resources.onboarding_swap_button_text
+import converter.composeapp.generated.resources.onboarding_top_editor_text
+import converter.composeapp.generated.resources.onboarding_try
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 
@@ -79,20 +93,53 @@ fun MainScreen(
                 title = stringResource(Res.string.camera_title, state.topCurrency?.code ?: "", state.bottomCurrency?.code ?: ""),
                 button = stringResource(Res.string.camera_button_title)
             )
-            Button(
-                onClick = {
-                    haptic.performHapticFeedback(HapticFeedbackType.VirtualKey)
-                    viewModel.onAction(MainAction.ShowCamera(props))
+            Column(horizontalAlignment = Alignment.End, verticalArrangement = Arrangement.spacedBy(16.dp)) {
+                AnimatedVisibility(state.onboardingState.isCameraButtonTextVisible) {
+                    Text(
+                        stringResource(Res.string.onboarding_camera_button_text),
+                        modifier = Modifier.width(200.dp),
+                        textAlign = TextAlign.End,
+                    )
                 }
-            ) {
-                CustomLabel(
-                    title = props.title,
-                    imageVector = vectorResource(Res.drawable.ic_camera)
-                )
+
+                AnimatedVisibility(state.onboardingState.isNextOnboardingButtonVisible) {
+                    Button(
+                        onClick = {
+                            haptic.performHapticFeedback(HapticFeedbackType.VirtualKey)
+                            viewModel.onAction(MainAction.NextOnboardingStepButtonTapped)
+                        },
+                    ) {
+                        val title = if (state.onboardingState.step == OnboardingStep.CameraButton) {
+                            stringResource(Res.string.onboarding_try)
+                        } else {
+                            stringResource(Res.string.common_next)
+                        }
+                        Text(title, style = MaterialTheme.typography.bodyLarge)
+                    }
+                }
+
+                AnimatedVisibility(!state.onboardingState.isNextOnboardingButtonVisible) {
+                    Button(
+                        onClick = {
+                            haptic.performHapticFeedback(HapticFeedbackType.VirtualKey)
+                            viewModel.onAction(MainAction.ShowCamera(props))
+                        }
+                    ) {
+                        CustomLabel(
+                            title = props.title,
+                            imageVector = vectorResource(Res.drawable.ic_camera)
+                        )
+                    }
+                }
             }
         },
         actions = {
-            RefreshButton {
+            RefreshButton(
+                modifier = Modifier
+                    .alpha(state.onboardingState.refreshButtonAlpha)
+                    .clip(CircleShape)
+                    .background(Color.White.copy(alpha = state.onboardingState.refreshButtonBackgroundAlpha)),
+            ) {
                 haptic.performHapticFeedback(HapticFeedbackType.VirtualKey)
                 viewModel.onAction(MainAction.ReloadRates)
             }
@@ -105,6 +152,19 @@ fun MainScreen(
             ) {
                 CircularProgressIndicator()
             }
+        } else if (state.onboardingState.step == OnboardingStep.Initial) {
+            Box(
+                modifier = Modifier
+                    .padding(16.dp)
+                    .fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = stringResource(Res.string.onboarding_initial_text),
+                    style = MaterialTheme.typography.titleLarge,
+                    textAlign = TextAlign.Center,
+                )
+            }
         } else {
             Column(
                 modifier = modifier
@@ -112,6 +172,14 @@ fun MainScreen(
                     .fillMaxWidth(),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
+                AnimatedVisibility(state.onboardingState.isRefreshButtonTextVisible) {
+                    Text(
+                        stringResource(Res.string.onboarding_refresh_button_text),
+                        modifier = Modifier.fillMaxWidth(),
+                        textAlign = TextAlign.End,
+                    )
+                }
+
                 CurrencyEditor(
                     currency = state.topCurrency,
                     value = state.topText,
@@ -124,10 +192,24 @@ fun MainScreen(
                     },
                     onCopy = { text, label ->
                         viewModel.onAction(MainAction.CopyButtonTapped(text, label))
-                    }
+                    },
+                    modifier = Modifier
+                        .alpha(state.onboardingState.topEditorAlpha)
+                        .clip(RoundedCornerShape(16.dp))
+                        .background(Color.White.copy(alpha = state.onboardingState.topEditorBackgroundAlpha))
                 )
 
-                SwapButton {
+                AnimatedVisibility(state.onboardingState.isTopEditorTextVisible) {
+                    Text(stringResource(Res.string.onboarding_top_editor_text))
+                }
+
+                SwapButton(
+                    Modifier
+                        .alpha(state.onboardingState.swapButtonAlpha)
+                        .clip(CircleShape)
+                        .background(Color.White.copy(alpha = state.onboardingState.swapButtonBackgroundAlpha)),
+                    isTextVisible = state.onboardingState.isSwapButtonTextVisible,
+                    ) {
                     haptic.performHapticFeedback(HapticFeedbackType.VirtualKey)
                     viewModel.onAction(MainAction.SwapCurrencies)
                 }
@@ -144,11 +226,21 @@ fun MainScreen(
                     },
                     onCopy = { text, label ->
                         viewModel.onAction(MainAction.CopyButtonTapped(text, label))
-                    }
+                    },
+                    modifier = Modifier
+                        .alpha(state.onboardingState.bottomEditorAlpha)
+                        .clip(RoundedCornerShape(16.dp))
+                        .background(Color.White.copy(alpha = state.onboardingState.bottomEditorBackgroundAlpha))
                 )
 
+                AnimatedVisibility(state.onboardingState.isBottomEditorTextVisible) {
+                    Text(stringResource(Res.string.onboarding_bottom_editor_text))
+                }
+
                 Text(
-                    modifier = Modifier.align(Alignment.End),
+                    modifier = Modifier
+                        .align(Alignment.End)
+                        .alpha(state.onboardingState.hintAlpha),
                     text = stringResource(Res.string.data_is_actual),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -159,7 +251,10 @@ fun MainScreen(
 }
 
 @Composable
-fun RefreshButton(onClick: () -> Unit) {
+fun RefreshButton(
+    modifier: Modifier,
+    onClick: () -> Unit
+) {
     var isRotating by remember { mutableStateOf(false) }
     val rotate = remember { Animatable(0f) }
     val target = 360f
@@ -172,22 +267,29 @@ fun RefreshButton(onClick: () -> Unit) {
         }
     }
 
-    IconButton(
-        onClick = {
-            isRotating = true
-            onClick()
-        },
-        modifier = Modifier.run { rotate(rotate.value) }
-    ) {
-        Icon(
-            Icons.Default.Refresh,
-            stringResource(Res.string.converter_reload),
-        )
+    Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+        IconButton(
+            onClick = {
+                isRotating = true
+                onClick()
+            },
+            modifier = modifier.run { rotate(rotate.value) }
+        ) {
+            Icon(
+                Icons.Default.Refresh,
+                stringResource(Res.string.converter_reload),
+            )
+        }
     }
 }
 
+
 @Composable
-fun SwapButton(onClick: () -> Unit) {
+fun SwapButton(
+    modifier: Modifier,
+    isTextVisible: Boolean,
+    onClick: () -> Unit
+) {
     var isRotating by remember { mutableStateOf(false) }
     val rotate = remember { Animatable(0f) }
     val target = 180f
@@ -200,25 +302,35 @@ fun SwapButton(onClick: () -> Unit) {
         }
     }
 
-    IconButton(
-        onClick = {
-            isRotating = true
-            onClick()
-        },
-        modifier = Modifier
-            .minimumInteractiveComponentSize()
-            .size(32.dp)
-            .run { rotate(rotate.value) }
+    Row(
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
+        verticalAlignment = Alignment.CenterVertically
     ) {
-        Icon(
-            vectorResource(Res.drawable.ic_swap),
-            stringResource(Res.string.converter_swap),
-        )
+        IconButton(
+            onClick = {
+                isRotating = true
+                onClick()
+            },
+            modifier = modifier
+                .minimumInteractiveComponentSize()
+                .size(32.dp)
+                .run { rotate(rotate.value) }
+        ) {
+            Icon(
+                vectorResource(Res.drawable.ic_swap),
+                stringResource(Res.string.converter_swap),
+            )
+        }
+
+        AnimatedVisibility(isTextVisible) {
+            Text(stringResource(Res.string.onboarding_swap_button_text))
+        }
     }
 }
 
 @Composable
 fun CurrencyEditor(
+    modifier: Modifier,
     currency: CurrencyRate?,
     value: String,
     onValueChanged: (String) -> Unit,
@@ -227,7 +339,8 @@ fun CurrencyEditor(
     onCopy: (String, String) -> Unit
 ) {
     val haptic = LocalHapticFeedback.current
-    Column {
+
+    Column(modifier = modifier.padding(4.dp)) {
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,

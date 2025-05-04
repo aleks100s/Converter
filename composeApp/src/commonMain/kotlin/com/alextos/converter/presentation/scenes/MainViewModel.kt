@@ -23,7 +23,14 @@ class MainViewModel(
     private val converterUseCase: ConverterUseCase,
     private val clipboardService: ClipboardService
 ): ViewModel() {
-    private val _state = MutableStateFlow(MainState())
+    private val _state = MutableStateFlow(MainState(onboardingState = OnboardingState(
+        step = OnboardingStep.Initial,
+        refreshButtonAlpha = 0f,
+        isNextOnboardingButtonVisible = true,
+        swapButtonAlpha = 0f,
+        bottomEditorAlpha = 0f,
+        hintAlpha = 0f,
+    )))
     val state = _state.asStateFlow()
 
     init {
@@ -136,6 +143,79 @@ class MainViewModel(
             }
             is MainAction.CopyButtonTapped -> {
                 clipboardService.copyToClipboard(action.text, action.label)
+            }
+            is MainAction.NextOnboardingStepButtonTapped -> {
+                val old = state.value.onboardingState
+                val onboardingState: OnboardingState = when (old.step) {
+                    OnboardingStep.Initial -> {
+                        old.copy(
+                            step = OnboardingStep.TopEditor,
+                            topEditorAlpha = 1f,
+                            topEditorBackgroundAlpha = 0.1f,
+                            isTopEditorTextVisible = true
+                        )
+                    }
+                    OnboardingStep.TopEditor -> {
+                        old.copy(
+                            step = OnboardingStep.BottomEditor,
+                            topEditorAlpha = 0.3f,
+                            topEditorBackgroundAlpha = 0f,
+                            isTopEditorTextVisible = false,
+                            bottomEditorAlpha = 1f,
+                            bottomEditorBackgroundAlpha = 0.1f,
+                            isBottomEditorTextVisible = true
+                        )
+                    }
+                    OnboardingStep.BottomEditor -> {
+                        old.copy(
+                            step = OnboardingStep.SwapButton,
+                            bottomEditorAlpha = 0.3f,
+                            bottomEditorBackgroundAlpha = 0f,
+                            isBottomEditorTextVisible = false,
+                            swapButtonAlpha = 1f,
+                            swapButtonBackgroundAlpha = 0.1f,
+                            isSwapButtonTextVisible = true
+                        )
+                    }
+                    OnboardingStep.SwapButton -> {
+                        old.copy(
+                            step = OnboardingStep.RefreshButton,
+                            swapButtonAlpha = 0.3f,
+                            swapButtonBackgroundAlpha = 0f,
+                            isSwapButtonTextVisible = false,
+                            refreshButtonAlpha = 1f,
+                            refreshButtonBackgroundAlpha = 0.1f,
+                            isRefreshButtonTextVisible = true
+                        )
+                    }
+                    OnboardingStep.RefreshButton -> {
+                        old.copy(
+                            step = OnboardingStep.CameraButton,
+                            refreshButtonAlpha = 0.3f,
+                            refreshButtonBackgroundAlpha = 0f,
+                            isRefreshButtonTextVisible = false,
+                            isCameraButtonTextVisible = true,
+                        )
+                    }
+                    OnboardingStep.CameraButton -> {
+                        old.copy(
+                            step = OnboardingStep.Done,
+                            topEditorAlpha = 1f,
+                            bottomEditorAlpha = 1f,
+                            swapButtonAlpha = 1f,
+                            refreshButtonAlpha = 1f,
+                            isCameraButtonTextVisible = false,
+                            hintAlpha = 1f,
+                            isNextOnboardingButtonVisible = false
+                        )
+                    }
+                    OnboardingStep.Done -> {
+                        old
+                    }
+                }
+                _state.update { state ->
+                     state.copy(onboardingState = onboardingState)
+                }
             }
         }
     }
