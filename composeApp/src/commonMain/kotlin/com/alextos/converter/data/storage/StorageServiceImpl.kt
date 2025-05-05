@@ -21,7 +21,7 @@ class StorageServiceImpl(
         val topText = settings["topText", "1"]
         val bottomText = settings["bottomText", "0"]
         val topCurrency = CurrencyCode.valueOf(settings["topCurrency", "USD"])
-        val bottomCurrency = CurrencyCode.valueOf(settings["bottomCurrency", "RUB"])
+        val bottomCurrency = CurrencyCode.valueOf(settings["bottomCurrency", "EUR"])
         return ConverterState(
             topText = topText,
             bottomText = bottomText,

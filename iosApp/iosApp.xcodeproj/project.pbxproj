@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2713194C2DC894A200CC42EB /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2713194A2DC894A200CC42EB /* InfoPlist.strings */; };
 		27FB5D7A2DBB44A900B50AC4 /* ConverterApplicationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27FB5D792DBB44A900B50AC4 /* ConverterApplicationDelegate.swift */; };
 		27FB5D7C2DBB453C00B50AC4 /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27FB5D7B2DBB453C00B50AC4 /* CameraViewController.swift */; };
 		27FB5D802DC5E70B00B50AC4 /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27FB5D7F2DC5E70B00B50AC4 /* CameraView.swift */; };
@@ -17,6 +18,21 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2713194B2DC894A200CC42EB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		2713194D2DC894A800CC42EB /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		2713194E2DC894A900CC42EB /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		2713194F2DC894A900CC42EB /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		271319502DC894AB00CC42EB /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		271319512DC894AB00CC42EB /* hi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hi; path = hi.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		271319522DC894AC00CC42EB /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		271319532DC894AD00CC42EB /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		271319542DC894AD00CC42EB /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		271319552DC894AE00CC42EB /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		271319562DC894AF00CC42EB /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		271319572DC894AF00CC42EB /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		271319582DC894B000CC42EB /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		271319592DC894B100CC42EB /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		2713195A2DC894B100CC42EB /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		27FB5D792DBB44A900B50AC4 /* ConverterApplicationDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConverterApplicationDelegate.swift; sourceTree = "<group>"; };
 		27FB5D7B2DBB453C00B50AC4 /* CameraViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
 		27FB5D7F2DC5E70B00B50AC4 /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
@@ -38,6 +54,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		271319492DC8941200CC42EB /* Localization */ = {
+			isa = PBXGroup;
+			children = (
+				2713194A2DC894A200CC42EB /* InfoPlist.strings */,
+			);
+			path = Localization;
+			sourceTree = "<group>";
+		};
 		A93A952E29CC810C00F8E227 = {
 			isa = PBXGroup;
 			children = (
@@ -58,6 +82,7 @@
 		A93A953929CC810C00F8E227 /* iosApp */ = {
 			isa = PBXGroup;
 			children = (
+				271319492DC8941200CC42EB /* Localization */,
 				27FB5D7F2DC5E70B00B50AC4 /* CameraView.swift */,
 				27FB5D7B2DBB453C00B50AC4 /* CameraViewController.swift */,
 				27FB5D792DBB44A900B50AC4 /* ConverterApplicationDelegate.swift */,
@@ -127,6 +152,20 @@
 			knownRegions = (
 				en,
 				Base,
+				ar,
+				"zh-Hans",
+				fr,
+				de,
+				hi,
+				it,
+				ja,
+				ko,
+				pl,
+				"pt-BR",
+				ru,
+				es,
+				tr,
+				vi,
 			);
 			mainGroup = A93A952E29CC810C00F8E227;
 			productRefGroup = A93A953829CC810C00F8E227 /* Products */;
@@ -144,6 +183,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A93A954229CC810D00F8E227 /* Preview Assets.xcassets in Resources */,
+				2713194C2DC894A200CC42EB /* InfoPlist.strings in Resources */,
 				A93A953F29CC810D00F8E227 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -184,6 +224,31 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		2713194A2DC894A200CC42EB /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				2713194B2DC894A200CC42EB /* en */,
+				2713194D2DC894A800CC42EB /* ar */,
+				2713194E2DC894A900CC42EB /* zh-Hans */,
+				2713194F2DC894A900CC42EB /* fr */,
+				271319502DC894AB00CC42EB /* de */,
+				271319512DC894AB00CC42EB /* hi */,
+				271319522DC894AC00CC42EB /* it */,
+				271319532DC894AD00CC42EB /* ja */,
+				271319542DC894AD00CC42EB /* ko */,
+				271319552DC894AE00CC42EB /* pl */,
+				271319562DC894AF00CC42EB /* pt-BR */,
+				271319572DC894AF00CC42EB /* ru */,
+				271319582DC894B000CC42EB /* es */,
+				271319592DC894B100CC42EB /* tr */,
+				2713195A2DC894B100CC42EB /* vi */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		A93A954329CC810D00F8E227 /* Debug */ = {
@@ -314,7 +379,6 @@
 				INFOPLIST_FILE = iosApp/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Валютка";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
-				INFOPLIST_KEY_NSCameraUsageDescription = "Доступ к камере";
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
@@ -349,7 +413,6 @@
 				INFOPLIST_FILE = iosApp/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Валютка";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
-				INFOPLIST_KEY_NSCameraUsageDescription = "Доступ к камере";
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
