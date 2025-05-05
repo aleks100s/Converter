@@ -4,6 +4,10 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.EaseInOutBounce
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -152,99 +156,117 @@ fun MainScreen(
             ) {
                 CircularProgressIndicator()
             }
-        } else if (state.onboardingState.step == OnboardingStep.Initial) {
-            Box(
-                modifier = Modifier
-                    .padding(16.dp)
-                    .fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = stringResource(Res.string.onboarding_initial_text),
-                    style = MaterialTheme.typography.titleLarge,
-                    textAlign = TextAlign.Center,
-                )
-            }
         } else {
-            Column(
-                modifier = modifier
-                    .padding(horizontal = 16.dp, vertical = 16.dp)
-                    .fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(16.dp)
+            AnimatedVisibility(
+                state.onboardingState.step == OnboardingStep.Initial,
+                exit = fadeOut()
             ) {
-                AnimatedVisibility(state.onboardingState.isRefreshButtonTextVisible) {
+                Box(
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
                     Text(
-                        stringResource(Res.string.onboarding_refresh_button_text),
-                        modifier = Modifier.fillMaxWidth(),
-                        textAlign = TextAlign.End,
+                        text = stringResource(Res.string.onboarding_initial_text),
+                        style = MaterialTheme.typography.titleLarge,
+                        textAlign = TextAlign.Center,
                     )
                 }
+            }
 
-                CurrencyEditor(
-                    currency = state.topCurrency,
-                    value = state.topText,
-                    onValueChanged = { text ->
-                        viewModel.onAction(MainAction.TopTextChanged(text))
-                    },
-                    currencies = state.rates,
-                    onCurrencySelected = { currency ->
-                        viewModel.onAction(MainAction.TopCurrencySelected(currency))
-                    },
-                    onCopy = { text, label ->
-                        viewModel.onAction(MainAction.CopyButtonTapped(text, label))
-                    },
-                    modifier = Modifier
-                        .alpha(state.onboardingState.topEditorAlpha)
-                        .clip(RoundedCornerShape(16.dp))
-                        .background(Color.White.copy(alpha = state.onboardingState.topEditorBackgroundAlpha))
-                )
+            AnimatedVisibility(
+                state.onboardingState.step != OnboardingStep.Initial,
+                enter = fadeIn()
+            ) {
+                Column(
+                    modifier = modifier
+                        .padding(horizontal = 16.dp, vertical = 16.dp)
+                        .fillMaxWidth(),
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    AnimatedVisibility(state.onboardingState.isRefreshButtonTextVisible) {
+                        Text(
+                            stringResource(Res.string.onboarding_refresh_button_text),
+                            modifier = Modifier.fillMaxWidth(),
+                            textAlign = TextAlign.End,
+                        )
+                    }
 
-                AnimatedVisibility(state.onboardingState.isTopEditorTextVisible) {
-                    Text(stringResource(Res.string.onboarding_top_editor_text))
-                }
+                    CurrencyEditor(
+                        currency = state.topCurrency,
+                        value = state.topText,
+                        onValueChanged = { text ->
+                            viewModel.onAction(MainAction.TopTextChanged(text))
+                        },
+                        currencies = state.rates,
+                        onCurrencySelected = { currency ->
+                            viewModel.onAction(MainAction.TopCurrencySelected(currency))
+                        },
+                        onCopy = { text, label ->
+                            viewModel.onAction(MainAction.CopyButtonTapped(text, label))
+                        },
+                        modifier = Modifier
+                            .alpha(state.onboardingState.topEditorAlpha)
+                            .clip(RoundedCornerShape(16.dp))
+                            .background(Color.White.copy(alpha = state.onboardingState.topEditorBackgroundAlpha))
+                    )
 
-                SwapButton(
-                    Modifier
-                        .alpha(state.onboardingState.swapButtonAlpha)
-                        .clip(CircleShape)
-                        .background(Color.White.copy(alpha = state.onboardingState.swapButtonBackgroundAlpha)),
-                    isTextVisible = state.onboardingState.isSwapButtonTextVisible,
+                    AnimatedVisibility(
+                        visible = state.onboardingState.isTopEditorTextVisible,
+                        enter = slideInVertically() + fadeIn(),
+                        exit = slideOutVertically() + fadeOut(),
                     ) {
-                    haptic.performHapticFeedback(HapticFeedbackType.VirtualKey)
-                    viewModel.onAction(MainAction.SwapCurrencies)
+                        Text(stringResource(Res.string.onboarding_top_editor_text))
+                    }
+
+                    SwapButton(
+                        Modifier
+                            .alpha(state.onboardingState.swapButtonAlpha)
+                            .clip(CircleShape)
+                            .background(Color.White.copy(alpha = state.onboardingState.swapButtonBackgroundAlpha)),
+                        isTextVisible = state.onboardingState.isSwapButtonTextVisible,
+                    ) {
+                        haptic.performHapticFeedback(HapticFeedbackType.VirtualKey)
+                        viewModel.onAction(MainAction.SwapCurrencies)
+                    }
+
+                    CurrencyEditor(
+                        currency = state.bottomCurrency,
+                        value = state.bottomText,
+                        onValueChanged = { text ->
+                            viewModel.onAction(MainAction.BottomTextChanged(text))
+                        },
+                        currencies = state.rates,
+                        onCurrencySelected = { currency ->
+                            viewModel.onAction(MainAction.BottomCurrencySelected(currency))
+                        },
+                        onCopy = { text, label ->
+                            viewModel.onAction(MainAction.CopyButtonTapped(text, label))
+                        },
+                        modifier = Modifier
+                            .alpha(state.onboardingState.bottomEditorAlpha)
+                            .clip(RoundedCornerShape(16.dp))
+                            .background(Color.White.copy(alpha = state.onboardingState.bottomEditorBackgroundAlpha))
+                    )
+
+                    AnimatedVisibility(
+                        visible = state.onboardingState.isBottomEditorTextVisible,
+                        enter = slideInVertically() + fadeIn(),
+                        exit = slideOutVertically() + fadeOut(),
+                    ) {
+                        Text(stringResource(Res.string.onboarding_bottom_editor_text))
+                    }
+
+                    Text(
+                        modifier = Modifier
+                            .align(Alignment.End)
+                            .alpha(state.onboardingState.hintAlpha),
+                        text = stringResource(Res.string.data_is_actual),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
                 }
-
-                CurrencyEditor(
-                    currency = state.bottomCurrency,
-                    value = state.bottomText,
-                    onValueChanged = { text ->
-                        viewModel.onAction(MainAction.BottomTextChanged(text))
-                    },
-                    currencies = state.rates,
-                    onCurrencySelected = { currency ->
-                        viewModel.onAction(MainAction.BottomCurrencySelected(currency))
-                    },
-                    onCopy = { text, label ->
-                        viewModel.onAction(MainAction.CopyButtonTapped(text, label))
-                    },
-                    modifier = Modifier
-                        .alpha(state.onboardingState.bottomEditorAlpha)
-                        .clip(RoundedCornerShape(16.dp))
-                        .background(Color.White.copy(alpha = state.onboardingState.bottomEditorBackgroundAlpha))
-                )
-
-                AnimatedVisibility(state.onboardingState.isBottomEditorTextVisible) {
-                    Text(stringResource(Res.string.onboarding_bottom_editor_text))
-                }
-
-                Text(
-                    modifier = Modifier
-                        .align(Alignment.End)
-                        .alpha(state.onboardingState.hintAlpha),
-                    text = stringResource(Res.string.data_is_actual),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
             }
         }
     }
