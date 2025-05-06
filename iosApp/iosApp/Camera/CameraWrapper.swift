@@ -8,7 +8,6 @@
 import ComposeApp
 import SwiftUI
 
-// Обёртка
 struct CameraWrapper: UIViewControllerRepresentable {
 	let converterUseCase: ConverterUseCase
 

@@ -1,5 +1,6 @@
 import UIKit
 import ComposeApp
+import YandexMobileAds
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -13,6 +14,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		self.window = window
 		window.rootViewController = MainKt.MainViewController(delegate: ConverterApplicationDelegate(window: window))
 		window.makeKeyAndVisible()
+		MobileAds.initializeSDK()
         return true
     }
 }
