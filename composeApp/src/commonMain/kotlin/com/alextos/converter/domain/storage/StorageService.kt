@@ -7,6 +7,7 @@ interface StorageService {
     fun getState(): ConverterState
     fun isOnboardingFinished(): Boolean
     fun finishOnboarding()
+    fun isFirstLaunch(): Boolean
 }
 
 data class ConverterState(

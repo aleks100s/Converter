@@ -37,4 +37,10 @@ class StorageServiceImpl(
     override fun finishOnboarding() {
         settings["onboardingFinished"] = true
     }
+
+    override fun isFirstLaunch(): Boolean {
+        val result = settings["firstLaunch", true]
+        settings["firstLaunch"] = false
+        return result
+    }
 }

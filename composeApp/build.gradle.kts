@@ -93,6 +93,10 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
+
+    buildFeatures {
+        buildConfig = true
+    }
 }
 
 //https://developer.android.com/develop/ui/compose/testing#setup
@@ -106,6 +110,7 @@ room {
 }
 
 dependencies {
+    implementation(libs.accessibility.test.framework)
     with(libs.room.compiler) {
         add("kspAndroid", this)
         add("kspIosX64", this)

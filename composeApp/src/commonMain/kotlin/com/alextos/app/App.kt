@@ -13,6 +13,7 @@ import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import com.alextos.app.navigation.ApplicationRoot
+import com.alextos.app.navigation.ApplicationViewModel
 import com.alextos.converter.presentation.scenes.MainScreen
 import com.alextos.converter.presentation.scenes.MainViewModel
 import converter.composeapp.generated.resources.*
@@ -26,7 +27,8 @@ import org.koin.mp.KoinPlatform.getKoin
 
 @Composable
 internal fun App() = AppTheme {
-    ApplicationRoot()
+    val viewModel = remember { getKoin().get<ApplicationViewModel>() }
+    ApplicationRoot(viewModel)
 }
 
 @Composable
