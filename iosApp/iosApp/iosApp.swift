@@ -12,7 +12,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     ) -> Bool {
         let window = UIWindow(frame: UIScreen.main.bounds)
 		self.window = window
-		window.rootViewController = MainKt.MainViewController(delegate: ConverterApplicationDelegate(window: window))
+		window.rootViewController = MainKt.MainViewController(
+			delegate: ConverterApplicationDelegate(window: window),
+			nativeViewFactory: NativeViewFactoryImpl()
+		)
 		window.makeKeyAndVisible()
 		MobileAds.initializeSDK()
         return true

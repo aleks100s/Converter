@@ -11,7 +11,8 @@
 		27E0A6192DC935AC009AB905 /* YandexMobileAds in Frameworks */ = {isa = PBXBuildFile; productRef = 27E0A6182DC935AC009AB905 /* YandexMobileAds */; };
 		27E0A61B2DC93627009AB905 /* MobileAdsBundle.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 27E0A61A2DC93627009AB905 /* MobileAdsBundle.bundle */; };
 		27E0A61E2DCA2610009AB905 /* AdBannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27E0A61D2DCA2610009AB905 /* AdBannerViewController.swift */; };
-		27E0A6202DCA261B009AB905 /* AdBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27E0A61F2DCA261B009AB905 /* AdBannerView.swift */; };
+		27E0A6282DCA3217009AB905 /* NativeViewFactoryImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27E0A6272DCA3217009AB905 /* NativeViewFactoryImpl.swift */; };
+		27E0A62B2DCA35A0009AB905 /* AdBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27E0A62A2DCA35A0009AB905 /* AdBannerView.swift */; };
 		27FB5D7A2DBB44A900B50AC4 /* ConverterApplicationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27FB5D792DBB44A900B50AC4 /* ConverterApplicationDelegate.swift */; };
 		27FB5D7C2DBB453C00B50AC4 /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27FB5D7B2DBB453C00B50AC4 /* CameraViewController.swift */; };
 		27FB5D802DC5E70B00B50AC4 /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27FB5D7F2DC5E70B00B50AC4 /* CameraView.swift */; };
@@ -38,7 +39,8 @@
 		2713195A2DC894B100CC42EB /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		27E0A61A2DC93627009AB905 /* MobileAdsBundle.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = MobileAdsBundle.bundle; sourceTree = "<group>"; };
 		27E0A61D2DCA2610009AB905 /* AdBannerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdBannerViewController.swift; sourceTree = "<group>"; };
-		27E0A61F2DCA261B009AB905 /* AdBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdBannerView.swift; sourceTree = "<group>"; };
+		27E0A6272DCA3217009AB905 /* NativeViewFactoryImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NativeViewFactoryImpl.swift; sourceTree = "<group>"; };
+		27E0A62A2DCA35A0009AB905 /* AdBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdBannerView.swift; sourceTree = "<group>"; };
 		27FB5D792DBB44A900B50AC4 /* ConverterApplicationDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConverterApplicationDelegate.swift; sourceTree = "<group>"; };
 		27FB5D7B2DBB453C00B50AC4 /* CameraViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
 		27FB5D7F2DC5E70B00B50AC4 /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
@@ -71,7 +73,7 @@
 		27E0A61C2DCA260B009AB905 /* Ads */ = {
 			isa = PBXGroup;
 			children = (
-				27E0A61F2DCA261B009AB905 /* AdBannerView.swift */,
+				27E0A62A2DCA35A0009AB905 /* AdBannerView.swift */,
 				27E0A61D2DCA2610009AB905 /* AdBannerViewController.swift */,
 			);
 			path = Ads;
@@ -85,6 +87,15 @@
 				27FB5D7B2DBB453C00B50AC4 /* CameraViewController.swift */,
 			);
 			path = Camera;
+			sourceTree = "<group>";
+		};
+		27E0A6292DCA3375009AB905 /* Implementations */ = {
+			isa = PBXGroup;
+			children = (
+				27E0A6272DCA3217009AB905 /* NativeViewFactoryImpl.swift */,
+				27FB5D792DBB44A900B50AC4 /* ConverterApplicationDelegate.swift */,
+			);
+			path = Implementations;
 			sourceTree = "<group>";
 		};
 		A93A952E29CC810C00F8E227 = {
@@ -108,10 +119,10 @@
 		A93A953929CC810C00F8E227 /* iosApp */ = {
 			isa = PBXGroup;
 			children = (
+				27E0A6292DCA3375009AB905 /* Implementations */,
 				27E0A6222DCA263E009AB905 /* Camera */,
 				27E0A61C2DCA260B009AB905 /* Ads */,
 				271319492DC8941200CC42EB /* Localization */,
-				27FB5D792DBB44A900B50AC4 /* ConverterApplicationDelegate.swift */,
 				A93A953A29CC810C00F8E227 /* iosApp.swift */,
 				A93A953E29CC810D00F8E227 /* Assets.xcassets */,
 			);
@@ -234,9 +245,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				27E0A6202DCA261B009AB905 /* AdBannerView.swift in Sources */,
 				27FB5D822DC5E80000B50AC4 /* CameraWrapper.swift in Sources */,
+				27E0A6282DCA3217009AB905 /* NativeViewFactoryImpl.swift in Sources */,
 				27E0A61E2DCA2610009AB905 /* AdBannerViewController.swift in Sources */,
+				27E0A62B2DCA35A0009AB905 /* AdBannerView.swift in Sources */,
 				27FB5D7A2DBB44A900B50AC4 /* ConverterApplicationDelegate.swift in Sources */,
 				A93A953B29CC810C00F8E227 /* iosApp.swift in Sources */,
 				27FB5D7C2DBB453C00B50AC4 /* CameraViewController.swift in Sources */,

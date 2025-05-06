@@ -8,8 +8,10 @@
 import SwiftUI
 
 struct AdBannerView: View {
+	let bannerId: String
+
 	var body: some View {
-		_AdBannerView(bannerId: .bannerId)
+		_AdBannerView(bannerId: bannerId)
 			.frame(height: 100)
 	}
 }
@@ -28,14 +30,4 @@ private struct _AdBannerView: UIViewControllerRepresentable {
 	}
 
 	func updateUIViewController(_ uiViewController: UIViewController, context: Context) {}
-}
-
-private extension String {
-	static var bannerId: String {
-	#if DEBUG
-		"demo-banner-yandex"
-	#else
-		"R-M-15379111-1"
-	#endif
-	}
 }

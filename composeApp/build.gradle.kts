@@ -110,6 +110,7 @@ room {
 }
 
 dependencies {
+    implementation(libs.androidx.ui.android)
     implementation(libs.accessibility.test.framework)
     with(libs.room.compiler) {
         add("kspAndroid", this)

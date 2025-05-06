@@ -19,6 +19,7 @@ ksp = "2.1.20-1.0.31"
 composeIcons = "1.1.1"
 sqlite = "2.5.0"
 accessibilityTestFramework = "4.1.1"
+uiAndroid = "1.8.0"
 
 [libraries]
 
@@ -52,6 +53,7 @@ room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 composeIcons-featherIcons = { module = "br.com.devsrsouza.compose.icons:feather", version.ref = "composeIcons" }
 androidx-sqlite = { module = "androidx.sqlite:sqlite-bundled", version.ref = "sqlite" }
 accessibility-test-framework = { group = "com.google.android.apps.common.testing.accessibility.framework", name = "accessibility-test-framework", version.ref = "accessibilityTestFramework" }
+androidx-ui-android = { group = "androidx.compose.ui", name = "ui-android", version.ref = "uiAndroid" }
 
 [plugins]
 
