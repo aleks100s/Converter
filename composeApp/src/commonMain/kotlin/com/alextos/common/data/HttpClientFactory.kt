@@ -23,7 +23,7 @@ object HttpClientFactory {
                         println(message)
                     }
                 }
-                level = LogLevel.NONE
+                level = LogLevel.ALL
             }
             defaultRequest {
                 contentType(ContentType.Application.Xml)
