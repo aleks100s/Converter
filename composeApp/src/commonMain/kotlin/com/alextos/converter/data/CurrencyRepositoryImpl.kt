@@ -34,7 +34,7 @@ class CurrencyRepositoryImpl(
     }
 
     override suspend fun fetchCurrencyRates() {
-        val response = remoteDataSource.getCurrencyRates().getOrDefault(emptyList())
+        val response = remoteDataSource.getCurrencyRates().getOrThrow()
         val existingCodes = CurrencyCode.entries.map { it.name }
         val entities = response
             .filter { existingCodes.contains(it.charCode) }

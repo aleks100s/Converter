@@ -2,6 +2,7 @@ package com.alextos.converter.presentation.scenes
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.alextos.common.UiText
 import com.alextos.common.preciseFormat
 import com.alextos.converter.domain.repository.CurrencyRepository
 import com.alextos.converter.domain.storage.ConverterState
@@ -9,10 +10,13 @@ import com.alextos.converter.domain.storage.StorageService
 import com.alextos.converter.domain.camera.ConverterAppDelegate
 import com.alextos.converter.domain.camera.ConverterUseCase
 import com.alextos.converter.domain.services.ClipboardService
+import converter.composeapp.generated.resources.Res
+import converter.composeapp.generated.resources.error
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -50,6 +54,7 @@ class MainViewModel(
             }
 
             repository.getCurrencyRates()
+                .filter { it.isNotEmpty() }
                 .collect { rates ->
                     _state.update { state ->
                         state.copy(
@@ -60,16 +65,14 @@ class MainViewModel(
                             topCurrency = rates.firstOrNull {
                                 it.code == (state.topCurrency?.code ?: savedState.topCurrency)
                             },
-                            isLoading = false
+                            contentState = ContentState.Success
                         )
                     }
                     onAction(MainAction.TopTextChanged(state.value.topText))
                 }
         }
 
-        viewModelScope.launch(Dispatchers.IO) {
-            repository.fetchCurrencyRates()
-        }
+        fetchData()
 
         viewModelScope.launch(Dispatchers.IO) {
             _state.collect {
@@ -137,12 +140,7 @@ class MainViewModel(
                 onAction(MainAction.TopTextChanged(state.value.topText))
             }
             is MainAction.ReloadRates -> {
-                _state.update { state ->
-                    state.copy(isLoading = true)
-                }
-                viewModelScope.launch(Dispatchers.IO) {
-                    repository.fetchCurrencyRates()
-                }
+                fetchData()
             }
             is MainAction.ShowCamera -> {
                 delegate.showCamera(converterUseCase, action.props)
@@ -222,6 +220,33 @@ class MainViewModel(
                 }
                 _state.update { state ->
                      state.copy(onboardingState = onboardingState)
+                }
+            }
+        }
+    }
+
+    private fun fetchData() {
+        _state.update { state ->
+            state.copy(contentState = ContentState.Loading)
+        }
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                repository.fetchCurrencyRates()
+                _state.update {
+                    it.copy(contentState = ContentState.Success)
+                }
+            } catch (e: Exception) {
+                _state.update { state ->
+                    if (state.rates.count() > 1) {
+                        state.copy(contentState = ContentState.Success)
+                    } else {
+                        val message = e.message?.let {
+                            UiText.DynamicString(it)
+                        } ?: UiText.StringResourceId(Res.string.error)
+                        state.copy(
+                            contentState = ContentState.Error(message)
+                        )
+                    }
                 }
             }
         }

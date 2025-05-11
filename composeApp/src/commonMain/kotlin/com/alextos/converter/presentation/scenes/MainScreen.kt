@@ -67,6 +67,7 @@ import converter.composeapp.generated.resources.ic_camera
 import converter.composeapp.generated.resources.converter_clear
 import converter.composeapp.generated.resources.converter_quick_select
 import converter.composeapp.generated.resources.converter_reload
+import converter.composeapp.generated.resources.converter_retry
 import converter.composeapp.generated.resources.converter_swap
 import converter.composeapp.generated.resources.converter_title
 import converter.composeapp.generated.resources.copy
@@ -93,46 +94,56 @@ fun MainScreen(
         modifier = Modifier,
         title = stringResource(Res.string.converter_title),
         floatingActionButton = {
-            val props = CameraProps(
-                title = stringResource(Res.string.camera_title, state.topCurrency?.code ?: "", state.bottomCurrency?.code ?: ""),
-                button = stringResource(Res.string.camera_button_title)
-            )
-            Column(horizontalAlignment = Alignment.End, verticalArrangement = Arrangement.spacedBy(16.dp)) {
-                AnimatedVisibility(state.onboardingState.isCameraButtonTextVisible) {
-                    Text(
-                        stringResource(Res.string.onboarding_camera_button_text),
-                        modifier = Modifier.width(200.dp),
-                        textAlign = TextAlign.End,
-                    )
-                }
-
-                AnimatedVisibility(state.onboardingState.isNextOnboardingButtonVisible) {
-                    Button(
-                        onClick = {
-                            haptic.performHapticFeedback(HapticFeedbackType.VirtualKey)
-                            viewModel.onAction(MainAction.NextOnboardingStepButtonTapped)
-                        },
-                    ) {
-                        val title = if (state.onboardingState.step == OnboardingStep.CameraButton) {
-                            stringResource(Res.string.onboarding_try)
-                        } else {
-                            stringResource(Res.string.common_next)
-                        }
-                        Text(title, style = MaterialTheme.typography.bodyLarge)
-                    }
-                }
-
-                AnimatedVisibility(!state.onboardingState.isNextOnboardingButtonVisible) {
-                    Button(
-                        onClick = {
-                            haptic.performHapticFeedback(HapticFeedbackType.VirtualKey)
-                            viewModel.onAction(MainAction.ShowCamera(props))
-                        }
-                    ) {
-                        CustomLabel(
-                            title = props.title,
-                            imageVector = vectorResource(Res.drawable.ic_camera)
+            if (state.contentState == ContentState.Success) {
+                val props = CameraProps(
+                    title = stringResource(
+                        Res.string.camera_title,
+                        state.topCurrency?.code ?: "",
+                        state.bottomCurrency?.code ?: ""
+                    ),
+                    button = stringResource(Res.string.camera_button_title)
+                )
+                Column(
+                    horizontalAlignment = Alignment.End,
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    AnimatedVisibility(state.onboardingState.isCameraButtonTextVisible) {
+                        Text(
+                            stringResource(Res.string.onboarding_camera_button_text),
+                            modifier = Modifier.width(200.dp),
+                            textAlign = TextAlign.End,
                         )
+                    }
+
+                    AnimatedVisibility(state.onboardingState.isNextOnboardingButtonVisible) {
+                        Button(
+                            onClick = {
+                                haptic.performHapticFeedback(HapticFeedbackType.VirtualKey)
+                                viewModel.onAction(MainAction.NextOnboardingStepButtonTapped)
+                            },
+                        ) {
+                            val title =
+                                if (state.onboardingState.step == OnboardingStep.CameraButton) {
+                                    stringResource(Res.string.onboarding_try)
+                                } else {
+                                    stringResource(Res.string.common_next)
+                                }
+                            Text(title, style = MaterialTheme.typography.bodyLarge)
+                        }
+                    }
+
+                    AnimatedVisibility(!state.onboardingState.isNextOnboardingButtonVisible) {
+                        Button(
+                            onClick = {
+                                haptic.performHapticFeedback(HapticFeedbackType.VirtualKey)
+                                viewModel.onAction(MainAction.ShowCamera(props))
+                            }
+                        ) {
+                            CustomLabel(
+                                title = props.title,
+                                imageVector = vectorResource(Res.drawable.ic_camera)
+                            )
+                        }
                     }
                 }
             }
@@ -149,125 +160,187 @@ fun MainScreen(
             }
         }
     ) { modifier ->
-        if (state.isLoading) {
-            Box(
-                modifier = modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                CircularProgressIndicator()
-            }
-        } else {
-            AnimatedVisibility(
-                state.onboardingState.step == OnboardingStep.Initial,
-                exit = fadeOut()
-            ) {
+        when (state.contentState) {
+            is ContentState.Loading -> {
                 Box(
-                    modifier = Modifier
-                        .padding(16.dp)
-                        .fillMaxSize(),
+                    modifier = modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(
-                        text = stringResource(Res.string.onboarding_initial_text),
-                        style = MaterialTheme.typography.titleLarge,
-                        textAlign = TextAlign.Center,
-                    )
+                    CircularProgressIndicator()
                 }
             }
+            is ContentState.Error -> {
+                ErrorView(
+                    modifier = modifier,
+                    error = (state.contentState as ContentState.Error).message.asString(),
+                    onClick = {
+                        haptic.performHapticFeedback(HapticFeedbackType.VirtualKey)
+                        viewModel.onAction(MainAction.ReloadRates)
+                    }
+                )
+            }
+            is ContentState.Success -> {
+                ContentView(
+                    modifier = modifier,
+                    state = state,
+                    onAction = viewModel::onAction
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun ErrorView(
+    modifier: Modifier,
+    error: String,
+    onClick: () -> Unit
+) {
+    Box(
+        modifier = modifier
+            .padding(16.dp)
+            .fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            Text(
+                text = error,
+                style = MaterialTheme.typography.titleLarge,
+                textAlign = TextAlign.Center,
+            )
+
+            Button(
+                onClick = onClick
+            ) {
+                Text(
+                    stringResource(Res.string.converter_retry),
+                    style = MaterialTheme.typography.bodyLarge
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun ContentView(
+    modifier: Modifier,
+    state: MainState,
+    onAction: (MainAction) -> Unit
+) {
+    val haptic = LocalHapticFeedback.current
+
+    AnimatedVisibility(
+        state.onboardingState.step == OnboardingStep.Initial,
+        exit = fadeOut()
+    ) {
+        Box(
+            modifier = Modifier
+                .padding(16.dp)
+                .fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = stringResource(Res.string.onboarding_initial_text),
+                style = MaterialTheme.typography.titleLarge,
+                textAlign = TextAlign.Center,
+            )
+        }
+    }
+
+    AnimatedVisibility(
+        state.onboardingState.step != OnboardingStep.Initial,
+        enter = fadeIn()
+    ) {
+        Column(
+            modifier = modifier
+                .padding(horizontal = 16.dp, vertical = 16.dp)
+                .fillMaxWidth(),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            AnimatedVisibility(state.onboardingState.isRefreshButtonTextVisible) {
+                Text(
+                    stringResource(Res.string.onboarding_refresh_button_text),
+                    modifier = Modifier.fillMaxWidth(),
+                    textAlign = TextAlign.End,
+                )
+            }
+
+            CurrencyEditor(
+                currency = state.topCurrency,
+                value = state.topText,
+                onValueChanged = { text ->
+                    onAction(MainAction.TopTextChanged(text))
+                },
+                currencies = state.rates,
+                onCurrencySelected = { currency ->
+                    onAction(MainAction.TopCurrencySelected(currency))
+                },
+                onCopy = { text, label ->
+                    onAction(MainAction.CopyButtonTapped(text, label))
+                },
+                modifier = Modifier
+                    .alpha(state.onboardingState.topEditorAlpha)
+                    .clip(RoundedCornerShape(16.dp))
+                    .background(Color.White.copy(alpha = state.onboardingState.topEditorBackgroundAlpha))
+            )
 
             AnimatedVisibility(
-                state.onboardingState.step != OnboardingStep.Initial,
-                enter = fadeIn()
+                visible = state.onboardingState.isTopEditorTextVisible,
+                enter = slideInVertically() + fadeIn(),
+                exit = slideOutVertically() + fadeOut(),
             ) {
-                Column(
-                    modifier = modifier
-                        .padding(horizontal = 16.dp, vertical = 16.dp)
-                        .fillMaxWidth(),
-                    verticalArrangement = Arrangement.spacedBy(16.dp)
-                ) {
-                    AnimatedVisibility(state.onboardingState.isRefreshButtonTextVisible) {
-                        Text(
-                            stringResource(Res.string.onboarding_refresh_button_text),
-                            modifier = Modifier.fillMaxWidth(),
-                            textAlign = TextAlign.End,
-                        )
-                    }
-
-                    CurrencyEditor(
-                        currency = state.topCurrency,
-                        value = state.topText,
-                        onValueChanged = { text ->
-                            viewModel.onAction(MainAction.TopTextChanged(text))
-                        },
-                        currencies = state.rates,
-                        onCurrencySelected = { currency ->
-                            viewModel.onAction(MainAction.TopCurrencySelected(currency))
-                        },
-                        onCopy = { text, label ->
-                            viewModel.onAction(MainAction.CopyButtonTapped(text, label))
-                        },
-                        modifier = Modifier
-                            .alpha(state.onboardingState.topEditorAlpha)
-                            .clip(RoundedCornerShape(16.dp))
-                            .background(Color.White.copy(alpha = state.onboardingState.topEditorBackgroundAlpha))
-                    )
-
-                    AnimatedVisibility(
-                        visible = state.onboardingState.isTopEditorTextVisible,
-                        enter = slideInVertically() + fadeIn(),
-                        exit = slideOutVertically() + fadeOut(),
-                    ) {
-                        Text(stringResource(Res.string.onboarding_top_editor_text))
-                    }
-
-                    SwapButton(
-                        Modifier
-                            .alpha(state.onboardingState.swapButtonAlpha)
-                            .clip(CircleShape)
-                            .background(Color.White.copy(alpha = state.onboardingState.swapButtonBackgroundAlpha)),
-                        isTextVisible = state.onboardingState.isSwapButtonTextVisible,
-                    ) {
-                        haptic.performHapticFeedback(HapticFeedbackType.VirtualKey)
-                        viewModel.onAction(MainAction.SwapCurrencies)
-                    }
-
-                    CurrencyEditor(
-                        currency = state.bottomCurrency,
-                        value = state.bottomText,
-                        onValueChanged = { text ->
-                            viewModel.onAction(MainAction.BottomTextChanged(text))
-                        },
-                        currencies = state.rates,
-                        onCurrencySelected = { currency ->
-                            viewModel.onAction(MainAction.BottomCurrencySelected(currency))
-                        },
-                        onCopy = { text, label ->
-                            viewModel.onAction(MainAction.CopyButtonTapped(text, label))
-                        },
-                        modifier = Modifier
-                            .alpha(state.onboardingState.bottomEditorAlpha)
-                            .clip(RoundedCornerShape(16.dp))
-                            .background(Color.White.copy(alpha = state.onboardingState.bottomEditorBackgroundAlpha))
-                    )
-
-                    AnimatedVisibility(
-                        visible = state.onboardingState.isBottomEditorTextVisible,
-                        enter = slideInVertically() + fadeIn(),
-                        exit = slideOutVertically() + fadeOut(),
-                    ) {
-                        Text(stringResource(Res.string.onboarding_bottom_editor_text))
-                    }
-
-                    Text(
-                        modifier = Modifier
-                            .align(Alignment.End)
-                            .alpha(state.onboardingState.hintAlpha),
-                        text = stringResource(Res.string.data_is_actual),
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
-                }
+                Text(stringResource(Res.string.onboarding_top_editor_text))
             }
+
+            SwapButton(
+                Modifier
+                    .alpha(state.onboardingState.swapButtonAlpha)
+                    .clip(CircleShape)
+                    .background(Color.White.copy(alpha = state.onboardingState.swapButtonBackgroundAlpha)),
+                isTextVisible = state.onboardingState.isSwapButtonTextVisible,
+            ) {
+                haptic.performHapticFeedback(HapticFeedbackType.VirtualKey)
+                onAction(MainAction.SwapCurrencies)
+            }
+
+            CurrencyEditor(
+                currency = state.bottomCurrency,
+                value = state.bottomText,
+                onValueChanged = { text ->
+                    onAction(MainAction.BottomTextChanged(text))
+                },
+                currencies = state.rates,
+                onCurrencySelected = { currency ->
+                    onAction(MainAction.BottomCurrencySelected(currency))
+                },
+                onCopy = { text, label ->
+                    onAction(MainAction.CopyButtonTapped(text, label))
+                },
+                modifier = Modifier
+                    .alpha(state.onboardingState.bottomEditorAlpha)
+                    .clip(RoundedCornerShape(16.dp))
+                    .background(Color.White.copy(alpha = state.onboardingState.bottomEditorBackgroundAlpha))
+            )
+
+            AnimatedVisibility(
+                visible = state.onboardingState.isBottomEditorTextVisible,
+                enter = slideInVertically() + fadeIn(),
+                exit = slideOutVertically() + fadeOut(),
+            ) {
+                Text(stringResource(Res.string.onboarding_bottom_editor_text))
+            }
+
+            Text(
+                modifier = Modifier
+                    .align(Alignment.End)
+                    .alpha(state.onboardingState.hintAlpha),
+                text = stringResource(Res.string.data_is_actual),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
         }
     }
 }

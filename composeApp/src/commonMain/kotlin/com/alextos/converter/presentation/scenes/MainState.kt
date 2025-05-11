@@ -1,5 +1,6 @@
 package com.alextos.converter.presentation.scenes
 
+import com.alextos.common.UiText
 import com.alextos.converter.domain.models.CurrencyRate
 
 data class MainState(
@@ -8,8 +9,8 @@ data class MainState(
     val bottomText: String = "100",
     val topCurrency: CurrencyRate? = null,
     val bottomCurrency: CurrencyRate? = null,
-    val isLoading: Boolean = true,
     val onboardingState: OnboardingState = OnboardingState(),
+    val contentState: ContentState = ContentState.Loading,
 )
 
 data class OnboardingState(
@@ -30,6 +31,12 @@ data class OnboardingState(
     val hintAlpha: Float = 1f,
     val isNextOnboardingButtonVisible: Boolean = false,
 )
+
+sealed interface ContentState {
+    data object Loading : ContentState
+    data class Error(val message: UiText) : ContentState
+    data object Success : ContentState
+}
 
 enum class OnboardingStep {
     Initial,
