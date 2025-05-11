@@ -32,9 +32,8 @@ class TextAnalyzer(
         recognizer.process(inputImage)
             .addOnSuccessListener { visionText ->
                 val boxes = visionText.textBlocks.mapNotNull { block ->
-                    block.text.trim().toDoubleOrNull()?.let {
-                        val result = converterUseCase.convert(it)
-                        val box =makeProportionalBoundingBox(
+                    converterUseCase.convert(block.text)?.let { result ->
+                        val box = makeProportionalBoundingBox(
                             originalBox = block.boundingBox ?: Rect(),
                             originalText = block.text,
                             modifiedText = result

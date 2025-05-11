@@ -12,20 +12,18 @@ class ConverterUseCase {
         this.to = to
     }
 
-    fun convert(value: Double): String {
+    fun convert(value: String): String? {
         val fromRate = from?.rate ?: 0.0
         val toRate = to?.rate ?: 0.0
-        val result = if (from?.code == to?.code) {
-            value
-        } else if (fromRate > 0 && toRate > 0) {
-            value * fromRate / toRate
-        } else if (fromRate > 0) {
-            value * fromRate
-        } else if (toRate > 0) {
-            value / toRate
-        } else {
-            0.0
+        if (fromRate == 0.0 || toRate == 0.0) {
+            return null
         }
-        return result.preciseFormat() + to?.sign
+
+        val number = value.trim { !it.isDigit() }.toDoubleOrNull()
+        if (number == null) {
+            return null
+        }
+
+        return (number * fromRate / toRate).preciseFormat() + to?.sign
     }
 }

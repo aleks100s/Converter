@@ -93,20 +93,14 @@ final class CameraViewController: UIViewController, AVCaptureVideoDataOutputSamp
 		for observation in results {
 			guard let candidate = observation.topCandidates(1).first else { continue }
 
-			let text = extractPrice(from: candidate.string)
-			guard let value = Double(text) else { continue }
-			
-			let result = converterUseCase.convert(value: value)
+			guard let result = converterUseCase.convert(value: candidate.string) else { continue }
+
 			DispatchQueue.main.async {
 				let rect = self.transformBoundingBox(observation.boundingBox, length: result.count)
 				let borderLayer = self.createTextLayer(frame: rect, text: result)
 				self.overlayView.layer.addSublayer(borderLayer)
 			}
 		}
-	}
-
-	private func extractPrice(from text: String) -> String {
-		text.trimmingCharacters(in: .letters)
 	}
 
 	private func transformBoundingBox(_ boundingBox: CGRect, length: Int) -> CGRect {
