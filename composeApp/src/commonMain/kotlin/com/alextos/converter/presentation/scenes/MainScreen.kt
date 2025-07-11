@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -43,14 +44,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.alextos.common.presentation.CustomButton
@@ -133,15 +137,34 @@ fun MainScreen(
                     }
 
                     AnimatedVisibility(!state.onboardingState.isNextOnboardingButtonVisible) {
-                        Button(
-                            onClick = {
-                                haptic.performHapticFeedback(HapticFeedbackType.VirtualKey)
-                                viewModel.onAction(MainAction.ShowCamera(props))
+                        Box {
+                            Button(
+                                onClick = {
+                                    haptic.performHapticFeedback(HapticFeedbackType.VirtualKey)
+                                    viewModel.onAction(MainAction.ShowCamera(props))
+                                }
+                            ) {
+                                CustomLabel(
+                                    title = props.title,
+                                    imageVector = vectorResource(Res.drawable.ic_camera)
+                                )
                             }
-                        ) {
-                            CustomLabel(
-                                title = props.title,
-                                imageVector = vectorResource(Res.drawable.ic_camera)
+
+                            Text(
+                                modifier = Modifier
+                                    .scale(0.9f)
+                                    .rotate(if (LocalLayoutDirection.current == LayoutDirection.Rtl) {
+                                        30f
+                                    } else {
+                                        -30f
+                                    })
+                                    .offset(x = (-16).dp, y = (-20).dp)
+                                    .align(Alignment.TopStart)
+                                    .clip(RoundedCornerShape(50))
+                                    .background(MaterialTheme.colorScheme.error)
+                                    .padding(horizontal = 12.dp, vertical = 4.dp),
+                                text = "BETA",
+                                color = MaterialTheme.colorScheme.errorContainer
                             )
                         }
                     }
