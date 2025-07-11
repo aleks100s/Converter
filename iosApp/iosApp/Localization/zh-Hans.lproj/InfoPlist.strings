@@ -1,2 +1,3 @@
 "NSCameraUsageDescription" = "应用需要访问相机以进行实时转换。";
 "NSUserTrackingUsageDescription" = "此标识符将用于向您投放个性化广告。";
+"CFBundleDisplayName" = "小币宝";

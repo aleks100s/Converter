@@ -1,2 +1,3 @@
 "NSCameraUsageDescription" = "The app needs access to the camera for real-time conversion.";
 "NSUserTrackingUsageDescription" = "This identifier will be used to deliver personalized ads to you.";
+"CFBundleDisplayName" = "Valyutka";

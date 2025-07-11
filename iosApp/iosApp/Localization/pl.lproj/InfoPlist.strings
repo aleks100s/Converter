@@ -1,2 +1,3 @@
 "NSCameraUsageDescription" = "Aplikacja potrzebuje dostępu do aparatu do konwersji w czasie rzeczywistym.";
 "NSUserTrackingUsageDescription" = "Ten identyfikator będzie używany do dostarczania Ci spersonalizowanych reklam.";
+"CFBundleDisplayName" = "Walutka";

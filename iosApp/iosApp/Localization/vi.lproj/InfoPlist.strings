@@ -1,2 +1,3 @@
 "NSCameraUsageDescription" = "Ứng dụng cần quyền truy cập máy ảnh để chuyển đổi theo thời gian thực.";
 "NSUserTrackingUsageDescription" = "Mã định danh này sẽ được sử dụng để phân phát quảng cáo được cá nhân hóa cho bạn.";
+"CFBundleDisplayName" = "Tiền Nhỏ";

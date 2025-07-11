@@ -1,2 +1,3 @@
 "NSCameraUsageDescription" = "リアルタイム変換のためにカメラへのアクセスが必要です。";
 "NSUserTrackingUsageDescription" = "この識別子は、あなたにパーソナライズされた広告を配信するために使用されます。";
+"CFBundleDisplayName" = "バリュッ子";

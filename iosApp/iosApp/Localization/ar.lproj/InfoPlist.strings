@@ -1,2 +1,3 @@
 "NSCameraUsageDescription" = "يحتاج التطبيق إلى الوصول إلى الكاميرا من أجل التحويل في الوقت الفعل.";
 "NSUserTrackingUsageDescription" = "سيتم استخدام هذا المعرّف لتقديم إعلانات مخصصة لك.";
+"CFBundleDisplayName" = "فاليوتا الصغيرة";
