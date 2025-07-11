@@ -1,1 +1,2 @@
 "NSCameraUsageDescription" = "Uygulamanın gerçek zamanlı dönüşüm için kameraya erişimi gerekiyor.";
+"NSUserTrackingUsageDescription" = "Bu tanımlayıcı size kişiselleştirilmiş reklamlar sunmak için kullanılacaktır.";

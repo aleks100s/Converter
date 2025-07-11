@@ -5,6 +5,7 @@
 //  Created by Alexander on 25.01.2025.
 //
 
+import AppTrackingTransparency
 import UIKit
 import YandexMobileAds
 
@@ -31,10 +32,21 @@ final class AdBannerViewController: UIViewController {
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		adView.loadAd()
+        if ATTrackingManager.trackingAuthorizationStatus != .authorized {
+            Task {
+                _ = await ATTrackingManager.requestTrackingAuthorization()
+                loadAd()
+            }
+        } else {
+            loadAd()
+        }
 	}
+    
+    private func loadAd() {
+        adView.loadAd()
+    }
 	
-	func showAd() {
+	private func showAd() {
 		view.addSubview(adView)
 		NSLayoutConstraint.activate([
 			adView.bottomAnchor.constraint(equalTo: view.bottomAnchor),

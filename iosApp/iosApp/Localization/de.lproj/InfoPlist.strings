@@ -1,1 +1,2 @@
 "NSCameraUsageDescription" = "Die App benötigt Zugriff auf die Kamera für die Echtzeit-Konvertierung.";
+"NSUserTrackingUsageDescription" = "Diese Kennung wird verwendet, um Ihnen personalisierte Werbung zu liefern.";
