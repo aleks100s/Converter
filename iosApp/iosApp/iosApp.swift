@@ -1,9 +1,10 @@
 import UIKit
 import ComposeApp
 import YandexMobileAds
+import AppTrackingTransparency
 
 @main
-class AppDelegate: UIResponder, UIApplicationDelegate {
+final class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     func application(
@@ -17,7 +18,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 			nativeViewFactory: NativeViewFactoryImpl()
 		)
 		window.makeKeyAndVisible()
+        trackApplicationLaunch()
 		MobileAds.initializeSDK()
         return true
+    }
+
+    func applicationDidBecomeActive(_ application: UIApplication) {
+        guard UserDefaults.standard.integer(forKey: "launch") > 1 else { return }
+
+        if ATTrackingManager.trackingAuthorizationStatus != .authorized {
+            ATTrackingManager.requestTrackingAuthorization { _ in }
+        }
+    }
+    
+    private func trackApplicationLaunch() {
+        var count = UserDefaults.standard.integer(forKey: "launch")
+        count += 1
+        UserDefaults.standard.set(count, forKey: "launch")
     }
 }
