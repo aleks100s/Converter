@@ -149,23 +149,6 @@ fun MainScreen(
                                     imageVector = vectorResource(Res.drawable.ic_camera)
                                 )
                             }
-
-                            Text(
-                                modifier = Modifier
-                                    .scale(0.9f)
-                                    .rotate(if (LocalLayoutDirection.current == LayoutDirection.Rtl) {
-                                        30f
-                                    } else {
-                                        -30f
-                                    })
-                                    .offset(x = (-16).dp, y = (-20).dp)
-                                    .align(Alignment.TopStart)
-                                    .clip(RoundedCornerShape(50))
-                                    .background(MaterialTheme.colorScheme.error)
-                                    .padding(horizontal = 12.dp, vertical = 4.dp),
-                                text = "BETA",
-                                color = MaterialTheme.colorScheme.errorContainer
-                            )
                         }
                     }
                 }
