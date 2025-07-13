@@ -34,6 +34,7 @@ final class AdBannerViewController: UIViewController {
 		super.viewDidLoad()
         if ATTrackingManager.trackingAuthorizationStatus != .authorized {
             Task {
+                try await Task.sleep(nanoseconds: 1_000_000_000)
                 _ = await ATTrackingManager.requestTrackingAuthorization()
                 loadAd()
             }
