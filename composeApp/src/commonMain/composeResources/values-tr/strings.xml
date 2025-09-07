@@ -29,6 +29,9 @@
     <string name="error">Bir şeyler yanlış gitti</string>
     <string name="converter_retry">Tekrar dene</string>
     <string name="converter_settings">Ayarlar</string>
+    <string name="onboarding_settings_button_text">Buradan ana para birimini ayarlayabilirsiniz</string>
+    <string name="main_currency">Ana para birimi varsayılan olarak çeviricide kullanılacaktır.</string>
+    <string name="favourite_currency">Favori para birimleri listede üstte görüntülenecektir.</string>
     <string name="currency_aed">BAE Dirhemi</string>
     <string name="currency_amd">Ermeni Dramı</string>
     <string name="currency_aud">Avustralya Doları</string>

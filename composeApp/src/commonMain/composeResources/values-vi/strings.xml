@@ -29,6 +29,9 @@
     <string name="error">Đã xảy ra sự cố</string>
     <string name="converter_retry">Thử lại</string>
     <string name="converter_settings">Cài đặt</string>
+    <string name="onboarding_settings_button_text">Tại đây bạn có thể đặt loại tiền chính</string>
+    <string name="main_currency">Loại tiền chính sẽ được sử dụng mặc định trong bộ chuyển đổi.</string>
+    <string name="favourite_currency">Các loại tiền ưa thích sẽ hiển thị ở đầu danh sách.</string>
     <string name="currency_aed">Dirham UAE</string>
     <string name="currency_amd">Dram Armenia</string>
     <string name="currency_aud">Đô la Úc</string>

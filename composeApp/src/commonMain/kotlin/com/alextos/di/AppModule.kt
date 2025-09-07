@@ -15,6 +15,7 @@ import com.alextos.converter.domain.camera.ConverterAppDelegate
 import com.alextos.converter.domain.camera.ConverterUseCase
 import com.alextos.converter.domain.storage.StorageService
 import com.alextos.converter.presentation.scenes.main.MainViewModel
+import com.alextos.converter.presentation.scenes.settings.SettingsViewModel
 import com.russhwolf.settings.Settings
 import io.ktor.client.HttpClient
 import org.koin.core.module.Module
@@ -43,4 +44,5 @@ fun appModule(delegate: ConverterAppDelegate) = module {
     single<StorageService> { StorageServiceImpl(get()) }
     single { ConverterUseCase()  }
     viewModelOf(::ApplicationViewModel)
+    viewModelOf(::SettingsViewModel)
 }

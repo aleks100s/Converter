@@ -29,6 +29,9 @@
     <string name="error">कुछ गलत हो गया</string>
     <string name="converter_retry">पुनः प्रयास करें</string>
     <string name="converter_settings">सेटिंग्स</string>
+    <string name="onboarding_settings_button_text">यहाँ आप मुख्य मुद्रा सेट कर सकते हैं</string>
+    <string name="main_currency">मुख्य मुद्रा को डिफ़ॉल्ट रूप से कन्वर्टर में उपयोग किया जाएगा।</string>
+    <string name="favourite_currency">पसंदीदा मुद्राएँ सूची के शीर्ष पर दिखाई देंगी।</string>
     <string name="currency_aed">यूएई दिरहम</string>
     <string name="currency_amd">आर्मीनियाई ड्राम</string>
     <string name="currency_aud">ऑस्ट्रेलियाई डॉलर</string>

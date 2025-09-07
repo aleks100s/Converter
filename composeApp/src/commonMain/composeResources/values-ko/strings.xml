@@ -29,6 +29,9 @@
     <string name="error">문제가 발생했습니다</string>
     <string name="converter_retry">다시 시도</string>
     <string name="converter_settings">설정</string>
+    <string name="onboarding_settings_button_text">여기에서 기본 통화를 설정할 수 있습니다</string>
+    <string name="main_currency">기본 통화는 변환기에서 기본으로 사용됩니다.</string>
+    <string name="favourite_currency">즐겨찾는 통화는 목록 상단에 표시됩니다.</string>
     <string name="currency_aed">아랍에미리트 디르함</string>
     <string name="currency_amd">아르메니아 드람</string>
     <string name="currency_aud">호주 달러</string>

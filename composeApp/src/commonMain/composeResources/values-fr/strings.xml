@@ -29,6 +29,9 @@
     <string name="error">Un problème est survenu</string>
     <string name="converter_retry">Réessayer</string>
     <string name="converter_settings">Paramètres</string>
+    <string name="onboarding_settings_button_text">Ici, vous pouvez définir la devise principale</string>
+    <string name="main_currency">La devise principale sera utilisée par défaut dans le convertisseur.</string>
+    <string name="favourite_currency">Les devises favorites apparaîtront en haut de la liste.</string>
     <string name="currency_aed">Dirham des É.A.U</string>
     <string name="currency_amd">Dram arménien</string>
     <string name="currency_aud">Dollar australien</string>

@@ -29,6 +29,9 @@
     <string name="error">Coś poszło nie tak</string>
     <string name="converter_retry">Spróbuj ponownie</string>
     <string name="converter_settings">Ustawienia</string>
+    <string name="onboarding_settings_button_text">Tutaj możesz ustawić główną walutę</string>
+    <string name="main_currency">Główna waluta będzie domyślnie używana w konwerterze.</string>
+    <string name="favourite_currency">Ulubione waluty będą wyświetlane na górze listy.</string>
     <string name="currency_aed">Dirham ZEA</string>
     <string name="currency_amd">Dram armeński</string>
     <string name="currency_aud">Dolar australijski</string>

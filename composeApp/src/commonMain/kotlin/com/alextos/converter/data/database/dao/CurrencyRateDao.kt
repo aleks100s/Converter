@@ -15,6 +15,9 @@ interface CurrencyRateDao {
     @Upsert
     suspend fun upsertCurrency(currency: CurrencyEntity)
 
+    @Upsert
+    suspend fun upsertCurrencies(currency: List<CurrencyEntity>)
+
     @Query("SELECT * FROM currencies")
     fun getCurrencies(): Flow<List<CurrencyEntity>>
 

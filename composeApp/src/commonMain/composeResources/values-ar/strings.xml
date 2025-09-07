@@ -29,6 +29,9 @@
     <string name="error">حدث خطأ ما</string>
     <string name="converter_retry">إعادة المحاولة</string>
     <string name="converter_settings">الإعدادات</string>
+    <string name="onboarding_settings_button_text">وهنا يمكنك ضبط العملة الرئيسية</string>
+    <string name="main_currency">سيتم استخدام العملة الرئيسية بشكل افتراضي في المحول.</string>
+    <string name="favourite_currency">سيتم عرض العملات المفضلة أعلى قائمة العملات.</string>
     <string name="currency_aed">درهم إماراتي</string>
     <string name="currency_amd">درام أرميني</string>
     <string name="currency_aud">دولار أسترالي</string>

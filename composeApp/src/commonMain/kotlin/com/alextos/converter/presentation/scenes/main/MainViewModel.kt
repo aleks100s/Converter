@@ -17,6 +17,7 @@ import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -56,6 +57,7 @@ class MainViewModel(
 
             repository.getCurrencyRates()
                 .filter { it.isNotEmpty() }
+                .map { list -> list.sortedByDescending { it.isFavourite } }
                 .collect { rates ->
                     _state.update { state ->
                         state.copy(

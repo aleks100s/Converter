@@ -32,7 +32,7 @@ fun <E: PickerElement>PickerDropdown(
 ) {
     var expanded by remember { mutableStateOf(false) }
     val pairedItems = options.map { it.pickerOption to it }
-    val options = remember { pairedItems.sortedBy { it.first }.map { it.second } }
+    val options = remember { pairedItems.map { it.second } }
 
     Box(modifier = modifier.padding(vertical = 4.dp)) {
         CustomButton(selected?.pickerTitle ?: "") {

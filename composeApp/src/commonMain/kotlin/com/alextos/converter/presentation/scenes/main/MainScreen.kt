@@ -103,7 +103,9 @@ fun MainScreen(
                 viewModel.onAction(MainAction.DismissSettingsSheet)
             }
         ) {
-            SettingsSheet()
+            SettingsSheet {
+                viewModel.onAction(MainAction.DismissSettingsSheet)
+            }
         }
     }
 

@@ -29,7 +29,7 @@ class CurrencyRepositoryImpl(
                     flag = currencyEntity.flag,
                     sign = currencyEntity.sign
                 )
-            }
+            }.sortedBy { it.code }
         }
     }
 
@@ -41,5 +41,13 @@ class CurrencyRepositoryImpl(
             .map { it.toEntity() }
         val rub = CurrencyRateEntity(code = CurrencyCode.RUB.name, rate = 1.0)
         dao.upsertCurrencyRates(entities + listOf(rub))
+    }
+
+    override suspend fun updateCurrency(currency: CurrencyRate) {
+        dao.upsertCurrency(currency.toEntity())
+    }
+
+    override suspend fun updateCurrencies(currencies: List<CurrencyRate>) {
+        dao.upsertCurrencies(currencies.map { it.toEntity() })
     }
 }

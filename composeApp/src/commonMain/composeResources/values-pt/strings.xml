@@ -29,6 +29,9 @@
     <string name="error">Algo deu errado</string>
     <string name="converter_retry">Tentar novamente</string>
     <string name="converter_settings">Configurações</string>
+    <string name="onboarding_settings_button_text">Aqui você pode definir a moeda principal</string>
+    <string name="main_currency">A moeda principal será usada por padrão no conversor.</string>
+    <string name="favourite_currency">As moedas favoritas aparecerão no topo da lista.</string>
     <string name="currency_aed">Dirham dos EAU</string>
     <string name="currency_amd">Dram armênio</string>
     <string name="currency_aud">Dólar australiano</string>

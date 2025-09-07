@@ -29,6 +29,9 @@
     <string name="error">Etwas ist schiefgelaufen</string>
     <string name="converter_retry">Erneut versuchen</string>
     <string name="converter_settings">Einstellungen</string>
+    <string name="onboarding_settings_button_text">Hier kannst du die Hauptwährung festlegen</string>
+    <string name="main_currency">Die Hauptwährung wird standardmäßig im Konverter verwendet.</string>
+    <string name="favourite_currency">Favorisierte Währungen werden oben in der Währungsliste angezeigt.</string>
     <string name="currency_aed">VAE-Dirham</string>
     <string name="currency_amd">Armenischer Dram</string>
     <string name="currency_aud">Australischer Dollar</string>
