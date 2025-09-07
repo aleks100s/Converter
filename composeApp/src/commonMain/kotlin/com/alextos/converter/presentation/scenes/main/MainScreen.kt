@@ -1,4 +1,4 @@
-package com.alextos.converter.presentation.scenes
+package com.alextos.converter.presentation.scenes.main
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.Animatable
@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -27,9 +26,11 @@ import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.minimumInteractiveComponentSize
@@ -44,17 +45,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
-import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.alextos.common.presentation.CustomButton
@@ -63,6 +61,7 @@ import com.alextos.converter.domain.models.CurrencyRate
 import com.alextos.common.presentation.PickerDropdown
 import com.alextos.common.presentation.Screen
 import com.alextos.converter.domain.camera.CameraProps
+import com.alextos.converter.presentation.scenes.settings.SettingsSheet
 import converter.composeapp.generated.resources.Res
 import converter.composeapp.generated.resources.camera_button_title
 import converter.composeapp.generated.resources.camera_title
@@ -72,27 +71,41 @@ import converter.composeapp.generated.resources.converter_clear
 import converter.composeapp.generated.resources.converter_quick_select
 import converter.composeapp.generated.resources.converter_reload
 import converter.composeapp.generated.resources.converter_retry
+import converter.composeapp.generated.resources.converter_settings
 import converter.composeapp.generated.resources.converter_swap
 import converter.composeapp.generated.resources.converter_title
 import converter.composeapp.generated.resources.copy
 import converter.composeapp.generated.resources.data_is_actual
+import converter.composeapp.generated.resources.ic_settings
 import converter.composeapp.generated.resources.ic_swap
 import converter.composeapp.generated.resources.onboarding_bottom_editor_text
 import converter.composeapp.generated.resources.onboarding_camera_button_text
 import converter.composeapp.generated.resources.onboarding_initial_text
 import converter.composeapp.generated.resources.onboarding_refresh_button_text
+import converter.composeapp.generated.resources.onboarding_settings_button_text
 import converter.composeapp.generated.resources.onboarding_swap_button_text
 import converter.composeapp.generated.resources.onboarding_top_editor_text
 import converter.composeapp.generated.resources.onboarding_try
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(
     viewModel: MainViewModel
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val haptic = LocalHapticFeedback.current
+
+    if (state.isSettingsSheetShown) {
+        ModalBottomSheet(
+            onDismissRequest = {
+                viewModel.onAction(MainAction.DismissSettingsSheet)
+            }
+        ) {
+            SettingsSheet()
+        }
+    }
 
     Screen(
         modifier = Modifier,
@@ -155,6 +168,16 @@ fun MainScreen(
             }
         },
         actions = {
+            SettingsButton(
+                modifier = Modifier
+                    .alpha(state.onboardingState.settingsButtonAlpha)
+                    .clip(CircleShape)
+                    .background(Color.White.copy(alpha = state.onboardingState.settingsButtonBackgroundAlpha)),
+            ) {
+                haptic.performHapticFeedback(HapticFeedbackType.VirtualKey)
+                viewModel.onAction(MainAction.SettingsButtonTapped)
+            }
+
             RefreshButton(
                 modifier = Modifier
                     .alpha(state.onboardingState.refreshButtonAlpha)
@@ -197,7 +220,7 @@ fun MainScreen(
 }
 
 @Composable
-fun ErrorView(
+private fun ErrorView(
     modifier: Modifier,
     error: String,
     onClick: () -> Unit
@@ -269,6 +292,14 @@ private fun ContentView(
             AnimatedVisibility(state.onboardingState.isRefreshButtonTextVisible) {
                 Text(
                     stringResource(Res.string.onboarding_refresh_button_text),
+                    modifier = Modifier.fillMaxWidth(),
+                    textAlign = TextAlign.End,
+                )
+            }
+
+            AnimatedVisibility(state.onboardingState.isSettingsButtonTextVisible) {
+                Text(
+                    stringResource(Res.string.onboarding_settings_button_text),
                     modifier = Modifier.fillMaxWidth(),
                     textAlign = TextAlign.End,
                 )
@@ -352,7 +383,7 @@ private fun ContentView(
 }
 
 @Composable
-fun RefreshButton(
+private fun RefreshButton(
     modifier: Modifier,
     onClick: () -> Unit
 ) {
@@ -368,25 +399,40 @@ fun RefreshButton(
         }
     }
 
-    Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-        IconButton(
-            onClick = {
-                isRotating = true
-                onClick()
-            },
-            modifier = modifier.run { rotate(rotate.value) }
-        ) {
-            Icon(
-                Icons.Default.Refresh,
-                stringResource(Res.string.converter_reload),
-            )
-        }
+    IconButton(
+        onClick = {
+            isRotating = true
+            onClick()
+        },
+        modifier = modifier.run { rotate(rotate.value) }
+    ) {
+        Icon(
+            Icons.Default.Refresh,
+            stringResource(Res.string.converter_reload),
+        )
+    }
+}
+
+@Composable
+private fun SettingsButton(
+    modifier: Modifier,
+    onClick: () -> Unit
+) {
+    IconButton(
+        onClick = onClick,
+        modifier = modifier.minimumInteractiveComponentSize()
+    ) {
+        Icon(
+            vectorResource(Res.drawable.ic_settings),
+            stringResource(Res.string.converter_settings),
+            modifier = Modifier.size(24.dp)
+        )
     }
 }
 
 
 @Composable
-fun SwapButton(
+private fun SwapButton(
     modifier: Modifier,
     isTextVisible: Boolean,
     onClick: () -> Unit
@@ -430,7 +476,7 @@ fun SwapButton(
 }
 
 @Composable
-fun CurrencyEditor(
+private fun CurrencyEditor(
     modifier: Modifier,
     currency: CurrencyRate?,
     value: String,

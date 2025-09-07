@@ -1,4 +1,4 @@
-package com.alextos.converter.presentation.scenes
+package com.alextos.converter.presentation.scenes.main
 
 import com.alextos.converter.domain.camera.CameraProps
 import com.alextos.converter.domain.models.CurrencyRate
@@ -13,4 +13,6 @@ sealed interface MainAction {
     data class ShowCamera(val props: CameraProps): MainAction
     data class CopyButtonTapped(val text: String, val label: String): MainAction
     data object NextOnboardingStepButtonTapped : MainAction
+    data object SettingsButtonTapped : MainAction
+    data object DismissSettingsSheet : MainAction
 }

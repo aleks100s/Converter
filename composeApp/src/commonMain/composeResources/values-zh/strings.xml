@@ -26,6 +26,9 @@
     <string name="onboarding_bottom_editor_text">选择目标货币</string>
     <string name="onboarding_camera_button_text">您可以使用相机实时转换货币</string>
     <string name="onboarding_try">试一试</string>
+    <string name="error">出现了一些问题</string>
+    <string name="converter_retry">重试</string>
+    <string name="converter_settings">设置</string>
     <string name="currency_aed">阿联酋迪拉姆</string>
     <string name="currency_amd">亚美尼亚德拉姆</string>
     <string name="currency_aud">澳大利亚元</string>

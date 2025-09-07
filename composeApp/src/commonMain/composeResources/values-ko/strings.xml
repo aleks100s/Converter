@@ -26,6 +26,9 @@
     <string name="onboarding_bottom_editor_text">변환할 통화를 선택하세요</string>
     <string name="onboarding_camera_button_text">카메라로 실시간 환율 변환이 가능합니다</string>
     <string name="onboarding_try">시도하기</string>
+    <string name="error">문제가 발생했습니다</string>
+    <string name="converter_retry">다시 시도</string>
+    <string name="converter_settings">설정</string>
     <string name="currency_aed">아랍에미리트 디르함</string>
     <string name="currency_amd">아르메니아 드람</string>
     <string name="currency_aud">호주 달러</string>

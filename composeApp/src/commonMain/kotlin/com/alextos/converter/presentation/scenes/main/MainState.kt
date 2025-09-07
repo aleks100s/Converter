@@ -1,4 +1,4 @@
-package com.alextos.converter.presentation.scenes
+package com.alextos.converter.presentation.scenes.main
 
 import com.alextos.common.UiText
 import com.alextos.converter.domain.models.CurrencyRate
@@ -11,6 +11,7 @@ data class MainState(
     val bottomCurrency: CurrencyRate? = null,
     val onboardingState: OnboardingState = OnboardingState(),
     val contentState: ContentState = ContentState.Loading,
+    val isSettingsSheetShown: Boolean = false,
 )
 
 data class OnboardingState(
@@ -27,6 +28,9 @@ data class OnboardingState(
     val refreshButtonAlpha: Float = 1f,
     val refreshButtonBackgroundAlpha: Float = 0.0f,
     val isRefreshButtonTextVisible: Boolean = false,
+    val settingsButtonAlpha: Float = 1f,
+    val settingsButtonBackgroundAlpha: Float = 0.0f,
+    val isSettingsButtonTextVisible: Boolean = false,
     val isCameraButtonTextVisible: Boolean = false,
     val hintAlpha: Float = 1f,
     val isNextOnboardingButtonVisible: Boolean = false,
@@ -44,6 +48,7 @@ enum class OnboardingStep {
     BottomEditor,
     SwapButton,
     RefreshButton,
+    SettingsButton,
     CameraButton,
     Done
 }

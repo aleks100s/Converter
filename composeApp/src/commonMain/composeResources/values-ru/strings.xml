@@ -22,13 +22,15 @@
 <string name="camera_button_title">Готово</string>
 <string name="onboarding_initial_text">Добро пожаловать в конвертер валют!</string>
 <string name="onboarding_refresh_button_text">Обновить курсы валют можно по кнопке вверху</string>
-<string name="onboarding_swap_button_text">Быстро поменять местами валюты</string>
+    <string name="onboarding_settings_button_text">А здесь можно настроить основную валюту</string>
+    <string name="onboarding_swap_button_text">Быстро поменять местами валюты</string>
 <string name="onboarding_top_editor_text">Нажмите на код валюты, чтобы выбрать нужную</string>
 <string name="onboarding_bottom_editor_text">Выберите, в какую валюту хотите перевести</string>
 <string name="onboarding_camera_button_text">Можно переводить валюту в реальном с помощью камеры</string>
 <string name="onboarding_try">Попробовать</string>
     <string name="error">Что-то пошло не так</string>
-    <string name="converter_retry">Обновить</string>
+    <string name="converter_retry">Повторить</string>
+    <string name="converter_settings">Настройки</string>
     <string name="currency_aed">Дирхам ОАЭ</string>
 <string name="currency_amd">Армянский драм</string>
 <string name="currency_aud">Австралийский доллар</string>

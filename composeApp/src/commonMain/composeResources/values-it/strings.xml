@@ -26,6 +26,9 @@
     <string name="onboarding_bottom_editor_text">Seleziona la valuta di destinazione</string>
     <string name="onboarding_camera_button_text">Puoi convertire in tempo reale con la fotocamera</string>
     <string name="onboarding_try">Prova</string>
+    <string name="error">Qualcosa è andato storto</string>
+    <string name="converter_retry">Riprova</string>
+    <string name="converter_settings">Impostazioni</string>
     <string name="currency_aed">Dirham degli Emirati Arabi Uniti</string>
     <string name="currency_amd">Dram armeno</string>
     <string name="currency_aud">Dollaro australiano</string>

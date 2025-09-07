@@ -26,6 +26,9 @@
     <string name="onboarding_bottom_editor_text">Chọn loại tiền muốn chuyển đổi</string>
     <string name="onboarding_camera_button_text">Bạn có thể chuyển đổi tiền tệ theo thời gian thực bằng máy ảnh</string>
     <string name="onboarding_try">Thử ngay</string>
+    <string name="error">Đã xảy ra sự cố</string>
+    <string name="converter_retry">Thử lại</string>
+    <string name="converter_settings">Cài đặt</string>
     <string name="currency_aed">Dirham UAE</string>
     <string name="currency_amd">Dram Armenia</string>
     <string name="currency_aud">Đô la Úc</string>

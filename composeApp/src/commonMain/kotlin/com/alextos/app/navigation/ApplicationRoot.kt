@@ -14,8 +14,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.alextos.common.presentation.NativeBanner
-import com.alextos.converter.presentation.scenes.MainScreen
-import com.alextos.converter.presentation.scenes.MainViewModel
+import com.alextos.converter.presentation.scenes.main.MainScreen
+import com.alextos.converter.presentation.scenes.main.MainViewModel
 import org.koin.mp.KoinPlatform.getKoin
 
 @Composable

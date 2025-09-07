@@ -14,7 +14,7 @@ import com.alextos.converter.domain.repository.CurrencyRepository
 import com.alextos.converter.domain.camera.ConverterAppDelegate
 import com.alextos.converter.domain.camera.ConverterUseCase
 import com.alextos.converter.domain.storage.StorageService
-import com.alextos.converter.presentation.scenes.MainViewModel
+import com.alextos.converter.presentation.scenes.main.MainViewModel
 import com.russhwolf.settings.Settings
 import io.ktor.client.HttpClient
 import org.koin.core.module.Module

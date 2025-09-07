@@ -26,6 +26,9 @@
     <string name="onboarding_bottom_editor_text">اختر العملة التي تريد التحويل إليها</string>
     <string name="onboarding_camera_button_text">يمكنك استخدام الكاميرا للتحويل في الوقت الحقيقي</string>
     <string name="onboarding_try">جرّب</string>
+    <string name="error">حدث خطأ ما</string>
+    <string name="converter_retry">إعادة المحاولة</string>
+    <string name="converter_settings">الإعدادات</string>
     <string name="currency_aed">درهم إماراتي</string>
     <string name="currency_amd">درام أرميني</string>
     <string name="currency_aud">دولار أسترالي</string>

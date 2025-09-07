@@ -26,6 +26,9 @@
     <string name="onboarding_bottom_editor_text">Wybierz walutę docelową</string>
     <string name="onboarding_camera_button_text">Możesz przeliczać w czasie rzeczywistym za pomocą aparatu</string>
     <string name="onboarding_try">Wypróbuj</string>
+    <string name="error">Coś poszło nie tak</string>
+    <string name="converter_retry">Spróbuj ponownie</string>
+    <string name="converter_settings">Ustawienia</string>
     <string name="currency_aed">Dirham ZEA</string>
     <string name="currency_amd">Dram armeński</string>
     <string name="currency_aud">Dolar australijski</string>

@@ -25,9 +25,11 @@
     <string name="onboarding_top_editor_text">Tap on the currency code to select one</string>
     <string name="onboarding_bottom_editor_text">Choose the currency to convert to</string>
     <string name="onboarding_camera_button_text">You can convert currencies in real-time using the camera</string>
+    <string name="onboarding_settings_button_text">А здесь можно настроить основную валюту</string>
     <string name="onboarding_try">Try it now</string>
-    <string name="error">Что-то пошло не так</string>
+    <string name="error">Something went wrong</string>
     <string name="converter_retry">Retry</string>
+    <string name="converter_settings">Settings</string>
     <string name="currency_aed">UAE Dirham</string>
     <string name="currency_amd">Armenian Dram</string>
     <string name="currency_aud">Australian Dollar</string>

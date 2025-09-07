@@ -26,6 +26,9 @@
     <string name="onboarding_bottom_editor_text">変換したい通貨を選択してください</string>
     <string name="onboarding_camera_button_text">カメラを使ってリアルタイムで通貨を変換できます</string>
     <string name="onboarding_try">試してみる</string>
+    <string name="error">問題が発生しました</string>
+    <string name="converter_retry">再試行</string>
+    <string name="converter_settings">設定</string>
     <string name="currency_aed">アラブ首長国連邦ディルハム</string>
     <string name="currency_amd">アルメニアドラム</string>
     <string name="currency_aud">オーストラリアドル</string>

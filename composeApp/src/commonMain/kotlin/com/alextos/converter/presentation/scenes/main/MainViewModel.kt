@@ -1,4 +1,4 @@
-package com.alextos.converter.presentation.scenes
+package com.alextos.converter.presentation.scenes.main
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -44,6 +44,7 @@ class MainViewModel(
                         OnboardingState(
                             step = OnboardingStep.Initial,
                             refreshButtonAlpha = 0f,
+                            settingsButtonAlpha = 0f,
                             isNextOnboardingButtonVisible = true,
                             swapButtonAlpha = 0f,
                             bottomEditorAlpha = 0f,
@@ -148,6 +149,16 @@ class MainViewModel(
             is MainAction.CopyButtonTapped -> {
                 clipboardService.copyToClipboard(action.text, action.label)
             }
+            is MainAction.SettingsButtonTapped -> {
+                _state.update { state ->
+                    state.copy(isSettingsSheetShown = true)
+                }
+            }
+            is MainAction.DismissSettingsSheet -> {
+                _state.update { state ->
+                    state.copy(isSettingsSheetShown = false)
+                }
+            }
             is MainAction.NextOnboardingStepButtonTapped -> {
                 val old = state.value.onboardingState
                 val onboardingState: OnboardingState = when (old.step) {
@@ -194,10 +205,21 @@ class MainViewModel(
                     }
                     OnboardingStep.RefreshButton -> {
                         old.copy(
-                            step = OnboardingStep.CameraButton,
+                            step = OnboardingStep.SettingsButton,
                             refreshButtonAlpha = 0.3f,
                             refreshButtonBackgroundAlpha = 0f,
                             isRefreshButtonTextVisible = false,
+                            settingsButtonAlpha = 1f,
+                            settingsButtonBackgroundAlpha = 0.1f,
+                            isSettingsButtonTextVisible = true,
+                        )
+                    }
+                    OnboardingStep.SettingsButton -> {
+                        old.copy(
+                            step = OnboardingStep.CameraButton,
+                            settingsButtonAlpha = 0.3f,
+                            settingsButtonBackgroundAlpha = 0f,
+                            isSettingsButtonTextVisible = false,
                             isCameraButtonTextVisible = true,
                         )
                     }
@@ -209,6 +231,7 @@ class MainViewModel(
                             bottomEditorAlpha = 1f,
                             swapButtonAlpha = 1f,
                             refreshButtonAlpha = 1f,
+                            settingsButtonAlpha = 1f,
                             isCameraButtonTextVisible = false,
                             hintAlpha = 1f,
                             isNextOnboardingButtonVisible = false

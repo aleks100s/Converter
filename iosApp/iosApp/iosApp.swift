@@ -24,10 +24,16 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
-        guard UserDefaults.standard.integer(forKey: "launch") > 1 else { return }
+        guard UserDefaults.standard.integer(forKey: "launch") > 1, ATTrackingManager.trackingAuthorizationStatus != .authorized else { return }
 
-        if ATTrackingManager.trackingAuthorizationStatus != .authorized {
-            ATTrackingManager.requestTrackingAuthorization { _ in }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+            ATTrackingManager.requestTrackingAuthorization { status in
+                if status == .notDetermined {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                        ATTrackingManager.requestTrackingAuthorization { _ in }
+                    }
+                }
+            }
         }
     }
     

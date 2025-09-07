@@ -26,6 +26,9 @@
     <string name="onboarding_bottom_editor_text">Hangi para birimine dönüştürmek istediğini seç</string>
     <string name="onboarding_camera_button_text">Gerçek zamanlı dönüştürme için kamerayı kullanabilirsin</string>
     <string name="onboarding_try">Dene</string>
+    <string name="error">Bir şeyler yanlış gitti</string>
+    <string name="converter_retry">Tekrar dene</string>
+    <string name="converter_settings">Ayarlar</string>
     <string name="currency_aed">BAE Dirhemi</string>
     <string name="currency_amd">Ermeni Dramı</string>
     <string name="currency_aud">Avustralya Doları</string>

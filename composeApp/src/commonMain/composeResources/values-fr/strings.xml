@@ -26,6 +26,9 @@
     <string name="onboarding_bottom_editor_text">Choisissez la devise cible</string>
     <string name="onboarding_camera_button_text">Vous pouvez convertir en temps réel avec la caméra</string>
     <string name="onboarding_try">Essayer</string>
+    <string name="error">Un problème est survenu</string>
+    <string name="converter_retry">Réessayer</string>
+    <string name="converter_settings">Paramètres</string>
     <string name="currency_aed">Dirham des É.A.U</string>
     <string name="currency_amd">Dram arménien</string>
     <string name="currency_aud">Dollar australien</string>
