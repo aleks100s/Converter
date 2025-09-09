@@ -1,6 +1,6 @@
 package com.alextos.converter.domain.models
 
-import androidx.compose.runtime.Composable
+import com.alextos.common.UiText
 import com.alextos.common.presentation.PickerElement
 import com.alextos.converter.presentation.extensions.localization
 
@@ -12,12 +12,10 @@ data class CurrencyRate(
     val flag: String,
     val sign: String,
 ): PickerElement {
-    override val pickerOption: String
-        @Composable
-        get() = code.localization.asString()
+    override val pickerOption: UiText
+        get() = code.localization
 
     override val pickerTitle: String
-        @Composable
         get() = code.name
 
     override val trailingIcon: PickerElement.Icon?

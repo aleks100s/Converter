@@ -256,7 +256,7 @@ class MainViewModel(
         }
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                repository.fetchCurrencyRates()
+                repository.downloadCurrencyRates()
                 _state.update {
                     it.copy(contentState = ContentState.Success)
                 }

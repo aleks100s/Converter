@@ -21,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.PopupProperties
+import com.alextos.common.UiText
 import converter.composeapp.generated.resources.Res
 import converter.composeapp.generated.resources.ic_heart
 import converter.composeapp.generated.resources.ic_heart_fill
@@ -32,10 +33,8 @@ interface PickerElement {
         Star
     }
 
-    @get:Composable
-    val pickerOption: String
+    val pickerOption: UiText
 
-    @get:Composable
     val pickerTitle: String
 
     val trailingIcon: PickerElement.Icon?
@@ -66,7 +65,7 @@ fun <E: PickerElement>PickerDropdown(
                     DropdownMenuItem(
                         text = {
                             Text(
-                                text = it.pickerOption,
+                                text = it.pickerOption.asString(),
                                 color = MaterialTheme.colorScheme.secondary
                             )
                         },

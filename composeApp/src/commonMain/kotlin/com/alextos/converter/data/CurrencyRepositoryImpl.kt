@@ -48,7 +48,20 @@ class CurrencyRepositoryImpl(
         }.sortedBy { it.code }
     }
 
-    override suspend fun fetchCurrencyRates() {
+    override suspend fun fetchMainCurrencyRate(): CurrencyRate? {
+        val currency = dao.getFavouriteCurrenciesOnce().firstOrNull() ?: return null
+        val rate = dao.getCurrencyRatesOnce().firstOrNull() ?: return null
+        return CurrencyRate(
+            code = CurrencyCode.valueOf(currency.code),
+            isMain = currency.isMain,
+            isFavourite = currency.isFavourite,
+            rate = rate.rate,
+            flag = currency.flag,
+            sign = currency.sign
+        )
+    }
+
+    override suspend fun downloadCurrencyRates() {
         val response = remoteDataSource.getCurrencyRates().getOrThrow()
         val existingCodes = CurrencyCode.entries.map { it.name }
         val entities = response
