@@ -19,4 +19,7 @@ data class CurrencyRate(
     override val pickerTitle: String
         @Composable
         get() = code.name
+
+    override val trailingIcon: PickerElement.Icon?
+        get() = if (isMain) PickerElement.Icon.Star else null
 }
