@@ -23,4 +23,10 @@ interface CurrencyRateDao {
 
     @Query("SELECT * FROM currency_rates")
     fun getCurrencyRates(): Flow<List<CurrencyRateEntity>>
+
+    @Query("SELECT * FROM currencies LIMIT 3")
+    suspend fun getFavouriteCurrenciesOnce(): List<CurrencyEntity>
+
+    @Query("SELECT * FROM currency_rates")
+    suspend fun getCurrencyRatesOnce(): List<CurrencyRateEntity>
 }
