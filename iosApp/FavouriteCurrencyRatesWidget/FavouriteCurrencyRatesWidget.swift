@@ -8,81 +8,92 @@
 import WidgetKit
 import SwiftUI
 
-struct Provider: AppIntentTimelineProvider {
-    func placeholder(in context: Context) -> SimpleEntry {
-        SimpleEntry(date: Date(), configuration: ConfigurationAppIntent())
-    }
+struct FavouriteCurrencyRatesWidget: Widget {
+    let kind: String = "FavouriteCurrencyRatesWidget"
 
-    func snapshot(for configuration: ConfigurationAppIntent, in context: Context) async -> SimpleEntry {
-        SimpleEntry(date: Date(), configuration: configuration)
+    var body: some WidgetConfiguration {
+        StaticConfiguration(
+            kind: kind,
+            provider: Provider()
+        ) { entry in
+            FavouriteCurrencyRatesWidgetEntryView(entry: entry)
+                .containerBackground(.fill.tertiary, for: .widget)
+        }
+        .supportedFamilies([.systemMedium])
+    }
+}
+
+struct Provider: TimelineProvider {
+    private let userDefaults = UserDefaults(suiteName: "group.com.alextos.cashback") ?? .standard
+    private let decoder = JSONDecoder()
+
+    func placeholder(in context: Context) -> SimpleEntry {
+        .default
     }
     
-    func timeline(for configuration: ConfigurationAppIntent, in context: Context) async -> Timeline<SimpleEntry> {
-        var entries: [SimpleEntry] = []
+    func getSnapshot(in context: Context, completion: @escaping (SimpleEntry) -> Void) {
+        do {
+            guard let data = userDefaults.object(forKey: "favourites") as? Data else {
+                completion(.default)
+                return
+            }
+            
+            let result = try decoder.decode(FavouriteRatesData.self, from: data)
+            let entry = SimpleEntry(
+                date: result.date,
+                rates: result.rates
+            )
 
-        // Generate a timeline consisting of five entries an hour apart, starting from the current date.
-        let currentDate = Date()
-        for hourOffset in 0 ..< 5 {
-            let entryDate = Calendar.current.date(byAdding: .hour, value: hourOffset, to: currentDate)!
-            let entry = SimpleEntry(date: entryDate, configuration: configuration)
-            entries.append(entry)
+            completion(entry)
+        } catch {
+            completion(.default)
         }
-
-        return Timeline(entries: entries, policy: .atEnd)
     }
+    
+    func getTimeline(in context: Context, completion: @escaping (Timeline<SimpleEntry>) -> Void) {
+        do {
+            guard let data = userDefaults.object(forKey: "favourites") as? Data else {
+                completion(Timeline(entries: [], policy: .after(.now.addingTimeInterval(60 * 60 * 24))))
+                return
+            }
+            
+            let result = try decoder.decode(FavouriteRatesData.self, from: data)
+            let entry = SimpleEntry(
+                date: result.date,
+                rates: result.rates
+            )
 
-//    func relevances() async -> WidgetRelevances<ConfigurationAppIntent> {
-//        // Generate a list containing the contexts this widget is relevant in.
-//    }
+            completion(Timeline(entries: [entry], policy: .after(.now.addingTimeInterval(60 * 60 * 24))))
+        } catch {
+            completion(Timeline(entries: [], policy: .after(.now.addingTimeInterval(60 * 60 * 24))))
+        }
+    }
 }
 
 struct SimpleEntry: TimelineEntry {
+    static let `default` = SimpleEntry(date: Date(), rates: [.init(code: "USD", rate: 78.45, symbol: "₽")])
+
     let date: Date
-    let configuration: ConfigurationAppIntent
+    let rates: [FavouriteRatesData.FavouriteRate]
 }
 
 struct FavouriteCurrencyRatesWidgetEntryView : View {
     var entry: Provider.Entry
 
     var body: some View {
-        VStack {
-            Text("Time:")
-            Text(entry.date, style: .time)
-
-            Text("Favorite Emoji:")
-            Text(entry.configuration.favoriteEmoji)
+        if let rate = entry.rates.first {
+            VStack {
+                HStack {
+                    Text(rate.code)
+                        .font(.title.bold())
+                    
+                    Text("\(rate.rate) \(rate.symbol)")
+                }
+                
+                Text("\(Text(entry.date, style: .time)) \(Text(entry.date, style: .date))")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
         }
     }
-}
-
-struct FavouriteCurrencyRatesWidget: Widget {
-    let kind: String = "FavouriteCurrencyRatesWidget"
-
-    var body: some WidgetConfiguration {
-        AppIntentConfiguration(kind: kind, intent: ConfigurationAppIntent.self, provider: Provider()) { entry in
-            FavouriteCurrencyRatesWidgetEntryView(entry: entry)
-                .containerBackground(.fill.tertiary, for: .widget)
-        }
-    }
-}
-
-extension ConfigurationAppIntent {
-    fileprivate static var smiley: ConfigurationAppIntent {
-        let intent = ConfigurationAppIntent()
-        intent.favoriteEmoji = "😀"
-        return intent
-    }
-    
-    fileprivate static var starEyes: ConfigurationAppIntent {
-        let intent = ConfigurationAppIntent()
-        intent.favoriteEmoji = "🤩"
-        return intent
-    }
-}
-
-#Preview(as: .systemSmall) {
-    FavouriteCurrencyRatesWidget()
-} timeline: {
-    SimpleEntry(date: .now, configuration: .smiley)
-    SimpleEntry(date: .now, configuration: .starEyes)
 }

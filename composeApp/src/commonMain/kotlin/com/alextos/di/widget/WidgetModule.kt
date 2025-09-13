@@ -26,5 +26,5 @@ val widgetModule = module {
     }
     single { get<AppDatabase>().currencyRateDao() }
 
-    single { GetFavouriteCurrencyRatesUseCase(get()) }
+    // single { GetFavouriteCurrencyRatesUseCase(get()) }
 }

@@ -9,6 +9,7 @@ import com.alextos.converter.domain.storage.ConverterState
 import com.alextos.converter.domain.storage.StorageService
 import com.alextos.converter.domain.camera.ConverterAppDelegate
 import com.alextos.converter.domain.camera.ConverterUseCase
+import com.alextos.converter.domain.favourites.GetFavouriteCurrencyRatesUseCase
 import com.alextos.converter.domain.services.ClipboardService
 import converter.composeapp.generated.resources.Res
 import converter.composeapp.generated.resources.error
@@ -26,7 +27,8 @@ class MainViewModel(
     private val storage: StorageService,
     private val delegate: ConverterAppDelegate,
     private val converterUseCase: ConverterUseCase,
-    private val clipboardService: ClipboardService
+    private val clipboardService: ClipboardService,
+    private val getFavouriteCurrencyRatesUseCase: GetFavouriteCurrencyRatesUseCase
 ): ViewModel() {
     private val _state = MutableStateFlow(MainState())
     val state = _state.asStateFlow()
@@ -72,6 +74,7 @@ class MainViewModel(
                         )
                     }
                     onAction(MainAction.TopTextChanged(state.value.topText))
+                    getFavouriteCurrencyRatesUseCase()
                 }
         }
 

@@ -49,8 +49,8 @@ class CurrencyRepositoryImpl(
     }
 
     override suspend fun fetchMainCurrencyRate(): CurrencyRate? {
-        val currency = dao.getFavouriteCurrenciesOnce().firstOrNull() ?: return null
-        val rate = dao.getCurrencyRatesOnce().firstOrNull() ?: return null
+        val currency = dao.getMainCurrenciesOnce().firstOrNull() ?: return null
+        val rate = dao.getCurrencyRate(currency.code).firstOrNull() ?: return null
         return CurrencyRate(
             code = CurrencyCode.valueOf(currency.code),
             isMain = currency.isMain,

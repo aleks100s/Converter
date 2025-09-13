@@ -44,6 +44,7 @@ fun appModule(delegate: ConverterAppDelegate) = module {
     single<Settings> { Settings() }
     single<StorageService> { StorageServiceImpl(get()) }
     single { ConverterUseCase()  }
+    single { GetFavouriteCurrencyRatesUseCase(get(), delegate) }
     viewModelOf(::ApplicationViewModel)
     viewModelOf(::SettingsViewModel)
 }
