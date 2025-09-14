@@ -22,6 +22,10 @@ class CurrencyApp: Application() {
                 }
                 startActivity(intent)
             }
+
+            override fun updateCurrencies(favourites: List<String>, main: String?) {
+
+            }
         }) {
             androidContext(this@CurrencyApp)
         }

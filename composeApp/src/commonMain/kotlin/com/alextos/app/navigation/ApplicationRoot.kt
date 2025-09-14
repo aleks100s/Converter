@@ -14,8 +14,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.alextos.common.presentation.NativeBanner
+import com.alextos.common.presentation.horizontalComposableTransition
 import com.alextos.converter.presentation.scenes.main.MainScreen
 import com.alextos.converter.presentation.scenes.main.MainViewModel
+import com.alextos.converter.presentation.scenes.settings.SettingsScreen
 import org.koin.mp.KoinPlatform.getKoin
 
 @Composable
@@ -46,7 +48,15 @@ fun ApplicationRoot(
         ) {
             composable<Route.Converter> {
                 val viewModel = remember { getKoin().get<MainViewModel>() }
-                MainScreen(viewModel)
+                MainScreen(viewModel) {
+                    navController.navigate(Route.Settings)
+                }
+            }
+
+            horizontalComposableTransition<Route.Settings> {
+                SettingsScreen() {
+                    navController.popBackStack()
+                }
             }
         }
     }

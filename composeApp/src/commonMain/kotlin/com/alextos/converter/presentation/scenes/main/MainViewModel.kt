@@ -154,16 +154,6 @@ class MainViewModel(
             is MainAction.CopyButtonTapped -> {
                 clipboardService.copyToClipboard(action.text, action.label)
             }
-            is MainAction.SettingsButtonTapped -> {
-                _state.update { state ->
-                    state.copy(isSettingsSheetShown = true)
-                }
-            }
-            is MainAction.DismissSettingsSheet -> {
-                _state.update { state ->
-                    state.copy(isSettingsSheetShown = false)
-                }
-            }
             is MainAction.NextOnboardingStepButtonTapped -> {
                 val old = state.value.onboardingState
                 val onboardingState: OnboardingState = when (old.step) {

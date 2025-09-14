@@ -24,6 +24,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.alextos.common.presentation.Screen
 import com.alextos.converter.domain.models.CurrencyRate
 import com.alextos.converter.presentation.extensions.localization
 import converter.composeapp.generated.resources.Res
@@ -37,54 +38,47 @@ import org.jetbrains.compose.resources.vectorResource
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun SettingsSheet(
+fun SettingsScreen(
     viewModel: SettingsViewModel = koinViewModel(),
     dismiss: () -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
-    Column(
-        modifier = Modifier
-            .padding(horizontal = 16.dp)
-            .fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(8.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+    Screen(
+        modifier = Modifier,
+        title = stringResource(Res.string.converter_settings),
+        goBack = dismiss
     ) {
-        Text(
-            text = stringResource(Res.string.converter_settings),
-            style = MaterialTheme.typography.titleLarge,
-            textAlign = TextAlign.Center,
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        LazyColumn(
-            modifier = Modifier.fillMaxWidth().weight(1f)
+        Column(
+            modifier = it
+                .padding(horizontal = 16.dp)
+                .fillMaxWidth(),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            item {
-                Column(
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(16.dp))
-                        .background(MaterialTheme.colorScheme.surfaceBright)
-                        .fillMaxWidth()
-                        .padding(16.dp)
-                ) {
-                    Text(stringResource(Res.string.main_currency))
-                    Text(stringResource(Res.string.favourite_currency))
+            LazyColumn(
+                modifier = Modifier.fillMaxWidth().weight(1f)
+            ) {
+                item {
+                    Column(
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(16.dp))
+                            .background(MaterialTheme.colorScheme.surfaceBright)
+                            .fillMaxWidth()
+                            .padding(16.dp)
+                    ) {
+                        Text(stringResource(Res.string.main_currency))
+                        Text(stringResource(Res.string.favourite_currency))
+                    }
+                }
+
+                items(state.currencies) { currencyRate ->
+                    CurrencyItem(
+                        currencyRate = currencyRate,
+                        onToggleFavourite = { viewModel.onAction(SettingsAction.ToggleFavourite(it)) },
+                        onSelectMainCurrency = { viewModel.onAction(SettingsAction.SelectMainCurrency(it)) }
+                    )
                 }
             }
-
-            items(state.currencies) { currencyRate ->
-                CurrencyItem(
-                    currencyRate = currencyRate,
-                    onToggleFavourite = { viewModel.onAction(SettingsAction.ToggleFavourite(it)) },
-                    onSelectMainCurrency = { viewModel.onAction(SettingsAction.SelectMainCurrency(it)) }
-                )
-            }
-        }
-
-        Button(
-            onClick = dismiss
-        ) {
-            Text("OK")
         }
     }
 }

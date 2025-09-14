@@ -61,7 +61,7 @@ import com.alextos.converter.domain.models.CurrencyRate
 import com.alextos.common.presentation.PickerDropdown
 import com.alextos.common.presentation.Screen
 import com.alextos.converter.domain.camera.CameraProps
-import com.alextos.converter.presentation.scenes.settings.SettingsSheet
+import com.alextos.converter.presentation.scenes.settings.SettingsScreen
 import converter.composeapp.generated.resources.Res
 import converter.composeapp.generated.resources.camera_button_title
 import converter.composeapp.generated.resources.camera_title
@@ -92,22 +92,11 @@ import org.jetbrains.compose.resources.vectorResource
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(
-    viewModel: MainViewModel
+    viewModel: MainViewModel,
+    onTapSettings: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val haptic = LocalHapticFeedback.current
-
-    if (state.isSettingsSheetShown) {
-        ModalBottomSheet(
-            onDismissRequest = {
-                viewModel.onAction(MainAction.DismissSettingsSheet)
-            }
-        ) {
-            SettingsSheet {
-                viewModel.onAction(MainAction.DismissSettingsSheet)
-            }
-        }
-    }
 
     Screen(
         modifier = Modifier,
@@ -177,7 +166,7 @@ fun MainScreen(
                     .background(Color.White.copy(alpha = state.onboardingState.settingsButtonBackgroundAlpha)),
             ) {
                 haptic.performHapticFeedback(HapticFeedbackType.VirtualKey)
-                viewModel.onAction(MainAction.SettingsButtonTapped)
+                onTapSettings()
             }
 
             RefreshButton(
