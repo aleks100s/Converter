@@ -18,7 +18,6 @@ class KtorRemoteCurrencyDataSource(
                 urlString = BASE_URL
             ) {
                 contentType(ContentType.Application.Xml)
-                // parameter("data_req", "15/04/2025")
             }
         }
     }

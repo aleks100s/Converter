@@ -11,9 +11,8 @@ import com.alextos.converter.data.network.KtorRemoteCurrencyDataSource
 import com.alextos.converter.data.network.RemoteCurrencyDataSource
 import com.alextos.converter.data.storage.StorageServiceImpl
 import com.alextos.converter.domain.repository.CurrencyRepository
-import com.alextos.converter.domain.camera.ConverterAppDelegate
 import com.alextos.converter.domain.camera.ConverterUseCase
-import com.alextos.converter.domain.favourites.GetFavouriteCurrencyRatesUseCase
+import com.alextos.converter.domain.favourites.SaveFavouriteCurrenciesUseCase
 import com.alextos.converter.domain.storage.StorageService
 import com.alextos.converter.presentation.scenes.main.MainViewModel
 import com.alextos.converter.presentation.scenes.settings.SettingsViewModel
@@ -44,7 +43,7 @@ fun appModule(delegate: ConverterAppDelegate) = module {
     single<Settings> { Settings() }
     single<StorageService> { StorageServiceImpl(get()) }
     single { ConverterUseCase()  }
-    single { GetFavouriteCurrencyRatesUseCase(get(), delegate) }
+    single { SaveFavouriteCurrenciesUseCase(delegate) }
     viewModelOf(::ApplicationViewModel)
     viewModelOf(::SettingsViewModel)
 }

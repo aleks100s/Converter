@@ -17,7 +17,6 @@ val widgetModule = module {
     single<HttpClient> { HttpClientFactory.create(get()) }
     single<RemoteCurrencyDataSource> { KtorRemoteCurrencyDataSource(get()) }
     single<CurrencyRepository> { CurrencyRepositoryImpl(get(), get()) }
-
     single {
         get<DatabaseFactory>().create()
             .addCallback(DatabaseSeeder())
@@ -25,6 +24,5 @@ val widgetModule = module {
             .build()
     }
     single { get<AppDatabase>().currencyRateDao() }
-
-    // single { GetFavouriteCurrencyRatesUseCase(get()) }
+    single { GetFavouriteCurrencyRatesUseCase(get()) }
 }

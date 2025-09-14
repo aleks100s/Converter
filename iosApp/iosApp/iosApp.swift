@@ -14,7 +14,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         let window = UIWindow(frame: UIScreen.main.bounds)
 		self.window = window
 		window.rootViewController = MainKt.MainViewController(
-            delegate: ConverterApplicationDelegate(window: window, userDefaults: UserDefaults(suiteName: "group.com.alextos.cashback") ?? .standard),
+            delegate: ConverterApplicationDelegate(window: window, userDefaults: UserDefaults(suiteName: Constants.appGroup) ?? .standard),
 			nativeViewFactory: NativeViewFactoryImpl()
 		)
 		window.makeKeyAndVisible()

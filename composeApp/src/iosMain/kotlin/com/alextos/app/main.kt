@@ -4,7 +4,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.window.ComposeUIViewController
 import com.alextos.common.NativeViewFactory
-import com.alextos.converter.domain.camera.ConverterAppDelegate
+import com.alextos.di.ConverterAppDelegate
 import com.alextos.di.initKoin
 import platform.UIKit.UIViewController
 

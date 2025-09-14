@@ -10,6 +10,7 @@ import com.alextos.converter.domain.repository.CurrencyRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.map
 
 class CurrencyRepositoryImpl(
     private val remoteDataSource: RemoteCurrencyDataSource,
@@ -33,42 +34,12 @@ class CurrencyRepositoryImpl(
         }
     }
 
-    override suspend fun fetchFavouriteCurrencyRates(): List<CurrencyRate> {
-        val currencies = dao.getFavouriteCurrenciesOnce()
-        val rates = dao.getCurrencyRatesOnce()
-        return currencies.map { currencyEntity ->
-            CurrencyRate(
-                code = CurrencyCode.valueOf(currencyEntity.code),
-                isMain = currencyEntity.isMain,
-                isFavourite = currencyEntity.isFavourite,
-                rate = rates.firstOrNull { it.code == currencyEntity.code }?.rate ?: 0.0,
-                flag = currencyEntity.flag,
-                sign = currencyEntity.sign
-            )
-        }.sortedBy { it.code }
-    }
-
-    override suspend fun fetchMainCurrencyRate(): CurrencyRate? {
-        val currency = dao.getMainCurrenciesOnce().firstOrNull() ?: return null
-        val rate = dao.getCurrencyRate(currency.code).firstOrNull() ?: return null
-        return CurrencyRate(
-            code = CurrencyCode.valueOf(currency.code),
-            isMain = currency.isMain,
-            isFavourite = currency.isFavourite,
-            rate = rate.rate,
-            flag = currency.flag,
-            sign = currency.sign
-        )
+    override suspend fun getCurrencyRatesOnce(): List<Pair<CurrencyCode, Double>> {
+        return fetchCurrencyRates().map { CurrencyCode.valueOf(it.code) to it.rate }
     }
 
     override suspend fun downloadCurrencyRates() {
-        val response = remoteDataSource.getCurrencyRates().getOrThrow()
-        val existingCodes = CurrencyCode.entries.map { it.name }
-        val entities = response
-            .filter { existingCodes.contains(it.charCode) }
-            .map { it.toEntity() }
-        val rub = CurrencyRateEntity(code = CurrencyCode.RUB.name, rate = 1.0)
-        dao.upsertCurrencyRates(entities + listOf(rub))
+        dao.upsertCurrencyRates(fetchCurrencyRates())
     }
 
     override suspend fun updateCurrency(currency: CurrencyRate) {
@@ -77,5 +48,15 @@ class CurrencyRepositoryImpl(
 
     override suspend fun updateCurrencies(currencies: List<CurrencyRate>) {
         dao.upsertCurrencies(currencies.map { it.toEntity() })
+    }
+
+    private suspend fun fetchCurrencyRates(): List<CurrencyRateEntity> {
+        val response = remoteDataSource.getCurrencyRates().getOrThrow()
+        val existingCodes = CurrencyCode.entries.map { it.name }
+        val entities = response
+            .filter { existingCodes.contains(it.charCode) }
+            .map { it.toEntity() }
+        val rub = CurrencyRateEntity(code = CurrencyCode.RUB.name, rate = 1.0)
+        return entities + rub
     }
 }

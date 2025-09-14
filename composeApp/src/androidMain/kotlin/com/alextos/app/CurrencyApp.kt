@@ -4,7 +4,7 @@ import android.app.Application
 import android.content.Intent
 import com.alextos.camera.CameraActivity
 import com.alextos.converter.domain.camera.CameraProps
-import com.alextos.converter.domain.camera.ConverterAppDelegate
+import com.alextos.di.ConverterAppDelegate
 import com.alextos.converter.domain.camera.ConverterUseCase
 import com.alextos.di.initKoin
 import org.koin.android.ext.koin.androidContext

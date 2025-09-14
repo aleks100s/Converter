@@ -2,10 +2,6 @@ package com.alextos.common
 
 import kotlin.math.roundToInt
 
-fun kek(vararg args: Any?): String {
-    return ""
-}
-
 fun Double.preciseFormat(): String {
     val str = toFullString().replace(",", ".")
 

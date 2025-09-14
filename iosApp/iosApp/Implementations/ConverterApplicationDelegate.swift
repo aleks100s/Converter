@@ -7,7 +7,7 @@
 
 import ComposeApp
 import SwiftUI
-import UIKit
+import WidgetKit
 
 final class ConverterApplicationDelegate: ConverterAppDelegate {
     private let userDefaults: UserDefaults
@@ -25,12 +25,9 @@ final class ConverterApplicationDelegate: ConverterAppDelegate {
 		window.rootViewController?.present(viewController, animated: true)
 	}
     
-    func updateFavouriteRates(result: GetFavouriteCurrencyRatesUseCase.Result?) {
-        if let result {
-            let favourites = FavouriteRatesData(result: result)
-            userDefaults.set(try? JSONEncoder().encode(favourites), forKey: "favourites")
-        } else {
-            userDefaults.removeObject(forKey: "favourites")
-        }
+    func updateCurrencies(favourites: [String], main: String?) {
+        let data = SharedWidgetData(favouriteCurrencies: favourites, mainCurrency: main)
+        userDefaults.set(try? JSONEncoder().encode(data), forKey: Constants.widgetDataKey)
+        WidgetCenter.shared.reloadAllTimelines()
     }
 }
