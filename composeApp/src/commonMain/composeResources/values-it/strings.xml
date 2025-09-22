@@ -29,9 +29,11 @@
     <string name="error">Qualcosa è andato storto</string>
     <string name="converter_retry">Riprova</string>
     <string name="converter_settings">Impostazioni</string>
+    <string name="favourite_currencies">Valute preferite</string> <!-- it -->
+    <string name="main_currency">Valuta principale</string> <!-- it -->
     <string name="onboarding_settings_button_text">Qui puoi impostare la valuta principale</string>
-    <string name="main_currency">La valuta principale verrà usata di default nel convertitore.</string>
-    <string name="favourite_currency">Le valute preferite verranno visualizzate in cima all’elenco.</string>
+    <string name="main_currency_info">La valuta principale verrà usata di default nel convertitore.</string>
+    <string name="favourite_currency_info">Le valute preferite verranno visualizzate in cima all’elenco.</string>
     <string name="currency_aed">Dirham degli Emirati Arabi Uniti</string>
     <string name="currency_amd">Dram armeno</string>
     <string name="currency_aud">Dollaro australiano</string>

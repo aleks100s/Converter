@@ -29,9 +29,11 @@
     <string name="error">問題が発生しました</string>
     <string name="converter_retry">再試行</string>
     <string name="converter_settings">設定</string>
+    <string name="favourite_currencies">お気に入りの通貨</string> <!-- ja -->
+    <string name="main_currency">主要通貨</string> <!-- ja -->
     <string name="onboarding_settings_button_text">ここで主要通貨を設定できます</string>
-    <string name="main_currency">主要通貨はデフォルトでコンバーターに使用されます。</string>
-    <string name="favourite_currency">お気に入りの通貨はリストの上部に表示されます。</string>
+    <string name="main_currency_info">主要通貨はデフォルトでコンバーターに使用されます。</string>
+    <string name="favourite_currency_info">お気に入りの通貨はリストの上部に表示されます。</string>
     <string name="currency_aed">アラブ首長国連邦ディルハム</string>
     <string name="currency_amd">アルメニアドラム</string>
     <string name="currency_aud">オーストラリアドル</string>

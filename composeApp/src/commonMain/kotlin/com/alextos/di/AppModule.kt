@@ -16,6 +16,8 @@ import com.alextos.converter.domain.favourites.SaveFavouriteCurrenciesUseCase
 import com.alextos.converter.domain.storage.StorageService
 import com.alextos.converter.presentation.scenes.main.MainViewModel
 import com.alextos.converter.presentation.scenes.settings.SettingsViewModel
+import com.alextos.converter.presentation.scenes.settings.favourites.FavouriteCurrencySettingsViewModel
+import com.alextos.converter.presentation.scenes.settings.main.MainCurrencySettingsViewModel
 import com.russhwolf.settings.Settings
 import io.ktor.client.HttpClient
 import org.koin.core.module.Module
@@ -46,4 +48,6 @@ fun appModule(delegate: ConverterAppDelegate) = module {
     single { SaveFavouriteCurrenciesUseCase(delegate) }
     viewModelOf(::ApplicationViewModel)
     viewModelOf(::SettingsViewModel)
+    viewModelOf(::FavouriteCurrencySettingsViewModel)
+    viewModelOf(::MainCurrencySettingsViewModel)
 }

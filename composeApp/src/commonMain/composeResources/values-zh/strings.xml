@@ -29,9 +29,11 @@
     <string name="error">出现了一些问题</string>
     <string name="converter_retry">重试</string>
     <string name="converter_settings">设置</string>
+    <string name="favourite_currencies">收藏的货币</string> <!-- zh -->
+    <string name="main_currency">主要货币</string> <!-- zh -->
     <string name="onboarding_settings_button_text">在这里您可以设置主要货币</string>
-    <string name="main_currency">主要货币将在转换器中默认使用。</string>
-    <string name="favourite_currency">收藏的货币将显示在列表顶部。</string>
+    <string name="main_currency_info">主要货币将在转换器中默认使用。</string>
+    <string name="favourite_currency_info">收藏的货币将显示在列表顶部。</string>
     <string name="currency_aed">阿联酋迪拉姆</string>
     <string name="currency_amd">亚美尼亚德拉姆</string>
     <string name="currency_aud">澳大利亚元</string>

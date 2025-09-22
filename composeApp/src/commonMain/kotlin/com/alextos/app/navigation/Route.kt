@@ -8,4 +8,10 @@ sealed interface Route {
 
     @Serializable
     data object Settings: Route
+
+    @Serializable
+    data object MainCurrencySettings: Route
+
+    @Serializable
+    data object FavouriteCurrencySettings: Route
 }

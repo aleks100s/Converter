@@ -16,9 +16,10 @@ import androidx.navigation.compose.rememberNavController
 import com.alextos.common.presentation.NativeBanner
 import com.alextos.common.presentation.horizontalComposableTransition
 import com.alextos.converter.presentation.scenes.main.MainScreen
-import com.alextos.converter.presentation.scenes.main.MainViewModel
 import com.alextos.converter.presentation.scenes.settings.SettingsScreen
-import org.koin.mp.KoinPlatform.getKoin
+import com.alextos.converter.presentation.scenes.settings.favourites.FavouriteCurrencySettingsScreen
+import com.alextos.converter.presentation.scenes.settings.main.MainCurrencySettingsScreen
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun ApplicationRoot(
@@ -47,14 +48,32 @@ fun ApplicationRoot(
             startDestination = Route.Converter
         ) {
             composable<Route.Converter> {
-                val viewModel = remember { getKoin().get<MainViewModel>() }
-                MainScreen(viewModel) {
+                MainScreen(koinViewModel()) {
                     navController.navigate(Route.Settings)
                 }
             }
 
             horizontalComposableTransition<Route.Settings> {
-                SettingsScreen() {
+                SettingsScreen(
+                    openMainCurrencySettings = {
+                        navController.navigate(Route.MainCurrencySettings)
+                    },
+                    openFavouriteCurrencySettings = {
+                        navController.navigate(Route.FavouriteCurrencySettings)
+                    }
+                ) {
+                    navController.popBackStack()
+                }
+            }
+
+            horizontalComposableTransition<Route.MainCurrencySettings> {
+                MainCurrencySettingsScreen(viewModel = koinViewModel()) {
+                    navController.popBackStack()
+                }
+            }
+
+            horizontalComposableTransition<Route.FavouriteCurrencySettings> {
+                FavouriteCurrencySettingsScreen(viewModel = koinViewModel()) {
                     navController.popBackStack()
                 }
             }

@@ -31,8 +31,10 @@
     <string name="error">Что-то пошло не так</string>
     <string name="converter_retry">Повторить</string>
     <string name="converter_settings">Настройки</string>
-    <string name="main_currency">Основная валюта будет использоваться по умолчанию в конвертере.</string>
-    <string name="favourite_currency">Избранные валюты будут отображаться в списке валют сверху.</string>
+    <string name="favourite_currencies">Избранные валюты</string> <!-- ru -->
+    <string name="main_currency">Основная валюта</string> <!-- ru -->
+    <string name="main_currency_info">Основная валюта будет использоваться по умолчанию в конвертере.</string>
+    <string name="favourite_currency_info">Избранные валюты будут отображаться в списке валют сверху.</string>
     <string name="currency_aed">Дирхам ОАЭ</string>
 <string name="currency_amd">Армянский драм</string>
 <string name="currency_aud">Австралийский доллар</string>
