@@ -90,15 +90,15 @@ kotlin {
 
 android {
     namespace = "com.alextos"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
-        minSdk = 21
-        targetSdk = 35
+        minSdk = 23
+        targetSdk = 36
 
         applicationId = "com.alextos.converter"
-        versionCode = 1
-        versionName = "1.0.0"
+        versionCode = 2
+        versionName = "2"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -127,4 +127,33 @@ dependencies {
         add("kspIosArm64", this)
         add("kspIosSimulatorArm64", this)
     }
+}
+
+// --- Ensure KSP waits for Compose Resources codegen ---
+listOf("Debug", "Release").forEach { variant ->
+    val kspTaskName = "ksp${variant}KotlinAndroid"
+    tasks.matching { it.name == kspTaskName }.configureEach {
+        dependsOn(
+            // общие генераторы (common)
+            "generateComposeResClass",
+            "generateResourceAccessorsForCommonMain",
+            "generateExpectResourceCollectorsForCommonMain",   // <-- добавлено
+            // androidMain
+            "generateResourceAccessorsForAndroidMain",
+            "generateActualResourceCollectorsForAndroidMain",
+            // variant-специфичный
+            "generateResourceAccessorsForAndroid$variant"
+        )
+        // (опционально) если хочешь строгое упорядочивание без ввода в up-to-date:
+        // mustRunAfter("generateComposeResClass", "generateResourceAccessorsForCommonMain", "generateExpectResourceCollectorsForCommonMain")
+    }
+}
+
+ksp {
+    // генерировать Kotlin-код (помогает уйти от части проблем в XProcessing)
+    arg("room.generateKotlin", "true")
+    // инкрементальная генерация
+    arg("room.incremental", "true")
+    // если на KSP2 ловил краш — можно временно отключить:
+    // useKsp2 = false
 }
