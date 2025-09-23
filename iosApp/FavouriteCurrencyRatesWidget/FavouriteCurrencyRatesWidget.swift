@@ -28,6 +28,7 @@ struct FavouriteCurrencyRatesWidget: Widget {
                 .containerBackground(.fill.tertiary, for: .widget)
         }
         .supportedFamilies([.systemSmall, .systemMedium, .systemLarge])
+        .description("Favourite currency rates")
     }
 }
 

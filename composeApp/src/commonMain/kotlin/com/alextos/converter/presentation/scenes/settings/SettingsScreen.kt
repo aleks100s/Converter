@@ -13,6 +13,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.alextos.common.presentation.Screen
@@ -67,25 +68,29 @@ private fun SettingsItem(
     onClick: () -> Unit
 ) {
     Column {
-        Row(
-            modifier = Modifier.clickable(onClick = onClick)
+        Column(
+            modifier = Modifier
+                .clickable(onClick = onClick)
                 .padding(horizontal = 16.dp, vertical = 8.dp)
-                .fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Column {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
                 Text(text = leadingText)
 
-                Text(
-                    text = caption,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.primary
-                )
+                trailingText?.let {
+                    Text(text = it,
+                        softWrap = false,
+                        overflow = TextOverflow.Visible)
+                }
             }
 
-            trailingText?.let {
-                Text(text = it)
-            }
+            Text(
+                text = caption,
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.primary
+            )
         }
 
         HorizontalDivider()
