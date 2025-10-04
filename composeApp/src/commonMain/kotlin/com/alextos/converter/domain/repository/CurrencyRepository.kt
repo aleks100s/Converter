@@ -10,4 +10,5 @@ interface CurrencyRepository {
     suspend fun downloadCurrencyRates()
     suspend fun updateCurrency(currency: CurrencyRate)
     suspend fun updateCurrencies(currencies: List<CurrencyRate>)
+    suspend fun setMainCurrency(currency: CurrencyCode)
 }

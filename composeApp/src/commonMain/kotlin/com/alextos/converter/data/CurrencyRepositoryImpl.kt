@@ -50,6 +50,10 @@ class CurrencyRepositoryImpl(
         dao.upsertCurrencies(currencies.map { it.toEntity() })
     }
 
+    override suspend fun setMainCurrency(currency: CurrencyCode) {
+        dao.setMainCurrency(currency.name)
+    }
+
     private suspend fun fetchCurrencyRates(): List<CurrencyRateEntity> {
         val response = remoteDataSource.getCurrencyRates().getOrThrow()
         val existingCodes = CurrencyCode.entries.map { it.name }

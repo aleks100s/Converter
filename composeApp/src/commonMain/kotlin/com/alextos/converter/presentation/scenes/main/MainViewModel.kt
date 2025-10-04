@@ -1,5 +1,6 @@
 package com.alextos.converter.presentation.scenes.main
 
+import androidx.compose.ui.text.intl.Locale
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.alextos.common.UiText
@@ -10,6 +11,7 @@ import com.alextos.converter.domain.storage.StorageService
 import com.alextos.di.ConverterAppDelegate
 import com.alextos.converter.domain.camera.ConverterUseCase
 import com.alextos.converter.domain.favourites.SaveFavouriteCurrenciesUseCase
+import com.alextos.converter.domain.models.CurrencyCode
 import com.alextos.converter.domain.services.ClipboardService
 import converter.composeapp.generated.resources.Res
 import converter.composeapp.generated.resources.error
@@ -18,6 +20,7 @@ import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -220,6 +223,7 @@ class MainViewModel(
                             )
                         } else {
                             storage.finishOnboarding()
+                            detectMainCurrency()
                             old.copy(
                                 step = OnboardingStep.Done,
                                 topEditorAlpha = 1f,
@@ -236,6 +240,7 @@ class MainViewModel(
                         }
                     }
                     OnboardingStep.CameraButton -> {
+                        detectMainCurrency()
                         storage.finishOnboarding()
                         old.copy(
                             step = OnboardingStep.Done,
@@ -257,6 +262,12 @@ class MainViewModel(
                      state.copy(onboardingState = onboardingState)
                 }
             }
+        }
+    }
+
+    private fun detectMainCurrency() {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.setMainCurrency(CurrencyCode.fromLocale() ?: CurrencyCode.USD)
         }
     }
 

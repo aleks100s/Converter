@@ -1,5 +1,7 @@
 package com.alextos.converter.domain.models
 
+import androidx.compose.ui.text.intl.Locale
+
 enum class CurrencyCode {
     AED, // United Arab Emirates Dirham,
     AMD, // Armenian Dram,
@@ -43,5 +45,12 @@ enum class CurrencyCode {
     USD, // United States Dollar,
     UZS, // Uzbekistani Som,
     VND, // Vietnamese Dong,
-    ZAR  // South African Rand
+    ZAR;  // South African Rand
+
+    companion object {
+        fun fromLocale(): CurrencyCode? {
+            val locale = Locale.current.region
+            return entries.firstOrNull { it.name.dropLast(1) == locale }
+        }
+    }
 }

@@ -23,4 +23,7 @@ interface CurrencyRateDao {
 
     @Query("SELECT * FROM currency_rates")
     fun getCurrencyRates(): Flow<List<CurrencyRateEntity>>
+
+    @Query("UPDATE currencies SET isMain = 1 WHERE code = :code")
+    suspend fun setMainCurrency(code: String)
 }

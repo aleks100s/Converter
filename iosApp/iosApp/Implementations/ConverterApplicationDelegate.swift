@@ -10,6 +10,8 @@ import SwiftUI
 import WidgetKit
 
 final class ConverterApplicationDelegate: ConverterAppDelegate {
+    var isCameraFeatureAvailable = true
+    
     private let userDefaults: UserDefaults
 	private let window: UIWindow
 
