@@ -14,6 +14,8 @@ class CurrencyApp: Application() {
         super.onCreate()
         // Initialize Koin or any other dependency injection framework here
         initKoin(delegate = object : ConverterAppDelegate {
+            override val isCameraFeatureAvailable = false
+
             override fun showCamera(converterUseCase: ConverterUseCase, props: CameraProps) {
                 val intent = Intent(this@CurrencyApp, CameraActivity::class.java).apply {
                     setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)

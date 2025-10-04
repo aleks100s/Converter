@@ -11,6 +11,7 @@ data class MainState(
     val bottomCurrency: CurrencyRate? = null,
     val onboardingState: OnboardingState = OnboardingState(),
     val contentState: ContentState = ContentState.Loading,
+    val isFABVisible: Boolean,
 )
 
 data class OnboardingState(

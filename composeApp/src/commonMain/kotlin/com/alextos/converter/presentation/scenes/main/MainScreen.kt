@@ -140,18 +140,20 @@ fun MainScreen(
                         }
                     }
 
-                    AnimatedVisibility(!state.onboardingState.isNextOnboardingButtonVisible) {
-                        Box {
-                            Button(
-                                onClick = {
-                                    haptic.performHapticFeedback(HapticFeedbackType.VirtualKey)
-                                    viewModel.onAction(MainAction.ShowCamera(props))
+                    if (state.isFABVisible) {
+                        AnimatedVisibility(!state.onboardingState.isNextOnboardingButtonVisible) {
+                            Box {
+                                Button(
+                                    onClick = {
+                                        haptic.performHapticFeedback(HapticFeedbackType.VirtualKey)
+                                        viewModel.onAction(MainAction.ShowCamera(props))
+                                    }
+                                ) {
+                                    CustomLabel(
+                                        title = props.title,
+                                        imageVector = vectorResource(Res.drawable.ic_camera)
+                                    )
                                 }
-                            ) {
-                                CustomLabel(
-                                    title = props.title,
-                                    imageVector = vectorResource(Res.drawable.ic_camera)
-                                )
                             }
                         }
                     }

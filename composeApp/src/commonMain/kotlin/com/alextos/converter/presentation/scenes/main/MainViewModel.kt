@@ -30,7 +30,7 @@ class MainViewModel(
     private val clipboardService: ClipboardService,
     private val saveFavouriteCurrenciesUseCase: SaveFavouriteCurrenciesUseCase
 ): ViewModel() {
-    private val _state = MutableStateFlow(MainState())
+    private val _state = MutableStateFlow(MainState(isFABVisible = delegate.isCameraFeatureAvailable))
     val state = _state.asStateFlow()
 
     init {
@@ -210,13 +210,30 @@ class MainViewModel(
                         )
                     }
                     OnboardingStep.SettingsButton -> {
-                        old.copy(
-                            step = OnboardingStep.CameraButton,
-                            settingsButtonAlpha = 0.3f,
-                            settingsButtonBackgroundAlpha = 0f,
-                            isSettingsButtonTextVisible = false,
-                            isCameraButtonTextVisible = true,
-                        )
+                        if (delegate.isCameraFeatureAvailable) {
+                            old.copy(
+                                step = OnboardingStep.CameraButton,
+                                settingsButtonAlpha = 0.3f,
+                                settingsButtonBackgroundAlpha = 0f,
+                                isSettingsButtonTextVisible = false,
+                                isCameraButtonTextVisible = true,
+                            )
+                        } else {
+                            storage.finishOnboarding()
+                            old.copy(
+                                step = OnboardingStep.Done,
+                                topEditorAlpha = 1f,
+                                bottomEditorAlpha = 1f,
+                                swapButtonAlpha = 1f,
+                                refreshButtonAlpha = 1f,
+                                settingsButtonAlpha = 1f,
+                                settingsButtonBackgroundAlpha = 0f,
+                                isCameraButtonTextVisible = false,
+                                hintAlpha = 1f,
+                                isNextOnboardingButtonVisible = false,
+                                isSettingsButtonTextVisible = false,
+                            )
+                        }
                     }
                     OnboardingStep.CameraButton -> {
                         storage.finishOnboarding()
