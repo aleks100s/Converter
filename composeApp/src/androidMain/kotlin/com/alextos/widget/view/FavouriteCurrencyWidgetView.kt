@@ -1,10 +1,13 @@
 package com.alextos.widget.view
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.glance.GlanceModifier
 import androidx.glance.GlanceTheme
+import androidx.glance.LocalContext
+import androidx.glance.LocalSize
 import androidx.glance.layout.Alignment
 import androidx.glance.layout.Column
 import androidx.glance.layout.Row
@@ -19,8 +22,19 @@ import com.alextos.converter.domain.models.emoji
 
 @Composable
 fun FavouriteCurrencyWidgetView(rates: List<FavouriteCurrency>) {
-    Column {
-        rates.chunked(2).forEach { pair ->
+    val size = LocalSize.current
+    val columns = when(size) {
+        DpSize(100.dp, 100.dp) -> 1
+        DpSize(250.dp, 100.dp) -> 2
+        DpSize(250.dp, 250.dp) -> 2
+        else -> 1
+    }
+
+    Column(
+        modifier = GlanceModifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        rates.chunked(columns).forEach { pair ->
             Row(
                 modifier = GlanceModifier.fillMaxWidth().padding(vertical = 4.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
