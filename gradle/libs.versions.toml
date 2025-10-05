@@ -26,6 +26,7 @@ playServicesMlkitTextRecognitionCommon = "19.1.0"
 playServicesMlkitTextRecognition = "19.0.1"
 cameraView = "1.5.0"
 cameraLifecycle = "1.5.0"
+glanceAppwidget = "1.1.1"
 
 [libraries]
 
@@ -67,6 +68,7 @@ play-services-mlkit-text-recognition-common = { group = "com.google.android.gms"
 play-services-mlkit-text-recognition = { group = "com.google.android.gms", name = "play-services-mlkit-text-recognition", version.ref = "playServicesMlkitTextRecognition" }
 androidx-camera-view = { group = "androidx.camera", name = "camera-view", version.ref = "cameraView" }
 androidx-camera-lifecycle = { group = "androidx.camera", name = "camera-lifecycle", version.ref = "cameraLifecycle" }
+androidx-glance-appwidget = { module = "androidx.glance:glance-appwidget", version.ref = "glanceAppwidget" }
 
 [plugins]
 

@@ -21,7 +21,7 @@ actual fun NativeBanner() {
     AndroidView(
         factory = { context ->
             val banner = BannerAdView(context)
-            banner.setAdUnitId(if (BuildConfig.DEBUG) "demo-banner-yandex" else "R-M-15379111-1")
+            banner.setAdUnitId(if (BuildConfig.DEBUG) "demo-banner-yandex" else "R-M-17407512-1")
             val width = displayMetrics.widthPixels
             val adWidth = (width / displayMetrics.density).roundToInt()
             banner.setAdSize(BannerAdSize.stickySize(context = context, width = adWidth))
