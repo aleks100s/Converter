@@ -8,6 +8,7 @@ import com.alextos.camera.CameraActivity
 import com.alextos.converter.domain.camera.CameraProps
 import com.alextos.di.ConverterAppDelegate
 import com.alextos.converter.domain.camera.ConverterUseCase
+import com.alextos.converter.domain.storage.ConverterState
 import com.alextos.di.initKoin
 import com.alextos.widget.FavouriteCurrencyWidget
 import kotlinx.coroutines.CoroutineScope
@@ -42,6 +43,10 @@ class CurrencyApp: Application() {
                         FavouriteCurrencyWidget().update(this@CurrencyApp, glanceId)
                     }
                 }
+            }
+
+            override fun lastQuery(state: ConverterState) {
+                
             }
         }) {
             androidContext(this@CurrencyApp)

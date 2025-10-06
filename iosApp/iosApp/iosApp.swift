@@ -14,7 +14,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         let window = UIWindow(frame: UIScreen.main.bounds)
 		self.window = window
 		window.rootViewController = MainKt.MainViewController(
-            delegate: ConverterApplicationDelegate(window: window, userDefaults: UserDefaults(suiteName: Constants.appGroup) ?? .standard),
+            delegate: ConverterApplicationDelegate(window: window, userDefaults: UserDefaults(suiteName: Constants.appGroup) ?? .standard, spotlightService: SpotlightService()),
 			nativeViewFactory: NativeViewFactoryImpl()
 		)
 		window.makeKeyAndVisible()

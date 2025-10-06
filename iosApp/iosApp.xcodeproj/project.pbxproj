@@ -17,6 +17,8 @@
 		27E0A61E2DCA2610009AB905 /* AdBannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27E0A61D2DCA2610009AB905 /* AdBannerViewController.swift */; };
 		27E0A6282DCA3217009AB905 /* NativeViewFactoryImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27E0A6272DCA3217009AB905 /* NativeViewFactoryImpl.swift */; };
 		27E0A62B2DCA35A0009AB905 /* AdBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27E0A62A2DCA35A0009AB905 /* AdBannerView.swift */; };
+		27EEAA732E940B290080FD4D /* SpotlightService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27EEAA722E940B290080FD4D /* SpotlightService.swift */; };
+		27EEAA752E9415A60080FD4D /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 27EEAA742E9415A60080FD4D /* Localizable.xcstrings */; };
 		27FB5D7A2DBB44A900B50AC4 /* ConverterApplicationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27FB5D792DBB44A900B50AC4 /* ConverterApplicationDelegate.swift */; };
 		27FB5D7C2DBB453C00B50AC4 /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27FB5D7B2DBB453C00B50AC4 /* CameraViewController.swift */; };
 		27FB5D802DC5E70B00B50AC4 /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27FB5D7F2DC5E70B00B50AC4 /* CameraView.swift */; };
@@ -76,6 +78,8 @@
 		27E0A61D2DCA2610009AB905 /* AdBannerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdBannerViewController.swift; sourceTree = "<group>"; };
 		27E0A6272DCA3217009AB905 /* NativeViewFactoryImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NativeViewFactoryImpl.swift; sourceTree = "<group>"; };
 		27E0A62A2DCA35A0009AB905 /* AdBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdBannerView.swift; sourceTree = "<group>"; };
+		27EEAA722E940B290080FD4D /* SpotlightService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotlightService.swift; sourceTree = "<group>"; };
+		27EEAA742E9415A60080FD4D /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		27FB5D792DBB44A900B50AC4 /* ConverterApplicationDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConverterApplicationDelegate.swift; sourceTree = "<group>"; };
 		27FB5D7B2DBB453C00B50AC4 /* CameraViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
 		27FB5D7F2DC5E70B00B50AC4 /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
@@ -127,6 +131,7 @@
 			isa = PBXGroup;
 			children = (
 				2713194A2DC894A200CC42EB /* InfoPlist.strings */,
+				27EEAA742E9415A60080FD4D /* Localizable.xcstrings */,
 			);
 			path = Localization;
 			sourceTree = "<group>";
@@ -167,6 +172,14 @@
 			path = Implementations;
 			sourceTree = "<group>";
 		};
+		27EEAA712E940B1B0080FD4D /* Spotlight */ = {
+			isa = PBXGroup;
+			children = (
+				27EEAA722E940B290080FD4D /* SpotlightService.swift */,
+			);
+			path = Spotlight;
+			sourceTree = "<group>";
+		};
 		A93A952E29CC810C00F8E227 = {
 			isa = PBXGroup;
 			children = (
@@ -191,6 +204,7 @@
 		A93A953929CC810C00F8E227 /* iosApp */ = {
 			isa = PBXGroup;
 			children = (
+				27EEAA712E940B1B0080FD4D /* Spotlight */,
 				2725D2632E7553BC0032CB47 /* Model */,
 				2725D2612E7551AC0032CB47 /* iosApp.entitlements */,
 				27E0A6292DCA3375009AB905 /* Implementations */,
@@ -327,6 +341,7 @@
 			files = (
 				27E0A61B2DC93627009AB905 /* MobileAdsBundle.bundle in Resources */,
 				2713194C2DC894A200CC42EB /* InfoPlist.strings in Resources */,
+				27EEAA752E9415A60080FD4D /* Localizable.xcstrings in Resources */,
 				A93A953F29CC810D00F8E227 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -392,6 +407,7 @@
 				27E0A62B2DCA35A0009AB905 /* AdBannerView.swift in Sources */,
 				27FB5D7A2DBB44A900B50AC4 /* ConverterApplicationDelegate.swift in Sources */,
 				A93A953B29CC810C00F8E227 /* iosApp.swift in Sources */,
+				27EEAA732E940B290080FD4D /* SpotlightService.swift in Sources */,
 				27FB5D7C2DBB453C00B50AC4 /* CameraViewController.swift in Sources */,
 				27FB5D802DC5E70B00B50AC4 /* CameraView.swift in Sources */,
 			);
@@ -456,7 +472,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 2;
+				MARKETING_VERSION = 3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.alextos.converter.FavouriteCurrencyRatesWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -490,7 +506,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 2;
+				MARKETING_VERSION = 3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.alextos.converter.FavouriteCurrencyRatesWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -638,7 +654,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2;
+				MARKETING_VERSION = 3;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.alextos.converter;
 				PRODUCT_NAME = Converter;
@@ -673,7 +689,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2;
+				MARKETING_VERSION = 3;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.alextos.converter;
 				PRODUCT_NAME = Converter;

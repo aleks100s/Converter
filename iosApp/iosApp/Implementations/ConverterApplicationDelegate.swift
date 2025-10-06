@@ -14,10 +14,16 @@ final class ConverterApplicationDelegate: ConverterAppDelegate {
     
     private let userDefaults: UserDefaults
 	private let window: UIWindow
+    private let spotlightService: SpotlightService
 
-	init(window: UIWindow, userDefaults: UserDefaults) {
+	init(
+        window: UIWindow,
+        userDefaults: UserDefaults,
+        spotlightService: SpotlightService
+    ) {
 		self.window = window
         self.userDefaults = userDefaults
+        self.spotlightService = spotlightService
 	}
 	
 	func showCamera(converterUseCase: ConverterUseCase, props: CameraProps) {
@@ -31,5 +37,14 @@ final class ConverterApplicationDelegate: ConverterAppDelegate {
         let data = SharedWidgetData(favouriteCurrencies: favourites, mainCurrency: main)
         userDefaults.set(try? JSONEncoder().encode(data), forKey: Constants.widgetDataKey)
         WidgetCenter.shared.reloadAllTimelines()
+    }
+    
+    func lastQuery(state: ConverterState) {
+        spotlightService.trackLastQuery(
+            currencyFrom: state.topCurrency?.name ?? "",
+            currencyTo: state.bottomCurrency?.name ?? "",
+            amountFrom: state.topText,
+            amountTo: state.bottomText
+        )
     }
 }

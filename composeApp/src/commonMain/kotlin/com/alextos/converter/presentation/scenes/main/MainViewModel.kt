@@ -16,15 +16,21 @@ import com.alextos.converter.domain.services.ClipboardService
 import converter.composeapp.generated.resources.Res
 import converter.composeapp.generated.resources.error
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.IO
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
+@OptIn(FlowPreview::class)
 class MainViewModel(
     private val repository: CurrencyRepository,
     private val storage: StorageService,
@@ -35,6 +41,8 @@ class MainViewModel(
 ): ViewModel() {
     private val _state = MutableStateFlow(MainState(isFABVisible = delegate.isCameraFeatureAvailable))
     val state = _state.asStateFlow()
+
+    private val lastQuery = MutableSharedFlow<ConverterState?>()
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
@@ -91,6 +99,17 @@ class MainViewModel(
                 )
             }
         }
+
+        viewModelScope.launch {
+            lastQuery
+                .mapNotNull { it }
+                .distinctUntilChanged()
+                .debounce(1000)
+                .collect {
+                    storage.saveState(it)
+                    delegate.lastQuery(it)
+                }
+        }
     }
 
     fun onAction(action: MainAction) {
@@ -105,16 +124,7 @@ class MainViewModel(
                         bottomText = bottomRubValue.preciseFormat(),
                     )
                 }
-                viewModelScope.launch(Dispatchers.IO) {
-                    storage.saveState(
-                        ConverterState(
-                            topText = state.value.topText,
-                            bottomText = state.value.bottomText,
-                            topCurrency = state.value.topCurrency?.code,
-                            bottomCurrency = state.value.bottomCurrency?.code
-                        )
-                    )
-                }
+                saveState()
             }
             is MainAction.BottomTextChanged -> {
                 val bottomValue = action.text.replace(Regex("[^\\d.,]"), "").replace(",", ".").toDoubleOrNull() ?: 0.0
@@ -126,6 +136,7 @@ class MainViewModel(
                         topText = topRubValue.preciseFormat(),
                     )
                 }
+                saveState()
             }
             is MainAction.SwapCurrencies -> {
                 _state.update { state ->
@@ -262,6 +273,18 @@ class MainViewModel(
                      state.copy(onboardingState = onboardingState)
                 }
             }
+        }
+    }
+
+    private fun saveState() {
+        viewModelScope.launch {
+            val state = ConverterState(
+                topText = state.value.topText,
+                bottomText = state.value.bottomText,
+                topCurrency = state.value.topCurrency?.code,
+                bottomCurrency = state.value.bottomCurrency?.code
+            )
+            lastQuery.emit(state)
         }
     }
 
