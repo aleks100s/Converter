@@ -9,11 +9,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.alextos.common.presentation.NativeBanner
 import com.alextos.common.presentation.horizontalComposableTransition
 import com.alextos.converter.presentation.scenes.main.MainScreen
 import com.alextos.converter.presentation.scenes.settings.SettingsScreen
@@ -22,12 +20,9 @@ import com.alextos.converter.presentation.scenes.settings.main.MainCurrencySetti
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun ApplicationRoot(
-    viewModel: ApplicationViewModel
-) {
+fun ApplicationRoot() {
     val navController = rememberNavController()
     val focusManager = LocalFocusManager.current
-    val isAdVisible = viewModel.isAdVisible.collectAsStateWithLifecycle().value
 
     Scaffold(modifier = Modifier.fillMaxSize()
         .clickable(
@@ -35,11 +30,6 @@ fun ApplicationRoot(
             interactionSource = remember { MutableInteractionSource() }
         ) {
             focusManager.clearFocus()
-        },
-        bottomBar = {
-            if (isAdVisible) {
-                NativeBanner()
-            }
         }
     ) { innerPadding ->
         NavHost(

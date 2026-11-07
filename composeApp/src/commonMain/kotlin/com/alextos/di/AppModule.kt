@@ -1,7 +1,6 @@
 package com.alextos.di
 
 import androidx.sqlite.driver.bundled.BundledSQLiteDriver
-import com.alextos.app.navigation.ApplicationViewModel
 import com.alextos.common.data.HttpClientFactory
 import com.alextos.converter.data.CurrencyRepositoryImpl
 import com.alextos.converter.data.database.AppDatabase
@@ -46,7 +45,6 @@ fun appModule(delegate: ConverterAppDelegate) = module {
     single<StorageService> { StorageServiceImpl(get()) }
     single { ConverterUseCase()  }
     single { SaveFavouriteCurrenciesUseCase(delegate) }
-    viewModelOf(::ApplicationViewModel)
     viewModelOf(::SettingsViewModel)
     viewModelOf(::FavouriteCurrencySettingsViewModel)
     viewModelOf(::MainCurrencySettingsViewModel)

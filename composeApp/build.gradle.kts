@@ -71,7 +71,6 @@ kotlin {
             implementation(libs.kotlinx.coroutines.android)
             implementation(libs.ktor.client.okhttp)
             implementation(libs.koin.android)
-            implementation(libs.mobileads)
             implementation(libs.androidx.camera.core)
             implementation(libs.androidx.camera.view)
             implementation(libs.androidx.camera.lifecycle)
@@ -99,8 +98,8 @@ android {
         targetSdk = 36
 
         applicationId = "com.alextos.converter"
-        versionCode = 4
-        versionName = "2.1"
+        versionCode = 5
+        versionName = "3"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }

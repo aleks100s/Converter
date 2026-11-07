@@ -33,7 +33,6 @@ fun Screen(
     backButtonIcon: ImageVector = Icons.AutoMirrored.Filled.ArrowBack,
     floatingActionButton: @Composable () -> Unit = {},
     actions: @Composable RowScope.() -> Unit = {},
-    bannerView: @Composable (() -> Unit)? = null,
     content: @Composable (Modifier) -> Unit
 ) {
     Scaffold(
@@ -70,16 +69,11 @@ fun Screen(
             )
         },
         containerColor = MaterialTheme.colorScheme.background.copy(alpha = 0.7f),
-        floatingActionButton = floatingActionButton,
-        bottomBar = {
-            if (bannerView != null) {
-                bannerView()
-            }
-        }
+        floatingActionButton = floatingActionButton
     ) { innerPaddings ->
         content(Modifier.padding(
             top = innerPaddings.calculateTopPadding(),
-            bottom = if (bannerView != null) innerPaddings.calculateBottomPadding() else 0.dp
+            bottom = 0.dp
         ))
     }
 }

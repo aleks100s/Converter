@@ -46,7 +46,7 @@ class CurrencyApp: Application() {
             }
 
             override fun lastQuery(state: ConverterState) {
-                
+
             }
         }) {
             androidContext(this@CurrencyApp)
