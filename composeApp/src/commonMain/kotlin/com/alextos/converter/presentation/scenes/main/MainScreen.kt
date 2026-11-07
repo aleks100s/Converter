@@ -11,6 +11,7 @@ import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,19 +19,17 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Clear
-import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.minimumInteractiveComponentSize
@@ -61,13 +60,14 @@ import com.alextos.converter.domain.models.CurrencyRate
 import com.alextos.common.presentation.PickerDropdown
 import com.alextos.common.presentation.Screen
 import com.alextos.converter.domain.camera.CameraProps
-import com.alextos.converter.presentation.scenes.settings.SettingsScreen
 import converter.composeapp.generated.resources.Res
 import converter.composeapp.generated.resources.camera_button_title
 import converter.composeapp.generated.resources.camera_title
 import converter.composeapp.generated.resources.common_next
 import converter.composeapp.generated.resources.ic_camera
 import converter.composeapp.generated.resources.converter_clear
+import converter.composeapp.generated.resources.ic_close
+import converter.composeapp.generated.resources.ic_rotate_right
 import converter.composeapp.generated.resources.converter_quick_select
 import converter.composeapp.generated.resources.converter_reload
 import converter.composeapp.generated.resources.converter_retry
@@ -202,11 +202,14 @@ fun MainScreen(
                 )
             }
             is ContentState.Success -> {
-                ContentView(
-                    modifier = modifier,
-                    state = state,
-                    onAction = viewModel::onAction
-                )
+                BoxWithConstraints(modifier = modifier.fillMaxSize()) {
+                    ContentView(
+                        modifier = Modifier,
+                        state = state,
+                        onAction = viewModel::onAction,
+                        isWideLayout = maxWidth >= 840.dp && maxHeight >= 480.dp
+                    )
+                }
             }
         }
     }
@@ -250,10 +253,9 @@ private fun ErrorView(
 private fun ContentView(
     modifier: Modifier,
     state: MainState,
-    onAction: (MainAction) -> Unit
+    onAction: (MainAction) -> Unit,
+    isWideLayout: Boolean
 ) {
-    val haptic = LocalHapticFeedback.current
-
     AnimatedVisibility(
         state.onboardingState.step == OnboardingStep.Initial,
         exit = fadeOut()
@@ -276,28 +278,162 @@ private fun ContentView(
         state.onboardingState.step != OnboardingStep.Initial,
         enter = fadeIn()
     ) {
-        Column(
-            modifier = modifier
-                .padding(horizontal = 16.dp, vertical = 16.dp)
-                .fillMaxWidth(),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+        if (isWideLayout) {
+            ConverterRowContent(
+                modifier = modifier.padding(bottom = if (state.isFABVisible) 72.dp else 0.dp),
+                state = state,
+                onAction = onAction
+            )
+        } else {
+            ConverterColumnContent(modifier = modifier, state = state, onAction = onAction)
+        }
+    }
+}
+
+@Composable
+private fun ConverterColumnContent(
+    modifier: Modifier,
+    state: MainState,
+    onAction: (MainAction) -> Unit
+) {
+    val haptic = LocalHapticFeedback.current
+
+    Column(
+        modifier = modifier
+            .padding(horizontal = 16.dp, vertical = 16.dp)
+            .verticalScroll(rememberScrollState())
+            .fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
+        AnimatedVisibility(state.onboardingState.isRefreshButtonTextVisible) {
+            Text(
+                stringResource(Res.string.onboarding_refresh_button_text),
+                modifier = Modifier.fillMaxWidth(),
+                textAlign = TextAlign.End,
+            )
+        }
+
+        AnimatedVisibility(state.onboardingState.isSettingsButtonTextVisible) {
+            Text(
+                stringResource(Res.string.onboarding_settings_button_text),
+                modifier = Modifier.fillMaxWidth(),
+                textAlign = TextAlign.End,
+            )
+        }
+
+        CurrencyEditor(
+            currency = state.topCurrency,
+            value = state.topText,
+            onValueChanged = { text ->
+                onAction(MainAction.TopTextChanged(text))
+            },
+            currencies = state.rates,
+            onCurrencySelected = { currency ->
+                onAction(MainAction.TopCurrencySelected(currency))
+            },
+            onCopy = { text, label ->
+                onAction(MainAction.CopyButtonTapped(text, label))
+            },
+            modifier = Modifier
+                .alpha(state.onboardingState.topEditorAlpha)
+                .clip(RoundedCornerShape(16.dp))
+                .background(Color.White.copy(alpha = state.onboardingState.topEditorBackgroundAlpha))
+        )
+
+        AnimatedVisibility(
+            visible = state.onboardingState.isTopEditorTextVisible,
+            enter = slideInVertically() + fadeIn(),
+            exit = slideOutVertically() + fadeOut(),
         ) {
-            AnimatedVisibility(state.onboardingState.isRefreshButtonTextVisible) {
-                Text(
-                    stringResource(Res.string.onboarding_refresh_button_text),
-                    modifier = Modifier.fillMaxWidth(),
-                    textAlign = TextAlign.End,
-                )
-            }
+            Text(stringResource(Res.string.onboarding_top_editor_text))
+        }
 
-            AnimatedVisibility(state.onboardingState.isSettingsButtonTextVisible) {
-                Text(
-                    stringResource(Res.string.onboarding_settings_button_text),
-                    modifier = Modifier.fillMaxWidth(),
-                    textAlign = TextAlign.End,
-                )
-            }
+        SwapButton(
+            Modifier
+                .alpha(state.onboardingState.swapButtonAlpha)
+                .clip(CircleShape)
+                .background(Color.White.copy(alpha = state.onboardingState.swapButtonBackgroundAlpha)),
+            isTextVisible = state.onboardingState.isSwapButtonTextVisible,
+            isVertical = false
+        ) {
+            haptic.performHapticFeedback(HapticFeedbackType.VirtualKey)
+            onAction(MainAction.SwapCurrencies)
+        }
 
+        CurrencyEditor(
+            currency = state.bottomCurrency,
+            value = state.bottomText,
+            onValueChanged = { text ->
+                onAction(MainAction.BottomTextChanged(text))
+            },
+            currencies = state.rates,
+            onCurrencySelected = { currency ->
+                onAction(MainAction.BottomCurrencySelected(currency))
+            },
+            onCopy = { text, label ->
+                onAction(MainAction.CopyButtonTapped(text, label))
+            },
+            modifier = Modifier
+                .alpha(state.onboardingState.bottomEditorAlpha)
+                .clip(RoundedCornerShape(16.dp))
+                .background(Color.White.copy(alpha = state.onboardingState.bottomEditorBackgroundAlpha))
+        )
+
+        AnimatedVisibility(
+            visible = state.onboardingState.isBottomEditorTextVisible,
+            enter = slideInVertically() + fadeIn(),
+            exit = slideOutVertically() + fadeOut(),
+        ) {
+            Text(stringResource(Res.string.onboarding_bottom_editor_text))
+        }
+
+        Text(
+            modifier = Modifier
+                .align(Alignment.End)
+                .alpha(state.onboardingState.hintAlpha),
+            text = stringResource(Res.string.data_is_actual),
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+    }
+}
+
+@Composable
+private fun ConverterRowContent(
+    modifier: Modifier,
+    state: MainState,
+    onAction: (MainAction) -> Unit
+) {
+    val haptic = LocalHapticFeedback.current
+
+    Column(
+        modifier = modifier
+            .padding(horizontal = 16.dp, vertical = 16.dp)
+            .verticalScroll(rememberScrollState())
+            .fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
+        AnimatedVisibility(state.onboardingState.isRefreshButtonTextVisible) {
+            Text(
+                stringResource(Res.string.onboarding_refresh_button_text),
+                modifier = Modifier.fillMaxWidth(),
+                textAlign = TextAlign.End,
+            )
+        }
+
+        AnimatedVisibility(state.onboardingState.isSettingsButtonTextVisible) {
+            Text(
+                stringResource(Res.string.onboarding_settings_button_text),
+                modifier = Modifier.fillMaxWidth(),
+                textAlign = TextAlign.End,
+            )
+        }
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
             CurrencyEditor(
                 currency = state.topCurrency,
                 value = state.topText,
@@ -312,18 +448,11 @@ private fun ContentView(
                     onAction(MainAction.CopyButtonTapped(text, label))
                 },
                 modifier = Modifier
+                    .weight(1f)
                     .alpha(state.onboardingState.topEditorAlpha)
                     .clip(RoundedCornerShape(16.dp))
                     .background(Color.White.copy(alpha = state.onboardingState.topEditorBackgroundAlpha))
             )
-
-            AnimatedVisibility(
-                visible = state.onboardingState.isTopEditorTextVisible,
-                enter = slideInVertically() + fadeIn(),
-                exit = slideOutVertically() + fadeOut(),
-            ) {
-                Text(stringResource(Res.string.onboarding_top_editor_text))
-            }
 
             SwapButton(
                 Modifier
@@ -331,6 +460,7 @@ private fun ContentView(
                     .clip(CircleShape)
                     .background(Color.White.copy(alpha = state.onboardingState.swapButtonBackgroundAlpha)),
                 isTextVisible = state.onboardingState.isSwapButtonTextVisible,
+                isVertical = true
             ) {
                 haptic.performHapticFeedback(HapticFeedbackType.VirtualKey)
                 onAction(MainAction.SwapCurrencies)
@@ -350,28 +480,37 @@ private fun ContentView(
                     onAction(MainAction.CopyButtonTapped(text, label))
                 },
                 modifier = Modifier
+                    .weight(1f)
                     .alpha(state.onboardingState.bottomEditorAlpha)
                     .clip(RoundedCornerShape(16.dp))
                     .background(Color.White.copy(alpha = state.onboardingState.bottomEditorBackgroundAlpha))
             )
-
-            AnimatedVisibility(
-                visible = state.onboardingState.isBottomEditorTextVisible,
-                enter = slideInVertically() + fadeIn(),
-                exit = slideOutVertically() + fadeOut(),
-            ) {
-                Text(stringResource(Res.string.onboarding_bottom_editor_text))
-            }
-
-            Text(
-                modifier = Modifier
-                    .align(Alignment.End)
-                    .alpha(state.onboardingState.hintAlpha),
-                text = stringResource(Res.string.data_is_actual),
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
         }
+
+        AnimatedVisibility(
+            visible = state.onboardingState.isTopEditorTextVisible,
+            enter = slideInVertically() + fadeIn(),
+            exit = slideOutVertically() + fadeOut(),
+        ) {
+            Text(stringResource(Res.string.onboarding_top_editor_text))
+        }
+
+        AnimatedVisibility(
+            visible = state.onboardingState.isBottomEditorTextVisible,
+            enter = slideInVertically() + fadeIn(),
+            exit = slideOutVertically() + fadeOut(),
+        ) {
+            Text(stringResource(Res.string.onboarding_bottom_editor_text))
+        }
+
+        Text(
+            modifier = Modifier
+                .align(Alignment.End)
+                .alpha(state.onboardingState.hintAlpha),
+            text = stringResource(Res.string.data_is_actual),
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
     }
 }
 
@@ -400,7 +539,7 @@ private fun RefreshButton(
         modifier = modifier.run { rotate(rotate.value) }
     ) {
         Icon(
-            Icons.Default.Refresh,
+            vectorResource(Res.drawable.ic_rotate_right),
             stringResource(Res.string.converter_reload),
         )
     }
@@ -428,6 +567,7 @@ private fun SettingsButton(
 private fun SwapButton(
     modifier: Modifier,
     isTextVisible: Boolean,
+    isVertical: Boolean,
     onClick: () -> Unit
 ) {
     var isRotating by remember { mutableStateOf(false) }
@@ -442,28 +582,56 @@ private fun SwapButton(
         }
     }
 
-    Row(
-        horizontalArrangement = Arrangement.spacedBy(16.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        IconButton(
-            onClick = {
-                isRotating = true
-                onClick()
-            },
-            modifier = modifier
-                .minimumInteractiveComponentSize()
-                .size(32.dp)
-                .run { rotate(rotate.value) }
+    if (isVertical) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            Icon(
-                vectorResource(Res.drawable.ic_swap),
-                stringResource(Res.string.converter_swap),
-            )
-        }
+            IconButton(
+                onClick = {
+                    isRotating = true
+                    onClick()
+                },
+                modifier = modifier
+                    .minimumInteractiveComponentSize()
+                    .size(32.dp)
+                    .rotate(rotate.value)
+                    .rotate(90f)
+            ) {
+                Icon(
+                    vectorResource(Res.drawable.ic_swap),
+                    stringResource(Res.string.converter_swap),
+                )
+            }
 
-        AnimatedVisibility(isTextVisible) {
-            Text(stringResource(Res.string.onboarding_swap_button_text))
+            AnimatedVisibility(isTextVisible) {
+                Text(stringResource(Res.string.onboarding_swap_button_text))
+            }
+        }
+    } else {
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            IconButton(
+                onClick = {
+                    isRotating = true
+                    onClick()
+                },
+                modifier = modifier
+                    .minimumInteractiveComponentSize()
+                    .size(32.dp)
+                    .run { rotate(rotate.value) }
+            ) {
+                Icon(
+                    vectorResource(Res.drawable.ic_swap),
+                    stringResource(Res.string.converter_swap),
+                )
+            }
+
+            AnimatedVisibility(isTextVisible) {
+                Text(stringResource(Res.string.onboarding_swap_button_text))
+            }
         }
     }
 }
@@ -522,7 +690,7 @@ private fun CurrencyEditor(
                             }
                         ) {
                             Icon(
-                                imageVector = Icons.Default.Clear,
+                                imageVector = vectorResource(Res.drawable.ic_close),
                                 contentDescription = stringResource(Res.string.converter_clear),
                             )
                         }

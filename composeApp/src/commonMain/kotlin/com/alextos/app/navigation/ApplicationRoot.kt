@@ -3,7 +3,6 @@ package com.alextos.app.navigation
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -31,9 +30,8 @@ fun ApplicationRoot() {
         ) {
             focusManager.clearFocus()
         }
-    ) { innerPadding ->
+    ) {
         NavHost(
-            modifier = Modifier.padding(bottom = innerPadding.calculateBottomPadding()),
             navController = navController,
             startDestination = Route.Converter
         ) {

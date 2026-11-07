@@ -1,5 +1,3 @@
-import org.gradle.kotlin.dsl.implementation
-import org.jetbrains.compose.ExperimentalComposeLibrary
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSetTree
 
 plugins {
@@ -20,7 +18,6 @@ kotlin {
     }
 
     listOf(
-        iosX64(),
         iosArm64(),
         iosSimulatorArm64()
     ).forEach {
@@ -32,11 +29,11 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            implementation(compose.runtime)
-            implementation(compose.foundation)
-            implementation(compose.material3)
-            implementation(compose.components.resources)
-            implementation(compose.components.uiToolingPreview)
+            implementation(libs.compose.runtime)
+            implementation(libs.compose.foundation)
+            implementation(libs.compose.material3)
+            implementation(libs.compose.components.resources)
+            implementation(libs.compose.ui.tooling.preview)
             implementation(libs.kotlinx.coroutines.core)
             implementation(libs.ktor.client.core)
             implementation(libs.ktor.client.content.negotiation)
@@ -48,7 +45,6 @@ kotlin {
             implementation(libs.kotlinx.serialization.json)
             implementation(libs.koin.core)
             implementation(libs.koin.compose)
-            implementation(libs.multiplatformSettings)
             implementation(libs.kotlinx.datetime)
             implementation(libs.room.runtime)
             implementation(libs.composeIcons.featherIcons)
@@ -56,17 +52,20 @@ kotlin {
             implementation(libs.ktor.serialization.xml)
             implementation(libs.koin.compose.viewmodel)
             implementation(libs.multiplatform.settings.no.arg)
+            implementation(libs.material3.window.size)
+            implementation(libs.material3.adaptive.layout)
+            implementation(libs.material3.adaptive.navigation)
+            implementation(libs.ui.backhandler)
         }
 
         commonTest.dependencies {
             implementation(kotlin("test"))
-            @OptIn(ExperimentalComposeLibrary::class)
-            implementation(compose.uiTest)
+            implementation(libs.compose.ui.test)
             implementation(libs.kotlinx.coroutines.test)
         }
 
         androidMain.dependencies {
-            implementation(compose.uiTooling)
+            implementation(libs.compose.ui.tooling)
             implementation(libs.androidx.activityCompose)
             implementation(libs.kotlinx.coroutines.android)
             implementation(libs.ktor.client.okhttp)
@@ -91,11 +90,11 @@ kotlin {
 
 android {
     namespace = "com.alextos"
-    compileSdk = 36
+    compileSdk = 37
 
     defaultConfig {
-        minSdk = 23
-        targetSdk = 36
+        minSdk = 24
+        targetSdk = 37
 
         applicationId = "com.alextos.converter"
         versionCode = 5
@@ -106,6 +105,10 @@ android {
 
     buildFeatures {
         buildConfig = true
+    }
+
+    testOptions {
+        unitTests.isIncludeAndroidResources = true
     }
 }
 
@@ -124,7 +127,6 @@ dependencies {
     implementation(libs.accessibility.test.framework)
     with(libs.room.compiler) {
         add("kspAndroid", this)
-        add("kspIosX64", this)
         add("kspIosArm64", this)
         add("kspIosSimulatorArm64", this)
     }

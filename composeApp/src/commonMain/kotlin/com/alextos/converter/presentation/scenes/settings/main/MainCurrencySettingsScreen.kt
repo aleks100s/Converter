@@ -28,40 +28,45 @@ import converter.composeapp.generated.resources.main_currency_info
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
-fun MainCurrencySettingsScreen(
+fun MainCurrencySettingsScreen(viewModel: MainCurrencySettingsViewModel, onDismiss: () -> Unit) {
+    Screen(modifier = Modifier, title = stringResource(Res.string.main_currency), goBack = onDismiss) {
+        MainCurrencySettingsContent(viewModel, modifier = it)
+    }
+}
+
+@Composable
+fun MainCurrencySettingsContent(
     viewModel: MainCurrencySettingsViewModel,
-    onDismiss: () -> Unit
+    modifier: Modifier = Modifier
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
-    Screen(
-        modifier = Modifier,
-        title = stringResource(Res.string.main_currency),
-        goBack = onDismiss
-    ) {
-        LazyColumn(
-            modifier = it
-                .padding(horizontal = 16.dp)
-                .fillMaxSize()
-        ) {
-            item {
-                Column(
-                    modifier = Modifier
-                        .padding(top = 16.dp)
-                        .clip(RoundedCornerShape(16.dp))
-                        .background(MaterialTheme.colorScheme.surfaceBright)
-                        .fillMaxWidth()
-                        .padding(16.dp)
-                ) {
-                    Text(stringResource(Res.string.main_currency_info))
-                }
-            }
 
-            items(state.currencies) { currencyRate ->
-                CurrencyItem(
-                    currencyRate = currencyRate,
-                    onSelectMainCurrency = { viewModel.selectMainCurrency(it) }
-                )
+    LazyColumn(
+        modifier = modifier
+            .padding(horizontal = 16.dp)
+            .fillMaxSize()
+    ) {
+        item {
+            Column(
+                modifier = Modifier
+                    .padding(top = 16.dp)
+                    .clip(RoundedCornerShape(16.dp))
+                    .background(MaterialTheme.colorScheme.surfaceBright)
+                    .fillMaxWidth()
+                    .padding(16.dp)
+            ) {
+                Text(stringResource(Res.string.main_currency_info))
             }
+        }
+
+        items(
+            items = state.currencies,
+            key = { it.code }
+        ) { currencyRate ->
+            CurrencyItem(
+                currencyRate = currencyRate,
+                onSelectMainCurrency = { viewModel.selectMainCurrency(it) }
+            )
         }
     }
 }

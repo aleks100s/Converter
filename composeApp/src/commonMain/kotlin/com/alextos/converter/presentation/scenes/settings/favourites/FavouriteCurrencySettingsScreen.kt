@@ -33,40 +33,45 @@ import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 
 @Composable
-fun FavouriteCurrencySettingsScreen(
+fun FavouriteCurrencySettingsScreen(viewModel: FavouriteCurrencySettingsViewModel, onDismiss: () -> Unit) {
+    Screen(modifier = Modifier, title = stringResource(Res.string.favourite_currencies), goBack = onDismiss) {
+        FavouriteCurrencySettingsContent(viewModel, modifier = it)
+    }
+}
+
+@Composable
+fun FavouriteCurrencySettingsContent(
     viewModel: FavouriteCurrencySettingsViewModel,
-    onDismiss: () -> Unit
+    modifier: Modifier = Modifier
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
-    Screen(
-        modifier = Modifier,
-        title = stringResource(Res.string.favourite_currencies),
-        goBack = onDismiss
-    ) {
-        LazyColumn(
-            modifier = it
-                .padding(horizontal = 16.dp)
-                .fillMaxSize()
-        ) {
-            item {
-                Column(
-                    modifier = Modifier
-                        .padding(top = 16.dp)
-                        .clip(RoundedCornerShape(16.dp))
-                        .background(MaterialTheme.colorScheme.surfaceBright)
-                        .fillMaxWidth()
-                        .padding(16.dp)
-                ) {
-                    Text(stringResource(Res.string.favourite_currency_info))
-                }
-            }
 
-            items(state.currencies) { currencyRate ->
-                CurrencyItem(
-                    currencyRate = currencyRate,
-                    onToggleFavourite = { viewModel.toggleFavouriteCurrency(it) }
-                )
+    LazyColumn(
+        modifier = modifier
+            .padding(horizontal = 16.dp)
+            .fillMaxSize()
+    ) {
+        item {
+            Column(
+                modifier = Modifier
+                    .padding(top = 16.dp)
+                    .clip(RoundedCornerShape(16.dp))
+                    .background(MaterialTheme.colorScheme.surfaceBright)
+                    .fillMaxWidth()
+                    .padding(16.dp)
+            ) {
+                Text(stringResource(Res.string.favourite_currency_info))
             }
+        }
+
+        items(
+            items = state.currencies,
+            key = { it.code }
+        ) { currencyRate ->
+            CurrencyItem(
+                currencyRate = currencyRate,
+                onToggleFavourite = { viewModel.toggleFavouriteCurrency(it) }
+            )
         }
     }
 }
